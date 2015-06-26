@@ -112,6 +112,10 @@ body {
     opacity: 0;
     top: $padding + $selector_border_size;
 
+    &.paused {
+      animation-play-state: paused;
+    }
+
     &.hide::after {
       animation: fadeout 1s 1;
       opacity: 0;
