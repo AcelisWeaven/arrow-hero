@@ -47,6 +47,11 @@ body {
       opacity: 0;
     }
 
+    &.show {
+      animation: fadein 1s 1;
+      opacity: 1;
+    }
+
     .key-selector {
       position: absolute;
       margin: 0 auto;
@@ -112,7 +117,7 @@ body {
     opacity: 0;
     top: $padding + $selector_border_size;
 
-    &.paused {
+    &.paused, &.remove::after {
       animation-play-state: paused;
     }
 
@@ -213,6 +218,11 @@ body {
       opacity: 1;
     }
 
+    &.hide {
+      animation: fadeout 0.8s ease-in-out;
+      opacity: 0;
+    }
+
     .results-container {
       display: table-cell;
       vertical-align: middle;
@@ -258,9 +268,15 @@ body {
   .bump {
     animation: bump 0.3s 1 ease-in-out;
   }
+
   &.hide {
     animation: fadeout 0.5s ease-out;
     opacity: 0;
+  }
+
+  &.show {
+    animation: fadein 0.5s ease-out;
+    opacity: 1;
   }
 }
 
