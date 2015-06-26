@@ -38,9 +38,13 @@ $(function() {
         $square.append($ding);
     }
 
-    function randomKey() {
+    function spawnRandomKey() {
 
         if (started === 'end') {
+            return;
+        } else if (started === 'paused') {
+            // Try to respawn next key asap
+            setTimeout(spawnRandomKey, 20);
             return;
         }
 
@@ -66,8 +70,8 @@ $(function() {
                 $square
                     .addClass('bad')
                     .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-                    $square.removeClass('bad');
-                });
+                        $square.removeClass('bad');
+                    });
             }
 
             if (speed < min) {
@@ -88,7 +92,7 @@ $(function() {
                 $elem.removeClass('low medium');
             }
 
-            if (currentLife <= 0 && started === true) {
+            if (currentLife <= 0 && started === 'running') {
                 started = 'end';
                 $('.key').addClass('hide');
                 $('.key-selector-container').addClass('hide');
@@ -100,74 +104,66 @@ $(function() {
         });
 
         $container.append($elem);
-        setTimeout(randomKey, speed);
+        // Spawn next key
+        setTimeout(spawnRandomKey, speed);
     }
 
     $(document).keydown(function(e) {
 
-        if (e.keyCode >= 37 && e.keyCode <= 40) {
+        if (e.keyCode == 32) { // space bar pressed
+            started = (started === 'running' ? 'paused' : 'running');
+            $('.key').toggleClass('paused', started === 'paused');
+        }
+
+        if (e.keyCode >= 37 && e.keyCode <= 40) { // arrow keys pressed
             e.preventDefault();
             if (started === false) {
-                started = true;
-
-                $('.helper-container').addClass('hide');
-                setTimeout(function() {
-                    $('.key-selector')
-                        .addClass('show fade')
-                        .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-                            $(this).removeClass('fade');
-                        });
-                }, 500);
-                setTimeout(function() {
-                    randomKey();
-                }, 1000);
-
-                $('.percent').css('width', '100%');
-                //var timeInterval = setInterval(function() {
-                //    console.log("Interval;; currentLife = "+currentLife);
-                //    var percent = currentLife*100/maxLife;
-                //    var $elem = $('.percent');
-                //    $elem.css('width', percent+'%');
-                //
-                //    if (percent < 20) {
-                //        $elem.addClass('low');
-                //    } else if (percent < 60) {
-                //        $elem.addClass('medium');
-                //    }
-                //
-                //    if (currentLife <= 0) {
-                //        console.log("DONE WITH "+points);
-                //        clearInterval(timeInterval);
-                //    }
-                //}, 1000);
-
+                startGame();
                 return false;
             }
-        }
 
-        if (keypressed !== '') {
-            $square.removeClass('s-'+keypressed);
-        }
-        switch (e.keyCode) {
-            case 37:
-                keypressed = 'key-left';
-                break;
+            if (keypressed !== '') {
+                $square.removeClass('s-'+keypressed);
+            }
+            switch (e.keyCode) {
+                case 37:
+                    keypressed = 'key-left';
+                    break;
 
-            case 38:
-                keypressed = 'key-up';
-                break;
+                case 38:
+                    keypressed = 'key-up';
+                    break;
 
-            case 39:
-                keypressed = 'key-right';
-                break;
+                case 39:
+                    keypressed = 'key-right';
+                    break;
 
-            case 40:
-                keypressed = 'key-down';
-                break;
-        }
-        if (keypressed !== '') {
+                case 40:
+                    keypressed = 'key-down';
+                    break;
+            }
             $square.addClass('s-'+keypressed);
         }
+
+
     });
+
+    function startGame() {
+        started = 'running';
+
+        $('.helper-container').addClass('hide');
+        setTimeout(function() {
+            $('.key-selector')
+                .addClass('show fade')
+                .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+                    $(this).removeClass('fade');
+                });
+        }, 500);
+        setTimeout(function() {
+            spawnRandomKey();
+        }, 1000);
+
+        $('.percent').css('width', '100%');
+    }
 
 });
