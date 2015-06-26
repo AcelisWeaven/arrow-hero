@@ -1,0 +1,7 @@
+{
+  "name": "jsgame",
+  "version": "0.0.1",
+  "dependencies": {
+      "jquery": "2.1.4"
+  }
+}
