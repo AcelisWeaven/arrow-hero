@@ -13,7 +13,9 @@ $(function() {
         difficulty = 1,
         started = false,
         maxLife = 5000,
-        currentLife = maxLife;
+        currentLife = maxLife,
+        scheduledSpawns = [] // array of objects: {delay, started, interval}
+        ;
 
 
     function updatePoints(pts) {
@@ -38,19 +40,24 @@ $(function() {
         $square.append($ding);
     }
 
-    function spawnRandomKey() {
+    function spawnRandomKey(obj) {
+        if (started !== 'paused') { // running or ended
+            removeScheduledSpawn(obj);
+        }
 
-        if (started === 'end') {
-            return;
-        } else if (started === 'paused') {
-            // Try to respawn next key asap
-            setTimeout(spawnRandomKey, 20);
+        if (started === 'end' || started === 'paused' || started === 'restart') {
             return;
         }
 
         var arr = ['up', 'left', 'down', 'right'];
         var $elem = $('<div class="key key-'+arr[Math.floor(Math.random()*arr.length)]+'"></div>');
         $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+
+            if (started === 'end' || started === 'restart') {
+                return;
+            }
+
+            console.log("coucou");
 
             // incremental speed
             var currStep = (100 - (max-speed)*100/(max-min)) * step / 100;
@@ -93,11 +100,7 @@ $(function() {
             }
 
             if (currentLife <= 0 && started === 'running') {
-                started = 'end';
-                $('.key').addClass('hide');
-                $('.key-selector-container').addClass('hide');
-                $('.results').addClass('show');
-                $('.points-container').addClass('hide');
+               endGame();
             }
 
             $(this).remove();
@@ -105,17 +108,100 @@ $(function() {
 
         $container.append($elem);
         // Spawn next key
-        setTimeout(spawnRandomKey, speed);
+        scheduleSpawn(speed);
+    }
+
+    function scheduleSpawn(delay) {
+        var now = new Date();
+        var obj = {
+            'delay': delay,
+            'started': now.getTime()
+        };
+        console.log("Started: "+now.getTime());
+        obj.interval = setTimeout(spawnRandomKey, delay, obj);
+        scheduledSpawns.push(obj);
+    }
+
+    function removeScheduledSpawn(obj) {
+        var index = scheduledSpawns.indexOf(obj);
+        if (index > -1)
+            scheduledSpawns.splice(index, 1);
+    }
+
+    function pauseScheduledSpawns() {
+        var now = new Date();
+        for (var i in scheduledSpawns) {
+            var obj = scheduledSpawns[i];
+            obj.delay -= now.getTime() - obj.started;
+            obj.started = null;
+            clearInterval(obj.interval);
+        }
+    }
+
+    function resumeScheduledSpawns() {
+        var now = new Date();
+        for (var i in scheduledSpawns) {
+            var obj = scheduledSpawns[i];
+            obj.started = now.getTime();
+            obj.interval = setTimeout(spawnRandomKey, obj.delay, obj);
+        }
+    }
+
+    function endGame () {
+        started = 'end';
+        $('.key').addClass('hide');
+        $('.key-selector-container').addClass('hide').removeClass('show');
+        $('.results').addClass('show').removeClass('hide');
+        $('.points-container').addClass('hide').removeClass('show');
+    }
+
+    function restartGame() {
+        started = 'restart';
+        console.log('restart');
+        points = 0;
+        maxLife = 5000;
+        currentLife = maxLife;
+        speed = max;
+        difficulty = 1;
+        keypressed = '';
+
+        $('.key-selector-container').addClass('show').removeClass('hide');
+        $('.results').addClass('hide').removeClass('show');
+        $('.points-container').addClass('show').removeClass('hide');
+
+        setTimeout(function() {
+            for (var i in scheduledSpawns) {
+                var obj = scheduledSpawns[i];
+                clearInterval(obj.interval);
+            }
+            scheduledSpawns = [];
+            $('.percent').css('width', '100%').removeClass('low medium');
+            setTimeout(function() {
+                started = 'running';
+                $('.key').addClass('remove');
+                scheduleSpawn(1);
+            }, 950);
+        }, 1000);
     }
 
     $(document).keydown(function(e) {
 
-        if (e.keyCode == 32) { // space bar pressed
-            started = (started === 'running' ? 'paused' : 'running');
-            $('.key').toggleClass('paused', started === 'paused');
+        if (e.keyCode === 32) {
+            if (started === 'running' || started === 'paused') { // space bar pressed
+                started = (started === 'running' ? 'paused' : 'running');
+                $('.key').toggleClass('paused', started === 'paused');
+
+                if (started === 'paused') {
+                    pauseScheduledSpawns();
+                } else if (started === 'running') {
+                    resumeScheduledSpawns();
+                }
+            } else if (started === 'end') {
+                restartGame();
+            }
         }
 
-        if (e.keyCode >= 37 && e.keyCode <= 40) { // arrow keys pressed
+        if (e.keyCode >= 37 && e.keyCode <= 40 && started !== 'paused' && started !== 'restart') { // arrow keys pressed
             e.preventDefault();
             if (started === false) {
                 startGame();
@@ -145,7 +231,6 @@ $(function() {
             $square.addClass('s-'+keypressed);
         }
 
-
     });
 
     function startGame() {
@@ -159,9 +244,7 @@ $(function() {
                     $(this).removeClass('fade');
                 });
         }, 500);
-        setTimeout(function() {
-            spawnRandomKey();
-        }, 1000);
+        scheduleSpawn(1000);
 
         $('.percent').css('width', '100%');
     }
