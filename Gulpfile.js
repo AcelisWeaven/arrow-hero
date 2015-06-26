@@ -16,27 +16,17 @@ gulp.task('Sass', function() {
             errorHandler: onError
         }))
         .pipe(plugins.rubySass({
-            compass: true,
             style: 'compressed',
             check: true}))
-        .pipe(plugins.minifyCss({keepSpecialComments:0}))
         .pipe(plugins.rename({suffix: '.min'}))
+        .pipe(plugins.minifyCss({keepSpecialComments:0}))
         .pipe(gulp.dest('app/dist/css/'));
 });
 
-
-
-gulp.task('copy', function() {
-    gulp.src(app + '/fonts/*.{ttf,woff,eof,svg,eot}')
-        .pipe(gulp.dest('app/dist/fonts/'));
-});
-
-
-
 gulp.task('concat', function() {
     gulp.src([
-            app + '/vendor/**.js',
-            app + '/js/**.js'
+        app + '/vendor/**.js',
+        app + '/js/**.js'
     ])
         .pipe(plugins.concat('app.js'))
         .pipe(plugins.uglify({mangle: true}))
@@ -53,19 +43,13 @@ gulp.task('lint', function() {
 gulp.task('watch', function() {
     gulp.watch(app + '/scss/**/*.scss', ['Sass']);
     gulp.watch([
-            app + '/vendor/**.js',
-            app + '/js/**.js'
+        app + '/vendor/**.js',
+        app + '/js/**.js'
     ], ['concat', 'lint']);
 });
 
-
-gulp.task('build', [
-'copy',
-'concat',
-'Sass',
-'lint'
-]);
-
 gulp.task('default', [
-'Sass'
+    'concat',
+    'Sass',
+    'lint'
 ]);

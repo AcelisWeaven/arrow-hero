@@ -12,8 +12,8 @@ $(function() {
         speed = max,
         difficulty = 1,
         started = false,
-        max_life = 10000,
-        current_life = max_life;
+        maxLife = 5000,
+        currentLife = maxLife;
 
 
     function updatePoints(pts) {
@@ -49,25 +49,25 @@ $(function() {
         $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
 
             // incremental speed
-            var curr_step = (100 - (max-speed)*100/(max-min)) * step / 100;
-            //console.log(curr_step+"     "+"("+max+"-"+speed+")*100/("+max+"-"+min+")");
+            var currStep = (100 - (max-speed)*100/(max-min)) * step / 100;
+            //console.log(currStep+"     "+"("+max+"-"+speed+")*100/("+max+"-"+min+")");
 
             difficulty = (max-speed)/step;
             if ($(this).hasClass(keypressed)) {
-                speed -= curr_step;
-                current_life += 200;
-                if (current_life > max_life) {
-                    current_life = max_life;
+                speed -= currStep;
+                currentLife += 200;
+                if (currentLife > maxLife) {
+                    currentLife = maxLife;
                 }
                 updatePoints(difficulty);
             } else {
-                speed += curr_step;
-                current_life -= 1000;
+                speed += currStep;
+                currentLife -= 1000;
                 $square
                     .addClass('bad')
                     .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
                     $square.removeClass('bad');
-                })
+                });
             }
 
             if (speed < min) {
@@ -75,11 +75,8 @@ $(function() {
             } else if (speed > max) {
                 speed = max;
             }
-            //$('#speed').html(speed);
 
-
-            console.log("Interval;; current_life = "+current_life);
-            var percent = current_life*100/max_life;
+            var percent = currentLife*100/maxLife;
             var $elem = $('.percent');
             $elem.css('width', percent+'%');
 
@@ -91,10 +88,10 @@ $(function() {
                 $elem.removeClass('low medium');
             }
 
-            if (current_life <= 0 && started === true) {
+            if (currentLife <= 0 && started === true) {
                 started = 'end';
-                $(".key").addClass("hide");
-                $('.key-selector-container').addClass("hide");
+                $('.key').addClass('hide');
+                $('.key-selector-container').addClass('hide');
                 $('.results').addClass('show');
                 $('.points-container').addClass('hide');
             }
@@ -113,12 +110,12 @@ $(function() {
             if (started === false) {
                 started = true;
 
-                $(".helper-container").addClass("hide");
+                $('.helper-container').addClass('hide');
                 setTimeout(function() {
-                    $(".key-selector")
-                        .addClass("show fade")
+                    $('.key-selector')
+                        .addClass('show fade')
                         .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-                            $(this).removeClass("fade");
+                            $(this).removeClass('fade');
                         });
                 }, 500);
                 setTimeout(function() {
@@ -127,8 +124,8 @@ $(function() {
 
                 $('.percent').css('width', '100%');
                 //var timeInterval = setInterval(function() {
-                //    console.log("Interval;; current_life = "+current_life);
-                //    var percent = current_life*100/max_life;
+                //    console.log("Interval;; currentLife = "+currentLife);
+                //    var percent = currentLife*100/maxLife;
                 //    var $elem = $('.percent');
                 //    $elem.css('width', percent+'%');
                 //
@@ -138,7 +135,7 @@ $(function() {
                 //        $elem.addClass('medium');
                 //    }
                 //
-                //    if (current_life <= 0) {
+                //    if (currentLife <= 0) {
                 //        console.log("DONE WITH "+points);
                 //        clearInterval(timeInterval);
                 //    }
