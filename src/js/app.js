@@ -175,6 +175,7 @@ $(function() {
                 clearInterval(obj.interval);
             }
             scheduledSpawns = [];
+            $pointContainer.html(points);
             $('.percent').css('width', '100%').removeClass('low medium');
             setTimeout(function() {
                 started = 'running';
