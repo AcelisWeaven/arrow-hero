@@ -27,7 +27,7 @@ $(function() {
         {score: 10000, speed: 330, message: 'You\'re really still here?', points: 40},
         {score: 10500, speed: 320, message: 'That\'s impressive!', points: 40}
     ];
-    var current = speeds[8];
+    var current = speeds[0];
     var difficulty = 1;
     var started = false;
     var maxLife = 5000;
@@ -95,7 +95,7 @@ $(function() {
                 return;
             }
 
-            if ($(this).hasClass(keypressed)) {
+            if ($(this).hasClass(keypressed) || 1) {
                 currentLife += 200;
                 if (currentLife > maxLife) {
                     currentLife = maxLife;
