@@ -95,7 +95,7 @@ $(function() {
                 return;
             }
 
-            if ($(this).hasClass(keypressed) || 1) {
+            if ($(this).hasClass(keypressed)) {
                 currentLife += 200;
                 if (currentLife > maxLife) {
                     currentLife = maxLife;
