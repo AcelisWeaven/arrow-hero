@@ -1,22 +1,39 @@
 'use strict';
 
 $(function() {
-    var points = 0,
-        $pointContainer = $('.points'),
-        keypressed = 'key-',
-        $container = $('.container'),
-        $square = $('.key-selector'),
-        min = 350,
-        max = 800,
-        step = 8,
-        speed = max,
-        difficulty = 1,
-        started = false,
-        maxLife = 5000,
-        currentLife = maxLife,
-        scheduledSpawns = [] // array of objects: {delay, started, interval}
-        ;
-
+    var points = 0;
+    var $pointContainer = $('.points');
+    var keypressed = 'key-';
+    var $container = $('.container');
+    var $square = $('.key-selector');
+    // array of objects: {score, speed, message, points}
+    var speeds = [
+        {score: 0, speed: 800, message: '', points: 1},
+        {score: 5, speed: 750, message: 'You\'ve got it!', points: 2},
+        {score: 20, speed: 695, message: 'Keep going!', points: 5},
+        {score: 70, speed: 630, message: 'You\'re doing great!', points: 7},
+        {score: 150, speed: 570, message: 'You rock!', points: 10},
+        {score: 300, speed: 520, message: 'Don\'t stop!', points: 12},
+        {score: 500, speed: 490, message: 'Tricky!', points: 15},
+        {score: 760, speed: 470, message: 'Great!', points: 17},
+        {score: 1100, speed: 455, message: 'I like your style!', points: 20},
+        {score: 1500, speed: 420, message: 'Awesome!', points: 22},
+        {score: 2000, speed: 400, message: 'Yeah!!', points: 25},
+        {score: 2700, speed: 385, message: 'How do you do that?', points: 27},
+        {score: 3500, speed: 370, message: '...how?', points: 30},
+        {score: 4300, speed: 360, message: 'Don\'t ever stop!!', points: 32},
+        {score: 5500, speed: 350, message: 'I\'m really impressed.', points: 35},
+        {score: 7000, speed: 340, message: 'Arrow hero!', points: 40},
+        {score: 10000, speed: 330, message: 'You\'re really still here?', points: 40},
+        {score: 10500, speed: 320, message: 'That\'s impressive!', points: 40}
+    ];
+    var current = speeds[8];
+    var difficulty = 1;
+    var started = false;
+    var maxLife = 5000;
+    var currentLife = maxLife;
+    // array of objects: {delay, started, interval}
+    var scheduledSpawns = [];
 
     function updatePoints(pts) {
         if (pts < 1) {
@@ -40,6 +57,27 @@ $(function() {
         $square.append($ding);
     }
 
+    function updateSpeed() {
+        var oldSpeed = current;
+        for (var i in speeds) {
+            var _speed = speeds[i];
+            if (points >= _speed.score) {
+                current = _speed;
+            } else if (points < _speed.score) {
+                break;
+            }
+        }
+        if (current.speed !== oldSpeed.speed) {
+            // Speed changed !
+            $('.level-message')
+                .text(current.message)
+                .addClass('show')
+                .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+                    $(this).removeClass('show');
+                });
+        }
+    }
+
     function spawnRandomKey(obj) {
         if (started !== 'paused') { // running or ended
             removeScheduledSpawn(obj);
@@ -57,22 +95,13 @@ $(function() {
                 return;
             }
 
-            console.log("coucou");
-
-            // incremental speed
-            var currStep = (100 - (max-speed)*100/(max-min)) * step / 100;
-            //console.log(currStep+"     "+"("+max+"-"+speed+")*100/("+max+"-"+min+")");
-
-            difficulty = (max-speed)/step;
             if ($(this).hasClass(keypressed)) {
-                speed -= currStep;
                 currentLife += 200;
                 if (currentLife > maxLife) {
                     currentLife = maxLife;
                 }
-                updatePoints(difficulty);
+                updatePoints(current.points);
             } else {
-                speed += currStep;
                 currentLife -= 1000;
                 $square
                     .addClass('bad')
@@ -81,11 +110,7 @@ $(function() {
                     });
             }
 
-            if (speed < min) {
-                speed = min;
-            } else if (speed > max) {
-                speed = max;
-            }
+            updateSpeed();
 
             var percent = currentLife*100/maxLife;
             var $elem = $('.percent');
@@ -100,7 +125,7 @@ $(function() {
             }
 
             if (currentLife <= 0 && started === 'running') {
-               endGame();
+                endGame();
             }
 
             $(this).remove();
@@ -108,7 +133,7 @@ $(function() {
 
         $container.append($elem);
         // Spawn next key
-        scheduleSpawn(speed);
+        scheduleSpawn(current.speed);
     }
 
     function scheduleSpawn(delay) {
@@ -117,15 +142,15 @@ $(function() {
             'delay': delay,
             'started': now.getTime()
         };
-        console.log("Started: "+now.getTime());
         obj.interval = setTimeout(spawnRandomKey, delay, obj);
         scheduledSpawns.push(obj);
     }
 
     function removeScheduledSpawn(obj) {
         var index = scheduledSpawns.indexOf(obj);
-        if (index > -1)
+        if (index > -1) {
             scheduledSpawns.splice(index, 1);
+        }
     }
 
     function pauseScheduledSpawns() {
@@ -157,11 +182,10 @@ $(function() {
 
     function restartGame() {
         started = 'restart';
-        console.log('restart');
         points = 0;
         maxLife = 5000;
         currentLife = maxLife;
-        speed = max;
+        current = speeds[0];
         difficulty = 1;
         keypressed = '';
 
@@ -188,7 +212,9 @@ $(function() {
     $(document).keydown(function(e) {
 
         if (e.keyCode === 32) {
-            if (started === 'running' || started === 'paused') { // space bar pressed
+            if (started === 'running' || started === 'paused') {
+                // space bar pressed
+
                 started = (started === 'running' ? 'paused' : 'running');
                 $('.key').toggleClass('paused', started === 'paused');
 
@@ -202,7 +228,9 @@ $(function() {
             }
         }
 
-        if (e.keyCode >= 37 && e.keyCode <= 40 && started !== 'paused' && started !== 'restart') { // arrow keys pressed
+        if (e.keyCode >= 37 && e.keyCode <= 40 && started !== 'paused' && started !== 'restart') {
+            // arrow keys pressed
+
             e.preventDefault();
             if (started === false) {
                 startGame();

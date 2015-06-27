@@ -112,7 +112,6 @@ body {
     right: 0;
     width: $key_size;
     height: $key_size;
-    //transform-origin: 50% 100%;
     animation: orbit 2s 1 linear;
     opacity: 0;
     top: $padding + $selector_border_size;
@@ -148,6 +147,21 @@ body {
 
     &::after {
       background-color: $key_color;
+    }
+  }
+
+  .level-message {
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: $size;
+    width: $size;
+    height: $size;
+    font-size: 17px;
+    opacity: 0;
+
+    &.show {
+      animation: reversedfadein 1s;
     }
   }
 
@@ -297,6 +311,19 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes reversedfadein {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
   }
 }
 
