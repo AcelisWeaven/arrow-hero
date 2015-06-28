@@ -37,7 +37,7 @@ $down_color: #FFC107;
 
   position: absolute;
   font-family: monospace;
-  font-size: $key_size * 0.7;
+  font-size: $key_size * 0.8;
   text-align: center;
   display: block;
   width: $key_size - 6px;
@@ -47,7 +47,6 @@ $down_color: #FFC107;
   border-radius: 5px;
   border-style: solid;
   border-width: 2px 3px 4px 3px;
-
 }
 
 body {
@@ -55,6 +54,7 @@ body {
   text-align: center;
   background-color: $background_color;
   padding-top: 20px;
+  color: #303030;
 }
 
 .container {
@@ -340,6 +340,8 @@ body {
   text-align: center;
   font-family: monospace;
   margin: 0 auto 20px auto;
+  opacity: 0;
+
   .bump {
     animation: bump 0.3s 1 ease-in-out;
   }
@@ -352,6 +354,19 @@ body {
   &.show {
     animation: fadein 0.5s ease-out;
     opacity: 1;
+  }
+}
+
+.best {
+  width: $size;
+  margin: 0 auto;
+  text-align: right;
+  padding-right: 5px;
+  font-size: 16px;
+
+  .best-points {
+    color: $up_color;
+    font-weight: bold;
   }
 }
 

@@ -34,6 +34,7 @@ $(function() {
     var currentLife = maxLife;
     // array of objects: {delay, started, interval}
     var scheduledSpawns = [];
+    var best_score = sessionStorage.getItem('best_score');
 
     function updatePoints(pts) {
         if (pts < 1) {
@@ -178,6 +179,14 @@ $(function() {
         $('.key-selector-container').addClass('hide').removeClass('show');
         $('.results').addClass('show').removeClass('hide');
         $('.points-container').addClass('hide').removeClass('show');
+
+        if (points > best_score) {
+            // update best score
+            best_score = points;
+            sessionStorage.setItem('best_score', best_score);
+            $('.best-points .value').text(best_score);
+            $('.best').fadeIn();
+        }
     }
 
     function restartGame() {
@@ -270,6 +279,7 @@ $(function() {
     function startGame() {
         started = 'running';
 
+        $('.points-container').addClass('show');
         $('.helper-container').addClass('hide');
         setTimeout(function() {
             $('.key-selector')
@@ -283,4 +293,8 @@ $(function() {
         $('.percent').css('width', '100%');
     }
 
+    if (best_score) {
+        $('.best-points .value').text(best_score);
+        $('.best').fadeIn();
+    }
 });
