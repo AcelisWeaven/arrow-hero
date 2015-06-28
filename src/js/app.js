@@ -4,7 +4,7 @@ $(function() {
     var points = 0;
     var $pointContainer = $('.points');
     var keypressed = 'key-';
-    var $container = $('.container');
+    var $container = $('.keys-container');
     var $square = $('.key-selector');
     // array of objects: {score, speed, message, points}
     var speeds = [
@@ -221,6 +221,7 @@ $(function() {
 
                 started = (started === 'running' ? 'paused' : 'running');
                 $('.key').toggleClass('paused', started === 'paused');
+                $('.pause').toggleClass('show', started === 'paused');
 
                 if (started === 'paused') {
                     pauseScheduledSpawns();
