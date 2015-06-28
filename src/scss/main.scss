@@ -9,18 +9,45 @@ $orbit_radius: 250%;
 $helper_spacing: 10px;
 $background_color: white;
 $board_color: #f0f0f0;
+$left_color: #4CAF50;
+$up_color: #FF5252;
+$right_color: #2196F3;
+$down_color: #FFC107;
 
-@mixin key() {
+@mixin key($direction:"") {
+  @if ($direction == "left") {
+    border-color: $left_color;
+    color: $left_color;
+    content: "\2190";
+  } @else if ($direction == "up") {
+    border-color: $up_color;
+    color: $up_color;
+    content: "\2191";
+  }  @else if ($direction == "right") {
+    border-color: $right_color;
+    color: $right_color;
+    content: "\2192";
+  }  @else if ($direction == "down") {
+    border-color: $down_color;
+    color: $down_color;
+    content: "\2193";
+  } @else {
+    border-color: transparent;
+  }
+
   position: absolute;
   font-family: monospace;
   font-size: $key_size * 0.7;
   text-align: center;
   display: block;
-  width: $key_size;
-  height: $key_size;
+  width: $key_size - 6px;
+  height: $key_size - 6px;
   transform-origin: 50% 50%;
-  line-height: $key_size;
+  line-height: $key_size - 6px;
   border-radius: 5px;
+  border-style: solid;
+  border-width: 2px 3px 4px 3px;
+
 }
 
 body {
@@ -37,8 +64,7 @@ body {
   height: $size - 2*$padding;
   padding: $padding;
   position: relative;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 0 auto 10px auto;
 
   .key-selector-container {
 
@@ -60,8 +86,14 @@ body {
       width: $selector_size;
       border-radius: 5px;
       height: $selector_size;
-      border: $selector_border_size dashed rgba(0, 0, 0, 0.5);
       opacity: 0;
+
+      border-width: $selector_border_size;
+      border-style: dashed;
+      border-left-color: $left_color;
+      border-top-color: $up_color;
+      border-right-color: $right_color;
+      border-bottom-color: $down_color;
 
       &.show {
         opacity: 1;
@@ -73,34 +105,34 @@ body {
       }
 
       &.bump {
-        animation: selector-bump 0.3s 1 ease-in-out;
+        animation: selector-bump 0.25s 1 ease-in-out;
       }
 
       &.bad {
         animation: selector-bad 0.2s 1 linear;
       }
 
-      &.s-key-left::after {
-        content: "\2190";
-        @include key();
-      }
-      &.s-key-up::after {
-        content: "\2191";
-        @include key();
-      }
-      &.s-key-right::after {
-        content: "\2192";
-        @include key();
-      }
-      &.s-key-down::after {
-        content: "\2193";
-        @include key();
+      &::after {
+        margin: 5px;
+        background-color: $board_color;
+        opacity: 0.8;
       }
 
-      &::after {
-        opacity: 0.3;
-        margin: 2px;
-        background: none;
+      &.s-key-left::after {
+        @include key("left");
+        border: none;
+      }
+      &.s-key-up::after {
+        @include key("up");
+        border: none;
+      }
+      &.s-key-right::after {
+        @include key("right");
+        border: none;
+      }
+      &.s-key-down::after {
+        @include key("down");
+        border: none;
       }
     }
   }
@@ -126,23 +158,19 @@ body {
     }
 
     &.key-left::after {
-      content: "\2190";
-      @include key();
+      @include key("left");
     }
 
     &.key-up::after {
-      content: "\2191";
-      @include key();
+      @include key("up");
     }
 
     &.key-right::after {
-      content: "\2192";
-      @include key();
+      @include key("right");
     }
 
     &.key-down::after {
-      content: "\2193";
-      @include key();
+      @include key("down");
     }
 
     &::after {
@@ -194,24 +222,24 @@ body {
       opacity: 1;
       animation: none;
 
+      &::after {
+        animation: lowbump 0.8s infinite ease-out;
+      }
+
       &.key-left::after {
         top: $key_size + $helper_spacing;
         right: $key_size + $helper_spacing;
-        animation: lowbump 1s infinite ease-out;
       }
       &.key-up::after {
         top: 0;
-        animation: lowbump 1s infinite ease-out;
       }
       &.key-down::after {
         top: $key_size + $helper_spacing;
-        animation: lowbump 1s infinite ease-out;
       }
       &.key-right::after {
         top: $key_size + $helper_spacing;
         right: 0;
         left: $key_size + $helper_spacing;
-        animation: lowbump 1s infinite ease-out;
       }
     }
   }
@@ -244,6 +272,10 @@ body {
       .results-content {
         margin-left: auto;
         margin-right: auto;
+
+        p {
+          animation: lowbump 0.8s infinite ease-out;
+        }
       }
     }
   }
@@ -380,16 +412,13 @@ body {
 
 @keyframes selector-bump {
   0% {
-    background-color: rgba(0, 255, 0, 0);
   }
 
   50% {
-    background-color: rgba(0, 219, 0, 0.5);
     transform: scale(1.2);
   }
 
   100% {
-    background-color: rgba(0, 255, 0, 0);
     transform: scale(1);
   }
 }
@@ -400,7 +429,7 @@ body {
   }
 
   50% {
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: rgba(255, 0, 0, 0.2);
     transform: scale(0.95) rotate(1deg);
   }
 

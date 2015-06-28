@@ -10,22 +10,22 @@ $(function() {
     var speeds = [
         {score: 0, speed: 800, message: '', points: 1},
         {score: 5, speed: 750, message: 'You\'ve got it!', points: 2},
-        {score: 20, speed: 695, message: 'Keep going!', points: 5},
-        {score: 70, speed: 630, message: 'You\'re doing great!', points: 7},
-        {score: 150, speed: 570, message: 'You rock!', points: 10},
-        {score: 300, speed: 520, message: 'Don\'t stop!', points: 12},
-        {score: 500, speed: 490, message: 'Tricky!', points: 15},
-        {score: 760, speed: 470, message: 'Great!', points: 17},
-        {score: 1100, speed: 455, message: 'I like your style!', points: 20},
-        {score: 1500, speed: 420, message: 'Awesome!', points: 22},
-        {score: 2000, speed: 400, message: 'Yeah!!', points: 25},
-        {score: 2700, speed: 385, message: 'How do you do that?', points: 27},
-        {score: 3500, speed: 370, message: '...how?', points: 30},
-        {score: 4300, speed: 360, message: 'Don\'t ever stop!!', points: 32},
-        {score: 5500, speed: 350, message: 'I\'m really impressed.', points: 35},
-        {score: 7000, speed: 340, message: 'Arrow hero!', points: 40},
-        {score: 10000, speed: 330, message: 'You\'re really still here?', points: 40},
-        {score: 10500, speed: 320, message: 'That\'s impressive!', points: 40}
+        {score: 20, speed: 670, message: 'Keep going!', points: 5},
+        {score: 70, speed: 610, message: 'You\'re doing great!', points: 7},
+        {score: 150, speed: 550, message: 'You rock!', points: 10},
+        {score: 300, speed: 500, message: 'Don\'t stop!', points: 12},
+        {score: 500, speed: 450, message: 'Tricky!', points: 15},
+        {score: 760, speed: 400, message: 'Great!', points: 17},
+        {score: 1100, speed: 370, message: 'I like your style!', points: 20},
+        {score: 1500, speed: 340, message: 'Awesome!', points: 22},
+        {score: 2000, speed: 300, message: 'Yeah!!', points: 25},
+        {score: 2700, speed: 290, message: 'How do you do that?', points: 27},
+        {score: 3500, speed: 280, message: '...how?', points: 30},
+        {score: 4300, speed: 270, message: 'Don\'t ever stop!!', points: 32},
+        {score: 5500, speed: 265, message: 'I\'m really impressed.', points: 35},
+        {score: 7000, speed: 260, message: 'Arrow hero!', points: 40},
+        {score: 10000, speed: 255, message: 'You\'re really still here?', points: 40},
+        {score: 10500, speed: 250, message: 'That\'s impressive!', points: 40}
     ];
     var current = speeds[0];
     var difficulty = 1;
@@ -187,6 +187,10 @@ $(function() {
         currentLife = maxLife;
         current = speeds[0];
         difficulty = 1;
+
+        if (keypressed !== '') {
+            $square.removeClass('s-'+keypressed);
+        }
         keypressed = '';
 
         $('.key-selector-container').addClass('show').removeClass('hide');
