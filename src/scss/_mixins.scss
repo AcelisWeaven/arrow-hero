@@ -1,0 +1,34 @@
+@mixin key($direction:"") {
+  @if ($direction == "left") {
+    border-color: $left_color;
+    color: $left_color;
+    content: "\2190";
+  } @else if ($direction == "up") {
+    border-color: $up_color;
+    color: $up_color;
+    content: "\2191";
+  }  @else if ($direction == "right") {
+    border-color: $right_color;
+    color: $right_color;
+    content: "\2192";
+  }  @else if ($direction == "down") {
+    border-color: $down_color;
+    color: $down_color;
+    content: "\2193";
+  } @else {
+    border-color: transparent;
+  }
+
+  position: absolute;
+  font-family: monospace;
+  font-size: $key_size * 0.8;
+  text-align: center;
+  display: block;
+  width: $key_size - 6px;
+  height: $key_size - 6px;
+  transform-origin: 50% 50%;
+  line-height: $key_size - 6px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px 3px 4px 3px;
+}

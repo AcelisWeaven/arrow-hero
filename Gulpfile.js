@@ -1,7 +1,9 @@
 var gulp = require('gulp'),
     gulpLoadPlugins = require('gulp-load-plugins'),
     jshint = require('gulp-jshint'),
-    plugins = gulpLoadPlugins();
+    plugins = gulpLoadPlugins(),
+    autoprefixer = require('gulp-autoprefixer'),
+    sourcemaps = require('gulp-sourcemaps');
 
 var app = 'src';
 
@@ -15,11 +17,19 @@ gulp.task('Sass', function() {
         .pipe(plugins.plumber({
             errorHandler: onError
         }))
+        .pipe(sourcemaps.init())
         .pipe(plugins.rubySass({
             style: 'compressed',
-            check: true}))
+            check: true,
+            "sourcemap=none": true
+        }))
         .pipe(plugins.rename({suffix: '.min'}))
+        .pipe(autoprefixer({
+            browsers: ['last 3 versions'],
+            cascade: false
+        }))
         .pipe(plugins.minifyCss({keepSpecialComments:0}))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('app/dist/css/'));
 });
 

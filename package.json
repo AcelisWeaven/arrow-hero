@@ -19,5 +19,9 @@
     "gulp-uglify": "^1.0.1",
     "gulp-load-plugins": "^0.7.0",
     "gulp-jshint": "^1.11.0"
+  },
+  "devDependencies": {
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-sourcemaps": "^1.5.2"
   }
 }
