@@ -1,0 +1,125 @@
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fadein {
+  from {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes reversedfadein {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes lowfadeinwithdelay {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: translateY($orbit_radius) rotate(0deg) translateY(-$orbit_radius) rotate(0deg) scale(0.7);
+  }
+  20% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 1;
+    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(0.7);
+  }
+}
+
+@keyframes lowbump {
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+@keyframes bump {
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes selector-bump {
+  0% {
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes selector-bad {
+  0% {
+    background-color: rgba(0, 255, 0, 0);
+  }
+
+  50% {
+    background-color: rgba(255, 0, 0, 0.2);
+    transform: scale(0.95) rotate(1deg);
+  }
+
+  100% {
+    background-color: rgba(0, 255, 0, 0);
+    transform: scale(1);
+  }
+}
+
+@keyframes ding {
+  0% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}

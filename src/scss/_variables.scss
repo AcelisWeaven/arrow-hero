@@ -1,0 +1,15 @@
+$padding: 10px;
+$key_size: 60px;
+$key_color: white;
+$selector_size: $key_size + 4;
+$selector_border_size: 5px;
+$real_selector_size: $selector_size + 2*$selector_border_size;
+$size: $key_size * 6 + $padding * 2 + $selector_border_size * 2;
+$orbit_radius: 250%;
+$helper_spacing: 10px;
+$background_color: white;
+$board_color: #f0f0f0;
+$left_color: #4CAF50;
+$up_color: #FF5252;
+$right_color: #2196F3;
+$down_color: #FFC107;
