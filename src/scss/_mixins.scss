@@ -1,4 +1,4 @@
-@mixin key($direction:"") {
+@mixin key($direction, $_size:$key_size, $_border_size:3px) {
   @if ($direction == "left") {
     border-color: $left_color;
     color: $left_color;
@@ -21,14 +21,14 @@
 
   position: absolute;
   font-family: monospace;
-  font-size: $key_size * 0.8;
+  font-size: $_size * 0.8;
   text-align: center;
   display: block;
-  width: $key_size - 6px;
-  height: $key_size - 6px;
+  width: $_size - 2 * $_border_size;
+  height: $_size - 2 * $_border_size;
   transform-origin: 50% 50%;
-  line-height: $key_size - 6px;
+  line-height: $_size - 2 * $_border_size;
   border-radius: 5px;
   border-style: solid;
-  border-width: 2px 3px 4px 3px;
+  border-width: ($_border_size - 1px) $_border_size ($_border_size + 1px) $_border_size;
 }

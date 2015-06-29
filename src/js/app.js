@@ -8,24 +8,24 @@ $(function() {
     var $square = $('.key-selector');
     // array of objects: {score, speed, message, points}
     var speeds = [
-        {score: 0, speed: 800, message: '', points: 1},
-        {score: 5, speed: 750, message: 'You\'ve got it!', points: 2},
-        {score: 20, speed: 670, message: 'Keep going!', points: 5},
-        {score: 70, speed: 620, message: 'You\'re doing great!', points: 7},
-        {score: 150, speed: 560, message: 'You rock!', points: 10},
-        {score: 300, speed: 510, message: 'Don\'t stop!', points: 12},
-        {score: 500, speed: 490, message: 'Tricky!', points: 15},
-        {score: 760, speed: 465, message: 'Great!', points: 17},
-        {score: 1100, speed: 440, message: 'I like your style!', points: 20},
-        {score: 1500, speed: 390, message: 'Awesome!', points: 22},
-        {score: 2000, speed: 360, message: 'Yeah!!', points: 25},
-        {score: 2700, speed: 330, message: 'How do you do that?', points: 27},
-        {score: 3500, speed: 310, message: '...how?', points: 30},
-        {score: 4300, speed: 290, message: 'Don\'t ever stop!!', points: 32},
-        {score: 5500, speed: 280, message: 'I\'m really impressed.', points: 35},
-        {score: 7000, speed: 270, message: 'Arrow hero!', points: 40},
-        {score: 10000, speed: 260, message: 'You\'re really still here?', points: 40},
-        {score: 10500, speed: 250, message: 'That\'s uncredible!', points: 40}
+        {score: 0, speed: 800, message: '', points: 1, keys: 1},
+        {score: 3, speed: 750, message: 'You\'ve got it!', points: 2, keys: 2},
+        {score: 20, speed: 670, message: 'Keep going!', points: 5, keys: 3},
+        {score: 70, speed: 620, message: 'You\'re doing great!', points: 7, keys: 3},
+        {score: 150, speed: 560, message: 'You rock!', points: 10, keys: 3},
+        {score: 300, speed: 510, message: 'Don\'t stop!', points: 12, keys: 4},
+        {score: 500, speed: 490, message: 'Tricky!', points: 15, keys: 4},
+        {score: 760, speed: 465, message: 'Great!', points: 17, keys: 4},
+        {score: 1100, speed: 440, message: 'I like your style!', points: 20, keys: 4},
+        {score: 1500, speed: 390, message: 'Awesome!', points: 22, keys: 4},
+        {score: 2000, speed: 360, message: 'Yeah!!', points: 25, keys: 4},
+        {score: 2700, speed: 330, message: 'How do you do that?', points: 27, keys: 4},
+        {score: 3500, speed: 310, message: '...how?', points: 30, keys: 4},
+        {score: 4300, speed: 290, message: 'Don\'t ever stop!!', points: 32, keys: 4},
+        {score: 5500, speed: 280, message: 'I\'m really impressed.', points: 35, keys: 4},
+        {score: 7000, speed: 270, message: 'Arrow hero!', points: 40, keys: 4},
+        {score: 10000, speed: 260, message: 'You\'re really still here?', points: 40, keys: 4},
+        {score: 10500, speed: 250, message: 'That\'s uncredible!', points: 40, keys: 4}
     ];
     var current = speeds[0];
     var difficulty = 1;
@@ -88,8 +88,8 @@ $(function() {
             return;
         }
 
-        var arr = ['up', 'left', 'down', 'right'];
-        var $elem = $('<div class="key key-'+arr[Math.floor(Math.random()*arr.length)]+'"></div>');
+        var arr = ['right', 'left', 'down', 'up'];
+        var $elem = $('<div class="key key-'+arr[Math.floor(Math.random()*current.keys)]+'"></div>');
         $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
 
             if (started === 'end' || started === 'restart') {
@@ -187,6 +187,9 @@ $(function() {
             $('.best-points .value').text(bestScore);
             $('.best').fadeIn();
         }
+
+        // Google Analytics tracking
+        _trackEvent('Game', 'Score', null, points);  // jshint ignore:line
     }
 
     function restartGame() {

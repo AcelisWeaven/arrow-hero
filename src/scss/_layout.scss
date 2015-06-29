@@ -13,12 +13,12 @@ body {
 
   h1 {
     font-size: 16pt;
-    margin-top: 10px;
+    margin-top: 23px;
     margin-bottom: 15px;
   }
   h2 {
     font-size: 14pt;
-    margin-top: 8px;
+    margin-top: 23px;
     margin-bottom: 13px;
   }
   h3 {
@@ -104,6 +104,19 @@ body {
       &.s-key-down::after {
         @include key("down");
         border: none;
+      }
+
+      .ding {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        font-family: 'Inconsolata', monospace;
+        font-size: 15pt;
+        animation: ding 0.5s 1 ease-out;
+        opacity: 0;
+        text-shadow: 3px 0 0 white, 0 -3px 0 white, 0 3px 0 white, -3px 0 0 white;
       }
     }
   }
@@ -336,20 +349,63 @@ body {
   font-size: 16px;
 
   .best-points {
-    color: $up_color;
     font-weight: bold;
   }
 }
 
-.key-selector .ding {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+.about {
+  width: $size - 20px;
   margin: 0 auto;
-  font-family: 'Inconsolata', monospace;
-  font-size: 15pt;
-  animation: ding 0.5s 1 ease-out;
-  opacity: 0;
-  text-shadow: 3px 0 0 white, 0 -3px 0 white, 0 3px 0 white, -3px 0 0 white;
+  text-align: justify;
+  font-size: 16px;
+  padding-top: 20px;
+
+  p {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .prim {
+    color: #3F3E40;
+    font-weight: bold;
+  }
+
+  .sec {
+    color: #3F3E40;
+    font-weight: bold;
+  }
+
+  .third {
+    color: $up_color;
+    font-weight: bold;
+  }
+
+  .key-up {
+    display: inline-block;
+
+    &::after {
+      @include key("up", 20px, 2px);
+      position: relative;
+    }
+  }
+
+  .tiny {
+    font-size: 12px;
+  }
+
+  .share {
+    padding-bottom: 20px;
+    padding-top: 10px;
+    text-align: center;
+    min-height: 30px;
+
+    .twitter-share-button[style] {
+      vertical-align: text-bottom !important;
+    }
+
+    .reddit-share-button {
+      vertical-align: middle;
+      padding-bottom: 6px;
+    }
+  }
 }
