@@ -53,11 +53,11 @@
   }
   96% {
     opacity: 1;
-    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(1);
+    transform: translateY($orbit_radius) rotate(-359deg) translateY(-$orbit_radius) rotate(359deg) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(0.7);
+    transform: translateY($orbit_radius) rotate(-359deg) translateY(-$orbit_radius) rotate(359deg) scale(0.7);
   }
 }
 

@@ -19,7 +19,7 @@ gulp.task('Sass', function() {
         }))
         .pipe(sourcemaps.init())
         .pipe(plugins.rubySass({
-            style: 'compressed',
+            style: 'expanded',
             check: true,
             "sourcemap=none": true
         }))
