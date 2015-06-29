@@ -189,7 +189,12 @@ $(function() {
         }
 
         // Google Analytics tracking
-        _trackEvent('Game', 'Score', null, points);  // jshint ignore:line
+        ga('send', { // jshint ignore:line
+            'hitType': 'event',          // Required.
+            'eventCategory': 'game',   // Required.
+            'eventAction': 'score',      // Required.
+            'eventValue': points
+        });
     }
 
     function restartGame() {
