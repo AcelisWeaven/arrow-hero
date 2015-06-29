@@ -228,6 +228,7 @@ $(function() {
     $(document).keydown(function(e) {
 
         if (e.keyCode === 32) {
+            e.preventDefault();
             if (started === 'running' || started === 'paused') {
                 // space bar pressed
 
