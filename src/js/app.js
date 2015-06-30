@@ -35,6 +35,7 @@ $(function() {
     // array of objects: {delay, started, interval}
     var scheduledSpawns = [];
     var bestScore = sessionStorage.getItem('bestScore');
+    var $mobileControls = $('.mobile-controls');
 
     function updatePoints(pts) {
         if (pts < 1) {
@@ -90,51 +91,53 @@ $(function() {
 
         var arr = ['right', 'left', 'down', 'up'];
         var $elem = $('<div class="key key-'+arr[Math.floor(Math.random()*current.keys)]+'"></div>');
-        $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-
-            if (started === 'end' || started === 'restart') {
-                return;
-            }
-
-            if ($(this).hasClass(keypressed)) {
-                currentLife += 200;
-                if (currentLife > maxLife) {
-                    currentLife = maxLife;
-                }
-                updatePoints(current.points);
-            } else {
-                currentLife -= 1000;
-                $square
-                    .addClass('bad')
-                    .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-                        $square.removeClass('bad');
-                    });
-            }
-
-            updateSpeed();
-
-            var percent = currentLife*100/maxLife;
-            var $elem = $('.percent');
-            $elem.css('width', percent+'%');
-
-            if (percent < 20) {
-                $elem.addClass('low');
-            } else if (percent < 60) {
-                $elem.addClass('medium').removeClass('low');
-            } else {
-                $elem.removeClass('low medium');
-            }
-
-            if (currentLife <= 0 && started === 'running') {
-                endGame();
-            }
-
-            $(this).remove();
-        });
+        $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', endAnimationHandle);
 
         $container.append($elem);
         // Spawn next key
         scheduleSpawn(current.speed);
+    }
+
+    function endAnimationHandle() {
+
+        if (started === 'end' || started === 'restart') {
+            return;
+        }
+
+        if ($(this).hasClass(keypressed)) {
+            currentLife += 200;
+            if (currentLife > maxLife) {
+                currentLife = maxLife;
+            }
+            updatePoints(current.points);
+        } else {
+            currentLife -= 1000;
+            $square
+                .addClass('bad')
+                .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+                    $square.removeClass('bad');
+                });
+        }
+
+        updateSpeed();
+
+        var percent = currentLife*100/maxLife;
+        var $elem = $('.percent');
+        $elem.css('width', percent+'%');
+
+        if (percent < 20) {
+            $elem.addClass('low');
+        } else if (percent < 60) {
+            $elem.addClass('medium').removeClass('low');
+        } else {
+            $elem.removeClass('low medium');
+        }
+
+        if (currentLife <= 0 && started === 'running') {
+            endGame();
+        }
+
+        $(this).remove();
     }
 
     function scheduleSpawn(delay) {
@@ -179,6 +182,7 @@ $(function() {
         $('.key-selector-container').addClass('hide').removeClass('show');
         $('.results').addClass('show').removeClass('hide');
         $('.points-container').addClass('hide').removeClass('show');
+        $('.pause-btn').text('Restart');
 
         if (points > bestScore) {
             // update best score
@@ -225,6 +229,7 @@ $(function() {
             setTimeout(function() {
                 started = 'running';
                 $('.key').addClass('remove');
+                $('.pause-btn').text('Pause');
                 scheduleSpawn(1);
             }, 950);
         }, 1000);
@@ -306,4 +311,34 @@ $(function() {
         $('.best-points .value').text(bestScore);
         $('.best').fadeIn();
     }
+
+    $mobileControls.find('.key-up, .key-down, .key-left, .key-right').on('touchstart', function() {
+        var _class = $(this).attr('class');
+        var e = jQuery.Event('keydown');
+
+        switch (_class) {
+            case 'key-left':
+                e.keyCode = 37;
+                break;
+
+            case 'key-up':
+                e.keyCode = 38;
+                break;
+
+            case 'key-right':
+                e.keyCode = 39;
+                break;
+
+            case 'key-down':
+                e.keyCode = 40;
+                break;
+        }
+
+        $(document).trigger(e);
+    });
+    $mobileControls.find('.pause-btn').on('touchstart', function() {
+        var e = jQuery.Event('keydown');
+        e.keyCode = 32;
+        $(document).trigger(e);
+    });
 });
