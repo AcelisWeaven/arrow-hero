@@ -10,7 +10,7 @@ First, clone this repository (you can fork it too):
 
     git clone git@github.com:AcelisWeaven/arrow-hero.git
 
-Then, we need to install [Node](https://nodejs.org/) dependencies:
+Then, we need to install [Node](https://nodejs.org/) [dependencies](https://www.npmjs.com/):
 
     sudo npm install
 
