@@ -26,15 +26,23 @@ body {
     margin-top: 6px;
     margin-bottom: 11px;
   }
+  em {
+    font-style: italic;
+  }
+  a {
+    text-decoration: none;
+    font-weight: bold;
+  }
 }
 
 .container {
-  width: $size;
+  max-width: $size;
   background-color: $board_color;
   border-radius: 5px;
   height: $size;
   position: relative;
   margin: 0 auto 10px auto;
+  user-select: text;
 
   .key-selector-container {
     padding: $padding;
@@ -129,7 +137,6 @@ body {
     width: $key_size;
     height: $key_size;
     animation: orbit 2s 1 linear;
-    opacity: 0;
     top: $padding + $selector_border_size;
 
     &.paused, &.remove::after {
@@ -167,8 +174,8 @@ body {
     left: 0;
     top: 0;
     line-height: $size;
-    width: $size;
-    height: $size;
+    width: 100%;
+    height: 100%;
     font-size: 17px;
     opacity: 0;
 
@@ -182,7 +189,7 @@ body {
     bottom: (2 * $key_size + $helper_spacing*5);
     left: 0;
     right: 0;
-    width: $size;
+    max-width: $size;
     margin: 0 auto;
 
     &.hide {
@@ -230,7 +237,7 @@ body {
 
   .results {
     position: absolute;
-    display: table;
+    display: none;
     top: 0;
     left: 0;
     margin: 0;
@@ -242,11 +249,13 @@ body {
     opacity: 0;
 
     &.show {
+      display: table;
       animation: lowfadeinwithdelay 1.8s ease-in-out;
       opacity: 1;
     }
 
     &.hide {
+      display: table;
       animation: fadeout 0.8s ease-in-out;
       opacity: 0;
     }
@@ -297,7 +306,7 @@ body {
 
   .total {
     position: absolute;
-    width: $size;
+    max-width: $size;
     border-radius: 0 0 5px 5px;
     margin: 0 auto;
     left: 0;
@@ -322,7 +331,7 @@ body {
 }
 
 .points-container {
-  width: $size + 2*$padding;
+  max-width: $size + 2*$padding;
   text-align: center;
   font-family: 'Inconsolata', monospace;
   margin: 0 auto 20px auto;
@@ -344,7 +353,7 @@ body {
 }
 
 .best {
-  width: $size;
+  max-width: $size;
   margin: 0 auto;
   text-align: right;
   padding-right: 5px;
@@ -356,7 +365,7 @@ body {
 }
 
 .about {
-  width: $size - 20px;
+  max-width: $size - 20px;
   margin: 0 auto;
   text-align: justify;
   font-size: 16px;
@@ -409,5 +418,67 @@ body {
       vertical-align: middle;
       padding-bottom: 6px;
     }
+  }
+}
+
+.mobile-controls {
+  position: relative;
+  display: none;
+  max-width: $size;
+  margin: 0 auto;
+  user-select: none;
+
+  .top {
+    text-align: center;
+    padding-bottom: 10px;
+
+    .key-up {
+      display: inline-block;
+
+      &::after {
+        @include key("up");
+        position: relative;
+      }
+    }
+  }
+
+  .bottom {
+    text-align: center;
+    padding-bottom: 10px;
+
+    .key-left {
+      display: inline-block;
+
+      &::after {
+        @include key("left");
+        position: relative;
+      }
+    }
+    .key-down {
+      display: inline-block;
+
+      &::after {
+        @include key("down");
+        position: relative;
+      }
+    }
+    .key-right {
+      display: inline-block;
+
+      &::after {
+        @include key("right");
+        position: relative;
+      }
+    }
+  }
+
+  .pause-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(black, 0.1);
+    padding: 13px 17px;
+    margin-right: 7px;
+    border-radius: 5px;
   }
 }

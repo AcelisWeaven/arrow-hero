@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="dist/css/main.min.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png"/>
 
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#FF3232">
     <meta name="description" content="A minimalist game where your goal is to match your inputs with the unstoppable continuous overwelming flow of arrows." />
     <meta name="twitter:card" value="summary">
     <meta name="twitter:image" content="http://acelisweaven.github.io/arrow-hero/sharing.png" />
@@ -38,7 +39,8 @@
         <div class="key key-up helper"></div>
         <div class="key key-right helper"></div>
         <div class="key key-down helper"></div>
-        <div class="text">Press a key to begin</div>
+        <div class="text desktop-only">Press a key to begin</div>
+        <div class="text not-desktop">Touch a key to begin</div>
     </div>
     <div class="total"><div class="percent" style="width: 0"></div></div>
     <div class="level-message">Yolo!</div>
@@ -48,7 +50,8 @@
                 <h3>You've made...</h3>
                 <h2><span class="points">0</span>  points</h2>
                 <br/>
-                <p>Press <strong>Space</strong> to restart</p>
+                <p class="desktop-only">Press <strong>Space</strong> to restart</p>
+                <p class="not-desktop">Touch <em>Restart</em> to try again</p>
             </div>
         </div>
     </div>
@@ -57,10 +60,22 @@
             <div class="pause-content">
                 <h3>Paused</h3>
                 <br/>
-                <p>Press <strong>Space</strong> to resume</p>
+                <p class="desktop-only">Press <strong>Space</strong> to resume</p>
+                <p class="not-desktop">Touch <em>Pause</em> again to resume</p>
             </div>
         </div>
     </div>
+</div>
+<div class="mobile-controls">
+    <div class="top">
+        <div class="key-up"></div>
+    </div>
+    <div class="bottom">
+        <div class="key-left"></div>
+        <div class="key-down"></div>
+        <div class="key-right"></div>
+    </div>
+    <div class="pause-btn">Pause</div>
 </div>
 <div class="best" style="display: none">
     Best: <span class="best-points"><span class="value">0</span> points</span>
@@ -90,9 +105,7 @@
     <p class="tiny">That would be very kind.</p>
     <h2>Steal this game</h2>
     <p>
-        Feel free to
-        <iframe src="https://ghbtns.com/github-btn.html?user=AcelisWeaven&repo=arrow-hero&type=fork&count=false" frameborder="0" scrolling="0" width="50px" height="20px"></iframe>
-        me on GitHub.
+        Feel free to <a href="https://github.com/AcelisWeaven/arrow-hero">fork me on GitHub</a>.
     </p>
 </div>
 
