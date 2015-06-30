@@ -89,55 +89,59 @@ $(function() {
             return;
         }
 
-        var arr = ['right', 'left', 'down', 'up'];
-        var $elem = $('<div class="key key-'+arr[Math.floor(Math.random()*current.keys)]+'"></div>');
-        $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', endAnimationHandle);
+        var arr = ['key-right', 'key-left', 'key-down', 'key-up'];
+        var direction = arr[Math.floor(Math.random()*current.keys)];
+        var $elem = $container.find('.idle').first();
+        if ($elem.length <= 0) {
+            $elem = $('<div class="key '+direction+'"></div>');
+            $elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
 
-        $container.append($elem);
+                if (started === 'end' || started === 'restart' || $(this).hasClass('idle')) {
+                    return;
+                }
+
+                if ($(this).hasClass(keypressed)) {
+                    currentLife += 200;
+                    if (currentLife > maxLife) {
+                        currentLife = maxLife;
+                    }
+                    updatePoints(current.points);
+                } else {
+                    currentLife -= 1000;
+                    $square
+                        .addClass('bad')
+                        .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+                            $square.removeClass('bad');
+                        });
+                }
+
+                updateSpeed();
+
+                var percent = currentLife*100/maxLife;
+                var $elem = $('.percent');
+                $elem.css('width', percent+'%');
+
+                if (percent < 20) {
+                    $elem.addClass('low');
+                } else if (percent < 60) {
+                    $elem.addClass('medium').removeClass('low');
+                } else {
+                    $elem.removeClass('low medium');
+                }
+
+                if (currentLife <= 0 && started === 'running') {
+                    endGame();
+                }
+
+                $(this).removeClass('key-up key-down key-left key-right').addClass('idle');
+            });
+            $container.append($elem);
+        } else {
+            $elem.removeClass('idle').addClass(direction);
+        }
+
         // Spawn next key
         scheduleSpawn(current.speed);
-    }
-
-    function endAnimationHandle() {
-
-        if (started === 'end' || started === 'restart') {
-            return;
-        }
-
-        if ($(this).hasClass(keypressed)) {
-            currentLife += 200;
-            if (currentLife > maxLife) {
-                currentLife = maxLife;
-            }
-            updatePoints(current.points);
-        } else {
-            currentLife -= 1000;
-            $square
-                .addClass('bad')
-                .on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-                    $square.removeClass('bad');
-                });
-        }
-
-        updateSpeed();
-
-        var percent = currentLife*100/maxLife;
-        var $elem = $('.percent');
-        $elem.css('width', percent+'%');
-
-        if (percent < 20) {
-            $elem.addClass('low');
-        } else if (percent < 60) {
-            $elem.addClass('medium').removeClass('low');
-        } else {
-            $elem.removeClass('low medium');
-        }
-
-        if (currentLife <= 0 && started === 'running') {
-            endGame();
-        }
-
-        $(this).remove();
     }
 
     function scheduleSpawn(delay) {
@@ -213,7 +217,8 @@ $(function() {
             $square.removeClass('s-'+keypressed);
         }
         keypressed = '';
-
+        
+        $container.find('.key').removeClass('key-up key-down key-left key-right hide').addClass('idle');
         $('.key-selector-container').addClass('show').removeClass('hide');
         $('.results').addClass('hide').removeClass('show');
         $('.points-container').addClass('show').removeClass('hide');
