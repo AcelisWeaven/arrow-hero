@@ -1,34 +1,47 @@
 @mixin key($direction, $_size:$key_size, $_border_size:3px) {
-  @if ($direction == "left") {
-    border-color: $left_color;
-    color: $left_color;
-    content: "\2190";
-  } @else if ($direction == "up") {
-    border-color: $up_color;
-    color: $up_color;
-    content: "\2191";
-  }  @else if ($direction == "right") {
-    border-color: $right_color;
-    color: $right_color;
-    content: "\2192";
-  }  @else if ($direction == "down") {
-    border-color: $down_color;
-    color: $down_color;
-    content: "\2193";
-  } @else {
-    border-color: transparent;
-  }
-
+  font: normal normal normal ($_size * 0.5)/1 FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
   position: absolute;
-  font-family: monospace;
-  font-size: $_size * 0.8;
   text-align: center;
   display: block;
-  width: $_size - 2 * $_border_size;
-  height: $_size - 2 * $_border_size;
   transform-origin: 50% 50%;
   line-height: $_size - 2 * $_border_size;
+  width: $_size - 2 * $_border_size;
+  height: $_size - 2 * $_border_size;
   border-radius: 5px;
   border-style: solid;
   border-width: ($_border_size - 1px) $_border_size ($_border_size + 1px) $_border_size;
+
+  @if ($direction == "left") {
+    border-color: $left_color;
+    color: $left_color;
+    content: "\f060";
+    padding-right: 5px;
+    width: $_size - 2 * $_border_size - 5px;
+  } @else if ($direction == "up") {
+    border-color: $up_color;
+    color: $up_color;
+    content: "\f062";
+    padding-bottom: 5px;
+    line-height: $_size - 2 * $_border_size - 5px;
+    height: $_size - 2 * $_border_size - 5px;
+  }  @else if ($direction == "right") {
+    border-color: $right_color;
+    color: $right_color;
+    content: "\f061";
+    padding-left: 5px;
+    width: $_size - 2 * $_border_size - 5px;
+  }  @else if ($direction == "down") {
+    border-color: $down_color;
+    color: $down_color;
+    content: "\f063";
+    padding-top: 5px;
+    line-height: $_size - 2 * $_border_size - 5px;
+    height: $_size - 2 * $_border_size - 5px;
+  } @else {
+    border-color: transparent;
+  }
 }
