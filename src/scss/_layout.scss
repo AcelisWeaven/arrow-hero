@@ -449,7 +449,7 @@ body {
       display: inline-block;
 
       &::after {
-        @include key("up");
+        @include key("up", $key_size+15px);
         position: relative;
       }
     }
@@ -463,7 +463,7 @@ body {
       display: inline-block;
 
       &::after {
-        @include key("left");
+        @include key("left", $key_size+15px);
         position: relative;
       }
     }
@@ -471,7 +471,7 @@ body {
       display: inline-block;
 
       &::after {
-        @include key("down");
+        @include key("down", $key_size+15px);
         position: relative;
       }
     }
@@ -479,7 +479,7 @@ body {
       display: inline-block;
 
       &::after {
-        @include key("right");
+        @include key("right", $key_size+15px);
         position: relative;
       }
     }
