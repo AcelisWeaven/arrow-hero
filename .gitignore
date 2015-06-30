@@ -20,3 +20,6 @@ src/vendor
 
 ### Project specifics ###
 app/dist
+
+### gulp deploy ###
+.publish
