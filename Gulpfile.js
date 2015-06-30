@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     plugins = gulpLoadPlugins(),
     autoprefixer = require('gulp-autoprefixer'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    ghPages = require('gulp-gh-pages');
 
 var app = 'src';
 
@@ -30,6 +31,7 @@ gulp.task('Sass', function() {
         }))
         .pipe(plugins.minifyCss({keepSpecialComments:0}))
         .pipe(sourcemaps.write())
+        .pipe(rebaseUrls())
         .pipe(gulp.dest('app/dist/css/'));
 });
 
@@ -56,6 +58,11 @@ gulp.task('watch', function() {
         app + '/vendor/**.js',
         app + '/js/**.js'
     ], ['concat', 'lint']);
+});
+
+gulp.task('deploy', function() {
+    return gulp.src('./app/**/*')
+        .pipe(ghPages());
 });
 
 gulp.task('default', [

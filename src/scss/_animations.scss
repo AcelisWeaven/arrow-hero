@@ -150,3 +150,26 @@
     transform: translateY(-30px);
   }
 }
+
+@keyframes color-arrow {
+  0%, 10% {
+    color: $up_color;
+    transform: rotate(0deg) translateY(-5px);
+  }
+  15%, 35% {
+    color: $right_color_alt;
+    transform: rotate(90deg) translateY(-5px);
+  }
+  40%, 60% {
+    color: $down_color;
+    transform: rotate(180deg) translateY(-5px);
+  }
+  65%, 85% {
+    color: $left_color;
+    transform: rotate(270deg) translateY(-5px);
+  }
+  90%, 100% {
+    color: $up_color;
+    transform: rotate(359deg) translateY(-5px);
+  }
+}

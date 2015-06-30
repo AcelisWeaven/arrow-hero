@@ -27,3 +27,11 @@ And that's it!
 If you want to listen for changes on your Sass or Javascript files, you only have to do this:
 
     gulp watch
+
+Deploy to Github pages
+---
+
+If you need to update your gh-pages branch quickly, you can do this:
+    
+    gulp deploy
+    

@@ -36,18 +36,25 @@
         <!--<div class="key key-up"></div>-->
     </div>
     <div class="helper-container">
-        <div class="key key-left helper"></div>
-        <div class="key key-up helper"></div>
-        <div class="key key-right helper"></div>
-        <div class="key key-down helper"></div>
-        <div class="text desktop-only">Press a key to begin</div>
-        <div class="text not-desktop">Touch a key to begin</div>
+        <div class="bottom">
+            <div class="key key-left helper"></div>
+            <div class="key key-up helper"></div>
+            <div class="key key-right helper"></div>
+            <div class="key key-down helper"></div>
+            <div class="text desktop-only">
+                Press a key to begin
+            </div>
+            <div class="text not-desktop">
+                Touch a key to begin
+            </div>
+        </div>
     </div>
     <div class="total"><div class="percent" style="width: 0"></div></div>
     <div class="level-message">Yolo!</div>
     <div class="results">
         <div class="results-container">
             <div class="results-content">
+                <div class="logo"></div>
                 <h3>You've made...</h3>
                 <h2><span class="points">0</span>  points</h2>
                 <br/>
@@ -59,6 +66,7 @@
     <div class="pause">
         <div class="pause-container">
             <div class="pause-content">
+                <div class="logo"></div>
                 <h3>Paused</h3>
                 <br/>
                 <p class="desktop-only">Press <strong>Space</strong> to resume</p>
@@ -121,7 +129,6 @@
 
     ga('create', 'UA-64620538-1', 'auto');
     ga('send', 'pageview');
-
 </script>
 <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
