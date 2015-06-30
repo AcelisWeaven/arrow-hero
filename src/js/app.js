@@ -217,7 +217,7 @@ $(function() {
             $square.removeClass('s-'+keypressed);
         }
         keypressed = '';
-        
+
         $container.find('.key').removeClass('key-up key-down key-left key-right hide').addClass('idle');
         $('.key-selector-container').addClass('show').removeClass('hide');
         $('.results').addClass('hide').removeClass('show');
