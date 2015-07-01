@@ -34,8 +34,16 @@ $(function() {
     var currentLife = maxLife;
     // array of objects: {delay, started, interval}
     var scheduledSpawns = [];
-    var bestScore = sessionStorage.getItem('bestScore');
+    var bestScore = localStorage.getItem('bestScore');
     var $mobileControls = $('.mobile-controls');
+
+
+    // Migration from sessionStorage to localStorage
+    var sessionStorageScore = sessionStorage.getItem('bestScore');
+    if (sessionStorageScore) {
+        localStorage.setItem('bestScore', sessionStorageScore);
+        bestScore = sessionStorageScore;
+    }
 
     function updatePoints(pts) {
         if (pts < 1) {
