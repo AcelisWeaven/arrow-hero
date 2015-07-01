@@ -110,8 +110,9 @@
     <h2><i class="fa fa-share-alt"></i> Sharing is caring</h2>
     <p>If you liked this game, share it with your friends!</p>
     <div class="share">
-        <div class="fb-share-button" data-layout="button"></div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Come play this game!" data-count="none" data-hashtags="ArrowHero">Tweet</a>
+        <div class="fb-share-button" data-layout="button_count"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Come play this game!" data-hashtags="ArrowHero">Tweet</a>
+        <div class="g-plus google-plus" data-action="share" data-annotation="bubble"></div>
         <a href="//www.reddit.com/submit" class="reddit-share-button" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false"> <img src="//www.redditstatic.com/spreddit7.gif" alt="submit to reddit" border="0" /> </a>
     </div>
     <p class="tiny">That would be very kind.</p>
@@ -119,8 +120,11 @@
     <p>
         Feel free to <a href="https://github.com/AcelisWeaven/arrow-hero">fork me on <i class="fa fa-github"></i> GitHub</a>.
     </p>
+    <hr/>
+    <p class="footer">A game created by <strong>Jérémy Graziani</strong></p>
 </div>
 
+<script src="dist/js/app.min.js"></script>
 <script>
     (function(a,c,e,l,i,s,w){a['GoogleAnalyticsObject']=i;a[i]=a[i]||function(){
                 (a[i].q=a[i].q||[]).push(arguments)},a[i].l=1*new Date();s=c.createElement(e),
@@ -138,6 +142,12 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script src="dist/js/app.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
 </body>
 </html>
