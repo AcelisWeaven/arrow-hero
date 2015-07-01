@@ -39,6 +39,11 @@ body {
   i {
     padding-left: 1px;
   }
+  hr {
+    border: none;
+    border-top: 1px solid #8b8b8b;
+    margin-top: 40px;
+  }
 }
 
 .container {
@@ -150,7 +155,7 @@ body {
     border-top-color: $up_color;
     border-right-color: $right_color_alt;
     border-bottom-color: $down_color;
-    opacity: 0.7;
+    opacity: 0.6;
 
     &::after {
       position: absolute;
@@ -465,14 +470,23 @@ body {
     text-align: center;
     min-height: 30px;
 
-    .twitter-share-button[style] {
-      vertical-align: text-bottom !important;
-    }
-
     .reddit-share-button {
+      top: -3px;
       vertical-align: middle;
       padding-bottom: 6px;
     }
+
+    .fb-share-button {
+      top: -3px;
+    }
+
+    .reddit-share-button {
+      vertical-align: top;
+    }
+  }
+
+  .footer {
+    text-align: right;
   }
 }
 
