@@ -25,7 +25,7 @@ $(function() {
         {score: 5500, speed: 280, message: 'I\'m really impressed.', points: 35, keys: 4},
         {score: 7000, speed: 270, message: 'Arrow hero!', points: 40, keys: 4},
         {score: 10000, speed: 260, message: 'You\'re really still here?', points: 40, keys: 4},
-        {score: 10500, speed: 250, message: 'That\'s uncredible!', points: 40, keys: 4}
+        {score: 10500, speed: 250, message: 'That\'s incredible!', points: 40, keys: 4}
     ];
     var current = speeds[0];
     var difficulty = 1;
