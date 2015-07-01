@@ -31,7 +31,6 @@ gulp.task('Sass', function() {
         }))
         .pipe(plugins.minifyCss({keepSpecialComments:0}))
         .pipe(sourcemaps.write())
-        .pipe(rebaseUrls())
         .pipe(gulp.dest('app/dist/css/'));
 });
 

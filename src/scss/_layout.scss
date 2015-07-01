@@ -150,6 +150,7 @@ body {
     border-top-color: $up_color;
     border-right-color: $right_color_alt;
     border-bottom-color: $down_color;
+    opacity: 0.7;
 
     &::after {
       position: absolute;
