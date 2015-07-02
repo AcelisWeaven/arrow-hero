@@ -12,7 +12,7 @@ First, clone this repository (you can fork it too):
 
 Then, we need to install [Node](https://nodejs.org/) [dependencies](https://www.npmjs.com/):
 
-    sudo npm install
+    npm install
 
 [Bower](http://bower.io/) manages the front-end libraries dependencies. To install them:
 
