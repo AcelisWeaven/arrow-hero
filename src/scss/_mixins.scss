@@ -45,3 +45,29 @@
     border-color: transparent;
   }
 }
+
+@mixin key_colorblind($direction, $_size:$key_size, $_border_size:4px, $_offset:5px) {
+  @include key($direction, $_size, $_border_size, $_offset);
+
+  color: black;
+  @if ($direction == "left") {
+    border-color: #3a3a3a;
+    border-bottom-color: #e7e7e7;
+    border-top-color: #e7e7e7;
+    border-style: dashed;
+    background-color: lighten($left_color, 30%);
+  } @else if ($direction == "up") {
+    border-color: black;
+    background-color: lighten($up_color, 30%);
+  }  @else if ($direction == "right") {
+    border-color: #3a3a3a;
+    border-left-color: #e7e7e7;
+    border-right-color: #e7e7e7;
+    border-width: $_border_size;
+    background-color: lighten($right_color, 40%);
+  }  @else if ($direction == "down") {
+    border-color: #e7e7e7;
+    border-width: $_border_size;
+    background-color: lighten($down_color, 30%);
+  }
+}

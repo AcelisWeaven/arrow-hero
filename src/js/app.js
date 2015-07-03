@@ -36,6 +36,7 @@ $(function() {
     var scheduledSpawns = [];
     var bestScore = localStorage.getItem('bestScore');
     var $mobileControls = $('.mobile-controls');
+    var $body = $('body');
 
 
     // Migration from sessionStorage to localStorage
@@ -325,7 +326,7 @@ $(function() {
         $('.best').fadeIn();
     }
 
-    $mobileControls.find('.key-up, .key-down, .key-left, .key-right').on('touchstart', function() {
+    $mobileControls.find('.key-up, .key-down, .key-left, .key-right').on('touchstart click', function() {
         var _class = $(this).attr('class');
         var e = jQuery.Event('keydown');
 
@@ -354,4 +355,11 @@ $(function() {
         e.keyCode = 32;
         $(document).trigger(e);
     });
+
+    console.log(localStorage.getItem('colorblind'));
+    $body.toggleClass('colorblind', (localStorage.getItem('colorblind') === 'yes'));
+    $('.colorblind-btn').on('click touchstart', function() {
+        $body.toggleClass('colorblind', !$body.hasClass('colorblind'));
+        localStorage.setItem('colorblind', ($body.hasClass('colorblind') ? 'yes' : 'no'));
+    })
 });

@@ -36,7 +36,7 @@ gulp.task('Sass', function() {
 
 gulp.task('concat', function() {
     gulp.src([
-        app + '/vendor/**.js',
+        app + '/vendor/jquery/dist/jquery.js',
         app + '/js/**.js'
     ])
         .pipe(plugins.concat('app.js'))
