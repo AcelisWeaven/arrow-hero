@@ -502,6 +502,10 @@ body {
     text-align: center;
     min-height: 30px;
 
+    &.big {
+      min-height: 100px;
+    }
+
     .reddit-share-button {
       top: -3px;
       vertical-align: middle;
