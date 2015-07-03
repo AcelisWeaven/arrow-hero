@@ -356,7 +356,6 @@ $(function() {
         $(document).trigger(e);
     });
 
-    console.log(localStorage.getItem('colorblind'));
     $body.toggleClass('colorblind', (localStorage.getItem('colorblind') === 'yes'));
     $('.colorblind-btn').on('click touchstart', function() {
         $body.toggleClass('colorblind', !$body.hasClass('colorblind'));
