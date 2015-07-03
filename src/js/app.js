@@ -270,7 +270,8 @@ $(function() {
             }
         }
 
-        if (e.keyCode >= 37 && e.keyCode <= 40 && started !== 'paused' && started !== 'restart') {
+        if (((e.keyCode >= 37 && e.keyCode <= 40) || (e.keyCode >= 72 && e.keyCode <= 76))
+            && started !== 'paused' && started !== 'restart') {
             // arrow keys pressed
 
             e.preventDefault();
