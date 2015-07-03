@@ -270,7 +270,8 @@ $(function() {
             }
         }
 
-        if (e.keyCode >= 37 && e.keyCode <= 40 && started !== 'paused' && started !== 'restart') {
+        if (((e.keyCode >= 37 && e.keyCode <= 40) || (e.keyCode >= 72 && e.keyCode <= 76))
+            && started !== 'paused' && started !== 'restart') {
             // arrow keys pressed
 
             e.preventDefault();
@@ -283,19 +284,23 @@ $(function() {
                 $square.removeClass('s-'+keypressed);
             }
             switch (e.keyCode) {
-                case 37:
+                case 37: // left
+                case 72: // h
                     keypressed = 'key-left';
                     break;
 
-                case 38:
+                case 38: // up
+                case 75: // j
                     keypressed = 'key-up';
                     break;
 
-                case 39:
+                case 39: // right
+                case 76: // l
                     keypressed = 'key-right';
                     break;
 
-                case 40:
+                case 40: // down
+                case 74: // j
                     keypressed = 'key-down';
                     break;
             }
