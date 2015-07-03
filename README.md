@@ -35,3 +35,12 @@ If you need to update your gh-pages branch quickly, you can do this:
     
     gulp deploy
     
+
+MIT-Licence TL;DR
+---
+
+This projet is licensed under the [MIT-LICENSE](LICENSE).
+
+It means you can do whatever you want with this project, but you *have* to leave a link to this repository or to the [public page](http://acelisweaven.github.io/arrow-hero/). (this is not a copyleft)
+
+Please, be respectful for other people work and for the time they put in their projects.
