@@ -46,6 +46,38 @@ body {
   }
 }
 
+.mobile {
+  width: $size - 20px;
+  margin: 0 auto;
+  text-align: left;
+  border-radius: 5px;
+  background-color: rgba(black, 0.5);
+  padding: 15px 10px;
+  color: white;
+
+  .centered {
+    text-align: center;
+  }
+
+  a {
+    color: white;
+  }
+
+  p {
+    padding-bottom: 10px;
+  }
+
+  ul {
+    text-align: center;
+    li {
+      padding: 5px 20px;
+      margin: 5px 0px;
+      display: inline-block;
+      background-color: rgba(white, 0.1);
+    }
+  }
+}
+
 .container {
   max-width: $size;
   background-color: $board_color;
