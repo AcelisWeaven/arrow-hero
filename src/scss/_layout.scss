@@ -47,7 +47,7 @@ body {
 }
 
 .mobile {
-  width: $size - 20px;
+  max-width: $size - 20px;
   margin: 0 auto 20px auto;
   text-align: left;
   border-radius: 5px;
