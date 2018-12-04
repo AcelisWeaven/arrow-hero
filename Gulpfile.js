@@ -19,7 +19,7 @@ gulp.task('Sass', function() {
             errorHandler: onError
         }))
         .pipe(sourcemaps.init())
-        .pipe(plugins.rubySass({
+        .pipe(plugins.sass({
             style: 'expanded',
             check: true,
             "sourcemap=none": true
