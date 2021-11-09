@@ -1,0 +1,29 @@
+/* === Inconsolata - regular */
+@font-face {
+	font-family: 'Inconsolata';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("./font/Inconsolata-Regular.eot");
+	src: local('Inconsolata'),
+		url("./font/Inconsolata-Regular.eot") format("embedded-opentype"),
+		url("./font/Inconsolata-Regular.woff2") format("woff2"),
+		url("./font/Inconsolata-Regular.woff") format("woff"),
+		url("./font/Inconsolata-Regular.ttf") format("truetype"),
+		url("./font/Inconsolata-Regular.svg") format("svg");
+}
+
+/* === Inconsolata - 700 */
+@font-face {
+	font-family: 'Inconsolata';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("./font/Inconsolata-Bold.eot");
+	src: local('Inconsolata'),
+		url("./font/Inconsolata-Bold.eot") format("embedded-opentype"),
+		url("./font/Inconsolata-Bold.woff2") format("woff2"),
+		url("./font/Inconsolata-Bold.woff") format("woff"),
+		url("./font/Inconsolata-Bold.ttf") format("truetype"),
+		url("./font/Inconsolata-Bold.svg") format("svg");
+}
