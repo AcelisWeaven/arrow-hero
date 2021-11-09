@@ -71,7 +71,7 @@ body {
     text-align: center;
     li {
       padding: 5px 20px;
-      margin: 5px 0px;
+      margin: 5px 0;
       display: inline-block;
       background-color: rgba(white, 0.1);
     }
@@ -208,7 +208,7 @@ body {
 
   .key {
     position: absolute;
-    margin: (($selector_size - $key_size) / 2) auto;
+    margin: (($selector_size - $key_size) * 0.5) auto;
     left: 0;
     right: 0;
     width: $key_size;
@@ -486,6 +486,11 @@ body {
   .best-points {
     font-weight: bold;
   }
+}
+
+.banner {
+  display: inline-block;
+  margin-top: 30px;
 }
 
 .about {

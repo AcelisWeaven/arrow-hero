@@ -1,29 +1,51 @@
 {
-  "name": "jsgame",
-  "version": "0.0.1",
-  "author": "J�r�my Graziani <jeremy.graziani@gmail.com>",
+  "name": "my-webpack-project",
+  "version": "1.0.0",
+  "author": "Jeremy Graziani <jeremy.graziani@gmail.com>",
+  "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
     "url": ""
   },
-  "dependencies": {
-    "gulp": "^3.8.8",
-    "gulp-concat": "^2.4.1",
-    "gulp-copy": "0.0.2",
-    "gulp-jshint": "^1.11.0",
-    "gulp-load-plugins": "^0.7.0",
-    "gulp-minify-css": "^0.3.10",
-    "gulp-plumber": "^0.6.6",
-    "gulp-rename": "^1.2.0",
-    "gulp-ruby-sass": "^0.7.1",
-    "gulp-sass": "^4.0.2",
-    "gulp-uglify": "^1.0.1",
-    "gulp-watch": "^1.1.0"
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
   },
   "devDependencies": {
-    "gulp-autoprefixer": "^2.3.1",
-    "gulp-gh-pages": "^0.5.2",
-    "gulp-sourcemaps": "^1.5.2"
-  }
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/register": "^7.16.0",
+    "@beyonk/google-fonts-webpack-plugin": "^1.7.0",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@webpack-cli/generators": "^2.4.1",
+    "autoprefixer": "^10.4.0",
+    "babel-loader": "^8.2.3",
+    "babel-register": "^6.26.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.5.1",
+    "eslint": "^8.2.0",
+    "eslint-config-recommended": "^4.1.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-webpack-plugin": "^3.1.0",
+    "fontawesome": "4.5",
+    "html-webpack-plugin": "^5.5.0",
+    "jquery": "^3.6.0",
+    "mini-css-extract-plugin": "^2.4.4",
+    "postcss-loader": "^6.2.0",
+    "prettier": "^2.4.1",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.62.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
+  },
+  "description": "My webpack project"
 }

@@ -1,5 +1,7 @@
+@use "sass:math";
+
 @mixin key($direction, $_size:$key_size, $_border_size:3px, $_offset:5px) {
-  font: normal normal normal ($_size * 0.5)/1 FontAwesome;
+  font: normal normal normal math.div($_size * 0.5, 1) FontAwesome;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

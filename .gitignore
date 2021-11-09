@@ -19,7 +19,7 @@ src/vendor
 *.css.map
 
 ### Project specifics ###
-app/dist
+dist
 
 ### gulp deploy ###
 .publish
