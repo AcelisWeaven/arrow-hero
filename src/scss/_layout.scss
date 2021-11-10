@@ -7,7 +7,7 @@ body {
   border-top: 1px solid $right_color;
   margin: 0;
 
-  h1,h2,h3 {
+  h1, h2, h3 {
     font-weight: bold;
   }
 
@@ -16,29 +16,36 @@ body {
     margin-top: 23px;
     margin-bottom: 15px;
   }
+
   h2 {
     font-size: 14pt;
     margin-top: 23px;
     margin-bottom: 13px;
   }
+
   h3 {
     font-size: 12pt;
     margin-top: 6px;
     margin-bottom: 11px;
   }
+
   em {
     font-style: italic;
   }
+
   a {
     text-decoration: none;
     font-weight: bold;
   }
+
   strong {
     font-weight: bold;
   }
+
   i {
     padding-left: 1px;
   }
+
   hr {
     border: none;
     border-top: 1px solid #8b8b8b;
@@ -69,6 +76,7 @@ body {
 
   ul {
     text-align: center;
+
     li {
       padding: 5px 20px;
       margin: 5px 0;
@@ -145,14 +153,17 @@ body {
         @include key("left");
         border: none;
       }
+
       &.s-key-up::after {
         @include key("up");
         border: none;
       }
+
       &.s-key-right::after {
         @include key("right");
         border: none;
       }
+
       &.s-key-down::after {
         @include key("down");
         border: none;
@@ -291,6 +302,7 @@ body {
             content: "\f06e";
           }
         }
+
         .help {
           display: none;
 
@@ -298,6 +310,7 @@ body {
             content: " off";
           }
         }
+
         &:hover {
           cursor: pointer;
           background-color: rgba(black, 0.1);
@@ -305,6 +318,7 @@ body {
           .icon {
             color: #4e4e4e;
           }
+
           .help {
             display: inline-block;
           }
@@ -344,12 +358,15 @@ body {
           top: $key_size + $helper_spacing;
           right: $key_size + $helper_spacing;
         }
+
         &.key-up::after {
           top: 0;
         }
+
         &.key-down::after {
           top: $key_size + $helper_spacing;
         }
+
         &.key-right::after {
           top: $key_size + $helper_spacing;
           right: 0;
@@ -368,7 +385,7 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     opacity: 0;
 
@@ -436,6 +453,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+
     .percent {
       height: 6px;
       margin: 0 auto;
@@ -461,8 +479,12 @@ body {
   margin: 0 auto 20px auto;
   opacity: 0;
 
-  .bump {
-    animation: bump 0.3s 1 ease-in-out;
+  .points {
+    display: inline-block;
+
+    &.bump {
+      animation: selector-bump 0.3s 1 ease-in-out;
+    }
   }
 
   &.hide {
@@ -596,6 +618,7 @@ body {
         position: relative;
       }
     }
+
     .key-down {
       display: inline-block;
 
@@ -604,6 +627,7 @@ body {
         position: relative;
       }
     }
+
     .key-right {
       display: inline-block;
 
@@ -634,6 +658,7 @@ body {
             content: "\f070";
           }
         }
+
         .help {
           display: inline-block;
 
@@ -641,6 +666,7 @@ body {
             content: " on";
           }
         }
+
         &:hover {
           cursor: pointer;
 

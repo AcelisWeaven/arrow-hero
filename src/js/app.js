@@ -1,13 +1,15 @@
 'use strict'
 
-import $ from 'jquery'
+function addMultipleEventListener (element, events, handler) {
+	events.forEach(e => element.addEventListener(e, handler))
+}
 
-$(() => {
+document.addEventListener('DOMContentLoaded', () => {
 	let points = 0
-	const $pointContainer = $('.points')
+	const pointContainers = document.querySelectorAll('.points')
 	let keypressed = 'key-'
-	const $container = $('.keys-container')
-	const $square = $('.key-selector')
+	const container = document.querySelector('.keys-container')
+	const square = document.querySelector('.key-selector')
 	// array of objects: {score, speed, message, points}
 	const speeds = [
 		{
@@ -20,7 +22,7 @@ $(() => {
 		{
 			score: 3,
 			speed: 750,
-			message: 'You\'ve got it!',
+			message: "You've got it!",
 			points: 2,
 			keys: 2,
 		},
@@ -34,7 +36,7 @@ $(() => {
 		{
 			score: 70,
 			speed: 620,
-			message: 'You\'re doing great!',
+			message: "You're doing great!",
 			points: 7,
 			keys: 3,
 		},
@@ -48,7 +50,7 @@ $(() => {
 		{
 			score: 300,
 			speed: 510,
-			message: 'Don\'t stop!',
+			message: "Don't stop!",
 			points: 12,
 			keys: 4,
 		},
@@ -132,28 +134,20 @@ $(() => {
 		{
 			score: 10500,
 			speed: 250,
-			message: 'That\'s incredible!',
+			message: "That's incredible!",
 			points: 40,
 			keys: 4,
 		},
 	]
 	let current = speeds[0]
-	let started = false
+	let gameState = false
 	let maxLife = 5000
 	let currentLife = maxLife
 	// array of objects: {delay, started, interval}
 	let scheduledSpawns = []
 	let bestScore = localStorage.getItem('bestScore')
-	const $mobileControls = $('.mobile-controls')
-	const $body = $('body')
-
-
-	// Migration from sessionStorage to localStorage
-	const sessionStorageScore = sessionStorage.getItem('bestScore')
-	if (sessionStorageScore) {
-		localStorage.setItem('bestScore', sessionStorageScore)
-		bestScore = sessionStorageScore
-	}
+	const mobileControls = document.querySelector('.mobile-controls')
+	const body = document.querySelector('body')
 
 	function updatePoints (pts) {
 		if (pts < 1)
@@ -161,22 +155,30 @@ $(() => {
 
 		pts = Math.floor(pts)
 		points += pts
-		$square.addClass('bump')
-		$pointContainer
-			.html(points)
-			.addClass('bump')
-			.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', () => {
-				$pointContainer.removeClass('bump')
-				$square.removeClass('bump')
-			})
+		square.classList.add('bump')
+		square.onanimationend = () => {
+			square.classList.remove('bump')
+		}
 
-		const $ding = $('<div class="ding">+' + pts + '</div>')
-		$ding.on('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-			/* @this HTMLElement */ function () {
-				$(this).remove()
-			})
-		$square.append($ding)
+		pointContainers.forEach(pointContainer => {
+			pointContainer.textContent = points
+			pointContainer.classList.add('bump')
+			pointContainer.onanimationend = () => {
+				pointContainer.classList.remove('bump')
+			}
+		})
+
+		const ding = document.createElement('div')
+		ding.classList.add('ding')
+		ding.textContent = `+${ pts }`
+		ding.onanimationend = () => {
+			ding.remove()
+		}
+
+		square.appendChild(ding)
 	}
+
+	const levelMessage = document.querySelector('.level-message')
 
 	function updateSpeed () {
 		const oldSpeed = current
@@ -188,76 +190,74 @@ $(() => {
 				break
 
 		}
-		if (current.speed !== oldSpeed.speed)
-		// Speed changed !
-			$('.level-message')
-				.text(current.message)
-				.addClass('show')
-				.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', /* @this HTMLElement */ function () {
-					$(this).removeClass('show')
-				})
+
+		if (current.speed !== oldSpeed.speed) {
+			// Speed changed !
+			levelMessage.textContent = current.message
+			levelMessage.classList.add('show')
+			levelMessage.onanimationend = () => {
+				levelMessage.classList.remove('show')
+			}
+		}
+
 
 	}
 
 	function spawnRandomKey (obj) {
-		if (started !== 'paused') // running or ended
+		if (gameState !== 'paused') // running or ended
 			removeScheduledSpawn(obj)
 
-
-		if (started === 'end' || started === 'paused' || started === 'restart')
+		if (gameState === 'end' || gameState === 'paused' || gameState === 'restart')
 			return
-
 
 		const arr = [ 'key-right', 'key-left', 'key-down', 'key-up' ]
 		const direction = arr[Math.floor(Math.random() * current.keys)]
-		let $elem = $container.find('.idle').first()
-		if ($elem.length <= 0) {
-			$elem = $('<div class="key ' + direction + '"></div>')
-			$elem.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', /* @this HTMLElement */ function () {
+		let nextKey = container.querySelector('.idle')
+		if (nextKey === null) {
+			nextKey = document.createElement('div')
+			nextKey.classList.add('key', direction)
+			nextKey.onanimationend = () => {
 
-				if (started === 'end' || started === 'restart' || $(this).hasClass('idle'))
+				if (gameState === 'end' || gameState === 'restart' || nextKey.classList.contains('idle'))
 					return
 
-
-				if ($(this).hasClass(keypressed)) {
-					currentLife += 200
-					if (currentLife > maxLife)
-						currentLife = maxLife
+				if (nextKey.classList.contains(keypressed)) {
+					currentLife = Math.min(currentLife + 200, maxLife)
 
 					updatePoints(current.points)
 				} else {
 					currentLife -= 1000
-					$square
-						.addClass('bad')
-						.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', () => {
-							$square.removeClass('bad')
-						})
+					square.classList.add('bad')
+					square.onanimationend = () => {
+						square.classList.remove('bad')
+					}
 				}
 
 				updateSpeed()
 
 				const percent = currentLife * 100 / maxLife
-				const $elem = $('.percent')
-				$elem.css('width', percent + '%')
+				const percentElem = document.querySelector('.percent')
+				percentElem.style.width = percent + '%'
 
 				if (percent < 20)
-					$elem.addClass('low')
-				else if (percent < 60)
-					$elem.addClass('medium').removeClass('low')
-				else
-					$elem.removeClass('low medium')
+					percentElem.classList.add('low')
+				else if (percent < 60) {
+					percentElem.classList.add('medium')
+					percentElem.classList.remove('low')
+				} else
+					percentElem.classList.remove('low', 'medium')
 
-
-				if (currentLife <= 0 && started === 'running')
+				if (currentLife <= 0 && gameState === 'running')
 					endGame()
 
-
-				$(this).removeClass('key-up key-down key-left key-right')
-					.addClass('idle')
-			})
-			$container.append($elem)
-		} else
-			$elem.removeClass('idle').addClass(direction)
+				nextKey.classList.add('idle')
+				nextKey.classList.remove('key-up', 'key-down', 'key-left', 'key-right')
+			}
+			container.appendChild(nextKey)
+		} else {
+			nextKey.classList.remove('idle')
+			nextKey.classList.add(direction)
+		}
 
 
 		// Spawn next key
@@ -301,45 +301,63 @@ $(() => {
 	}
 
 	function endGame () {
-		started = 'end'
-		$('.key').addClass('hide')
-		$('.key-selector-container').addClass('hide')
-			.removeClass('show')
-		$('.results').addClass('show')
-			.removeClass('hide')
-		$('.points-container').addClass('hide')
-			.removeClass('show')
-		$('.pause-btn').text('Restart')
+		gameState = 'end'
+		document.querySelectorAll('.key').forEach(k => k.classList.add('hide'))
+
+		const keySelectorContainer = document.querySelector('.key-selector-container')
+		keySelectorContainer.classList.add('hide')
+		keySelectorContainer.classList.remove('show')
+
+		const results = document.querySelector('.results')
+		results.classList.add('show')
+		results.classList.remove('hide')
+
+		const pointsContainer = document.querySelector('.points-container')
+		pointsContainer.classList.add('hide')
+		pointsContainer.classList.remove('show')
+
+		const percent = document.querySelector('.percent')
+		percent.style.width = '0%'
+
+		document.querySelector('.pause-btn').textContent = 'Restart'
 
 		if (points > bestScore) {
 			// update best score
 			bestScore = points
 			sessionStorage.setItem('bestScore', bestScore)
-			$('.best-points .value').text(bestScore)
-			$('.best').fadeIn()
+			document.querySelector('.best-points .value').textContent = bestScore
+			document.querySelector('.best').style.display = 'block'
 		}
 	}
 
 	function restartGame () {
-		started = 'restart'
+		gameState = 'restart'
 		points = 0
 		maxLife = 5000
 		currentLife = maxLife
 		current = speeds[0]
 
 		if (keypressed !== '')
-			$square.removeClass('s-' + keypressed)
+			square.classList.remove('s-' + keypressed)
 
 		keypressed = ''
 
-		$container.find('.key').removeClass('key-up key-down key-left key-right hide')
-			.addClass('idle')
-		$('.key-selector-container').addClass('show')
-			.removeClass('hide')
-		$('.results').addClass('hide')
-			.removeClass('show')
-		$('.points-container').addClass('show')
-			.removeClass('hide')
+		container.querySelectorAll('.key').forEach(key => {
+			key.classList.remove('key-up', 'key-down', 'key-left', 'key-right', 'hide')
+			key.classList.add('idle')
+		})
+
+		const keySelectorContainer = document.querySelector('.key-selector-container')
+		keySelectorContainer.classList.add('show')
+		keySelectorContainer.classList.remove('hide')
+
+		const results = document.querySelector('.results')
+		results.classList.add('hide')
+		results.classList.remove('show')
+
+		const pointsContainer = document.querySelector('.points-container')
+		pointsContainer.classList.add('show')
+		pointsContainer.classList.remove('hide')
 
 		setTimeout(() => {
 			for (const i in scheduledSpawns) {
@@ -347,51 +365,54 @@ $(() => {
 				clearInterval(obj.interval)
 			}
 			scheduledSpawns = []
-			$pointContainer.html(points)
-			$('.percent').css('width', '100%')
-				.removeClass('low medium')
+			pointContainers.forEach(pointContainer => pointContainer.textContent = points)
+
+			const percent = document.querySelector('.percent')
+			percent.style.width = '100%'
+			percent.classList.remove('low', 'medium')
+
 			setTimeout(() => {
-				started = 'running'
-				$('.key').addClass('remove')
-				$('.pause-btn').text('Pause')
+				gameState = 'running'
+				document.querySelectorAll('.key').forEach(k => k.classList.add('remove'))
+				document.querySelector('.pause-btn').textContent = 'Pause'
 				scheduleSpawn(1)
 			}, 950)
 		}, 1000)
 	}
 
-	$(document).keydown(e => {
+	document.onkeydown = e => {
 
 		if (e.keyCode === 32) {
 			e.preventDefault()
-			if (started === 'running' || started === 'paused') {
+			if (gameState === 'running' || gameState === 'paused') {
 				// space bar pressed
 
-				started = started === 'running' ? 'paused' : 'running'
-				$('.key').toggleClass('paused', started === 'paused')
-				$('.pause').toggleClass('show', started === 'paused')
+				gameState = gameState === 'running' ? 'paused' : 'running'
+				document.querySelectorAll('.key').forEach(k => k.classList.toggle('paused', gameState === 'paused'))
+				document.querySelector('.pause').classList.toggle('show', gameState === 'paused')
 
-				if (started === 'paused')
+				if (gameState === 'paused')
 					pauseScheduledSpawns()
-				else if (started === 'running')
+				else if (gameState === 'running')
 					resumeScheduledSpawns()
 
-			} else if (started === 'end')
+			} else if (gameState === 'end')
 				restartGame()
 
 		}
 
 		if ((e.keyCode >= 37 && e.keyCode <= 40 || e.keyCode >= 72 && e.keyCode <= 76)
-            && started !== 'paused' && started !== 'restart') {
+            && gameState !== 'paused' && gameState !== 'restart') {
 			// arrow keys pressed
 
 			e.preventDefault()
-			if (started === false) {
+			if (gameState === false) {
 				startGame()
 				return false
 			}
 
 			if (keypressed !== '')
-				$square.removeClass('s-' + keypressed)
+				square.classList.remove('s-' + keypressed)
 
 			switch (e.keyCode) {
 				case 37: // left
@@ -414,66 +435,50 @@ $(() => {
 					keypressed = 'key-down'
 					break
 			}
-			$square.addClass('s-' + keypressed)
+			square.classList.add('s-' + keypressed)
 		}
 
-	})
+	}
 
 	function startGame () {
-		started = 'running'
+		gameState = 'running'
 
-		$('.points-container').addClass('show')
-		$('.helper-container').addClass('hide')
+		document.querySelector('.points-container').classList.add('show')
+		document.querySelector('.helper-container').classList.add('hide')
 		setTimeout(() => {
-			$('.key-selector')
-				.addClass('show fade')
-				.on('webkitAnimationEnd oanimationend msAnimationEnd animationend', /* @this HTMLElement */ function () {
-					$(this).removeClass('fade')
-				})
+			const keySelector = document.querySelector('.key-selector')
+			keySelector.classList.add('show', 'fade')
+			keySelector.onanimationend = () => keySelector.classList.remove('fade')
 		}, 500)
 		scheduleSpawn(1000)
 
-		$('.percent').css('width', '100%')
+		document.querySelector('.percent').style.width = '100%'
 	}
 
 	if (bestScore) {
-		$('.best-points .value').text(bestScore)
-		$('.best').fadeIn()
+		document.querySelector('.best-points .value').textContent = bestScore
+		document.querySelector('.best').style.display = 'block'
 	}
 
-	$mobileControls.find('.key-up, .key-down, .key-left, .key-right').on('touchstart click', /* @this HTMLElement */ function () {
-		const _class = $(this).attr('class')
-		const e = $.Event('keydown')
 
-		switch (_class) {
-			case 'key-left':
-				e.keyCode = 37
-				break
+	function addMobileListener (selector, /* @deprecated */ keyCode) {
+		const keyElem = mobileControls.querySelector(selector)
+		addMultipleEventListener(keyElem, [ 'touchstart', 'click' ], () => {
+			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode }))
+		})
+	}
 
-			case 'key-up':
-				e.keyCode = 38
-				break
+	addMobileListener('.key-left', 37)
+	addMobileListener('.key-up', 38)
+	addMobileListener('.key-right', 39)
+	addMobileListener('.key-down', 40)
+	mobileControls.querySelector('.pause-btn').ontouchstart = () => {
+		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
+	}
 
-			case 'key-right':
-				e.keyCode = 39
-				break
-
-			case 'key-down':
-				e.keyCode = 40
-				break
-		}
-
-		$(document).trigger(e)
-	})
-	$mobileControls.find('.pause-btn').on('touchstart', () => {
-		const e = $.Event('keydown')
-		e.keyCode = 32
-		$(document).trigger(e)
-	})
-
-	$body.toggleClass('colorblind', localStorage.getItem('colorblind') === 'yes')
-	$('.colorblind-btn').on('click touchstart', () => {
-		$body.toggleClass('colorblind', !$body.hasClass('colorblind'))
-		localStorage.setItem('colorblind', $body.hasClass('colorblind') ? 'yes' : 'no')
+	body.classList.toggle('colorblind', localStorage.getItem('colorblind') === 'yes')
+	addMultipleEventListener(document.querySelector('.colorblind-btn'), [ 'click', 'touchstart' ], () => {
+		body.classList.toggle('colorblind', !body.classList.contains('colorblind'))
+		localStorage.setItem('colorblind', body.classList.contains('colorblind') ? 'yes' : 'no')
 	})
 })
