@@ -23,7 +23,6 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@webpack-cli/generators": "^2.4.1",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^8.2.3",
     "babel-register": "^6.26.0",
