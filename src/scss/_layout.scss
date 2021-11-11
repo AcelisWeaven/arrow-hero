@@ -217,8 +217,12 @@ body {
       display: none;
     }
 
+    svg {
+      transition: opacity 1s;
+    }
+
     &.hide svg {
-      animation: fadeout 1s 1;
+      //animation: fadeout 1s 1;
       opacity: 0;
     }
 
