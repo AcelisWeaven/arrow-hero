@@ -199,6 +199,7 @@ body {
   }
 
   .key {
+    $scale_adjustment: 1.15;
     position: absolute;
     margin: (($selector_size - $key_size) * 0.5) auto;
     left: 0;
@@ -237,19 +238,22 @@ body {
       color: $left_color;
 
       svg {
-        transform: rotate(-90deg);
+        transform: rotate(-90deg) scale($scale_adjustment);
       }
     }
 
     &.key-up {
       color: $up_color;
+      svg {
+        transform: scale($scale_adjustment);
+      }
     }
 
     &.key-right {
       color: $right_color;
 
       svg {
-        transform: rotate(90deg);
+        transform: rotate(90deg) scale($scale_adjustment);
       }
     }
 
@@ -257,7 +261,7 @@ body {
       color: $down_color;
 
       svg {
-        transform: rotate(180deg);
+        transform: rotate(180deg) scale($scale_adjustment);
       }
     }
   }
