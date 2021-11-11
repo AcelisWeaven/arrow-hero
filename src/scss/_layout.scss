@@ -184,37 +184,10 @@ body {
     }
   }
 
-  .logo {
-    position: relative;
-    width: 128px - 2 * $logo_border_size;
-    height: 128px - 2 * $logo_border_size;
+  .img-logo {
+    width: 200px;
+    height: 200px;
     margin: 0 auto 20px auto;
-    background-color: rgba(white, 0.9);
-
-    border-radius: 10px;
-    border-width: $logo_border_size;
-    border-style: solid;
-    border-left-color: $left_color;
-    border-top-color: $up_color;
-    border-right-color: $right_color_alt;
-    border-bottom-color: $down_color;
-    opacity: 0.6;
-
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      font: normal normal normal 64px/1 FontAwesome;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      transform: translate(0, 0);
-      color: $up_color;
-      content: "\f062";
-      line-height: 128px - 2 * $logo_border_size;
-      animation: color-arrow 6s infinite ease-out;
-    }
   }
 
   .key {

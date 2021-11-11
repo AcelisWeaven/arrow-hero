@@ -14,6 +14,9 @@ const isProduction = process.env.NODE_ENV === 'production'
 const config = {
     entry: './src/index.js',
     mode: isProduction ? 'production' : 'development',
+    cache: {
+        type: "filesystem"
+    },
     output: {
         filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
@@ -48,17 +51,23 @@ const config = {
                 },
             ],
         }),
-        new ImageMinimizerPlugin({
-            minimizerOptions: {
-                // Lossless optimization
-                plugins: [
-                    ['jpegtran', {progressive: true}],
-                    ['optipng', {optimizationLevel: 9}],
-                ],
-            },
-        }),
+        new MiniCssExtractPlugin(),
+        // Disabled temporarily because of a conflict with FaviconsWebpackPlugin (Github build time shoots up to 20 minutes)
+        // new ImageMinimizerPlugin({
+        //     minimizerOptions: {
+        //         // Lossless optimization
+        //         plugins: [
+        //             ['jpegtran', {progressive: true}],
+        //             ['optipng', {optimizationLevel: 9}],
+        //         ],
+        //     },
+        // }),
         new FaviconsWebpackPlugin({
-            logo: './src/images/logo.png'
+            logo: './src/images/arrow-hero.svg',
+            favicons: {
+                theme_color: "#ff3232",
+                logging: true,
+            }
         })
     ],
     module: {
