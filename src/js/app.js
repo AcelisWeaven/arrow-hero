@@ -366,11 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		results.classList.add('hide')
 		results.classList.remove('show')
 
-		const pointsContainer = document.querySelector('.points-container')
-		pointsContainer.classList.add('show')
-		pointsContainer.classList.remove('hide')
-
 		setTimeout(() => {
+			const pointsContainer = document.querySelector('.points-container')
+			pointsContainer.classList.add('show')
+			pointsContainer.classList.remove('hide')
+
 			for (const i in scheduledSpawns) {
 				const obj = scheduledSpawns[i]
 				clearInterval(obj.interval)
