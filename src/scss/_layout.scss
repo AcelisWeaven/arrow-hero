@@ -290,37 +290,6 @@ body {
 
     .top {
       text-align: left;
-
-      .colorblind-btn {
-        padding: 12px;
-
-        .icon {
-          &::before {
-            content: "\f06e";
-          }
-        }
-
-        .help {
-          display: none;
-
-          &::after {
-            content: " off";
-          }
-        }
-
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(black, 0.1);
-
-          .icon {
-            color: #4e4e4e;
-          }
-
-          .help {
-            display: inline-block;
-          }
-        }
-      }
     }
 
     .bottom {
@@ -639,59 +608,5 @@ body {
     padding: 13px 17px;
     margin-right: 7px;
     border-radius: 5px;
-  }
-}
-
-.colorblind {
-  .helper-container {
-    .top {
-      .colorblind-btn {
-        .icon {
-          &::before {
-            content: "\f070";
-          }
-        }
-
-        .help {
-          display: inline-block;
-
-          &::after {
-            content: " on";
-          }
-        }
-
-        &:hover {
-          cursor: pointer;
-
-          .icon {
-            color: #4e4e4e;
-          }
-        }
-      }
-    }
-  }
-
-  .key {
-    &.key-left::after {
-      @include key_colorblind("left");
-    }
-
-    &.key-up::after {
-      @include key_colorblind("up");
-    }
-
-    &.key-right::after {
-      @include key_colorblind("right");
-    }
-
-    &.key-down::after {
-      @include key_colorblind("down");
-    }
-  }
-
-  .key-selector-container {
-    .key-selector {
-      border-left-style: dashed;
-    }
   }
 }
