@@ -390,6 +390,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		}, 1000)
 	}
 
+	document.onblur = () => {
+		if (gameState === 'running')
+			// auto pause
+			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
+	}
+
 	document.onkeydown = e => {
 
 		if (e.keyCode === 32) {
