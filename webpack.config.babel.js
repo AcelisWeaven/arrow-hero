@@ -1,8 +1,11 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin')
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -11,7 +14,9 @@ const config = {
     entry: './src/index.js',
     mode: isProduction ? 'production' : 'development',
     output: {
+        filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     devServer: {
         open: true,
@@ -30,6 +35,8 @@ const config = {
             fix: true,
         }),
         new HtmlWebpackPlugin({
+            hash: true,
+            inject: true,
             template: 'index.html',
         }),
         new GoogleFontsPlugin({
@@ -40,6 +47,15 @@ const config = {
                 },
             ],
         }),
+        new ImageMinimizerPlugin({
+            minimizerOptions: {
+                // Lossless optimization
+                plugins: [
+                    ['jpegtran', {progressive: true}],
+                    ['optipng', {optimizationLevel: 9}],
+                ],
+            },
+        }),
     ],
     module: {
         rules: [
@@ -49,10 +65,10 @@ const config = {
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader', 'postcss-loader'],
             },
             {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpe?g|gif)$/i,
                 type: 'asset',
             },
 
@@ -66,7 +82,37 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production'
 
-        config.plugins.push(new MiniCssExtractPlugin())
+        config.plugins.push(new MiniCssExtractPlugin({
+            filename: "[name].[contenthash].css",
+            chunkFilename: "[id].[contenthash].css",
+        }))
+        config.optimization = {
+            minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    minify: TerserPlugin.uglifyJsMinify,
+                    // `terserOptions` options will be passed to `uglify-js`
+                    // Link to options - https://github.com/mishoo/UglifyJS#minify-options
+                    terserOptions: {},
+                }),
+                new CssMinimizerPlugin(),
+            ],
+            splitChunks: {
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        chunks: 'all',
+                    },
+                    styles: {
+                        name: "styles",
+                        type: "css/mini-extract",
+                        chunks: "all",
+                        enforce: true,
+                    },
+                },
+            },
+        }
     } else
         config.mode = 'development'
 

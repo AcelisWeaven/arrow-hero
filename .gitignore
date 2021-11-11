@@ -1,14 +1,6 @@
-### Node ###
-
-# Dependency directory
+### Node / Yarn ###
+yarn-error.log
 node_modules
-
-### Bower ###
-bower_components
-.bower-cache
-.bower-registry
-.bower-tmp
-src/vendor
 
 ### IntelliJ ###
 .idea
@@ -20,6 +12,3 @@ src/vendor
 
 ### Project specifics ###
 dist
-
-### gulp deploy ###
-.publish
