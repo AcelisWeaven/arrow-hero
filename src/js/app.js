@@ -373,7 +373,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			setTimeout(() => {
 				gameState = 'running'
-				document.querySelectorAll('.key').forEach(k => k.classList.add('remove'))
 				document.querySelector('.pause-btn').textContent = 'Pause'
 				scheduleSpawn(1)
 			}, 950)
