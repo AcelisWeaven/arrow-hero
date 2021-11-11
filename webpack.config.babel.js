@@ -52,16 +52,17 @@ const config = {
             ],
         }),
         new MiniCssExtractPlugin(),
-        // Disabled temporarily because of a conflict with FaviconsWebpackPlugin (Github build time shoots up to 20 minutes)
-        // new ImageMinimizerPlugin({
-        //     minimizerOptions: {
-        //         // Lossless optimization
-        //         plugins: [
-        //             ['jpegtran', {progressive: true}],
-        //             ['optipng', {optimizationLevel: 9}],
-        //         ],
-        //     },
-        // }),
+        new ImageMinimizerPlugin({
+            minimizerOptions: {
+                // Lossless optimization
+                plugins: [
+                    ['jpegtran', {progressive: true}],
+                    ['optipng', {optimizationLevel: 9}],
+                ],
+            },
+            // Ignore favicons implicitly (else, Github build time shoots up to 20 minutes)
+            include: /images/
+        }),
         new FaviconsWebpackPlugin({
             logo: './src/images/arrow-hero.svg',
             favicons: {
