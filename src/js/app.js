@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	let scheduledSpawns = []
 	let bestScore = localStorage.getItem('bestScore')
 	const mobileControls = document.querySelector('.mobile-controls')
-	const body = document.querySelector('body')
 
 	// initialize helpers
 	const bottom = document.querySelector('.bottom')
