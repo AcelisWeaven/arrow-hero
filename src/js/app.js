@@ -483,9 +483,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	addMobileListener('.key-up', 38)
 	addMobileListener('.key-right', 39)
 	addMobileListener('.key-down', 40)
-	mobileControls.querySelector('.pause-btn').ontouchstart = () => {
+
+	addMultipleEventListener(mobileControls.querySelector('.pause-btn'), [ 'click', 'touchstart' ], e => {
+		e.preventDefault()
 		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
-	}
+	})
 
 	body.classList.toggle('colorblind', localStorage.getItem('colorblind') === 'yes')
 	addMultipleEventListener(document.querySelector('.colorblind-btn'), [ 'click', 'touchstart' ], () => {
