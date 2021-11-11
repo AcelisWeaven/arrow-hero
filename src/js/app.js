@@ -488,10 +488,4 @@ document.addEventListener('DOMContentLoaded', () => {
 		e.preventDefault()
 		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
 	})
-
-	body.classList.toggle('colorblind', localStorage.getItem('colorblind') === 'yes')
-	addMultipleEventListener(document.querySelector('.colorblind-btn'), [ 'click', 'touchstart' ], () => {
-		body.classList.toggle('colorblind', !body.classList.contains('colorblind'))
-		localStorage.setItem('colorblind', body.classList.contains('colorblind') ? 'yes' : 'no')
-	})
 })
