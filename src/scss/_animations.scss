@@ -115,16 +115,15 @@
 
 @keyframes selector-bad {
   0% {
-    background-color: rgba(0, 255, 0, 0);
+    background-color: rgba(255, 0, 0, 0);
   }
-
   50% {
     background-color: rgba(255, 0, 0, 0.2);
-    transform: scale(0.95) rotate(1deg);
+    transform: scale(0.95);
   }
 
   100% {
-    background-color: rgba(0, 255, 0, 0);
+    background-color: rgba(255, 0, 0, 0);
     transform: scale(1);
   }
 }
