@@ -1,6 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
@@ -56,6 +57,9 @@ const config = {
                 ],
             },
         }),
+        new FaviconsWebpackPlugin({
+            logo: './src/images/logo.png'
+        })
     ],
     module: {
         rules: [
