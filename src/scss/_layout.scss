@@ -96,6 +96,12 @@ body {
   padding: 0;
   user-select: text;
 
+  .keys-container {
+    svg {
+      shape-rendering: optimizeSpeed;
+    }
+  }
+
   .key-selector-container {
     padding: $padding;
 
@@ -115,7 +121,7 @@ body {
       left: 0;
       right: 0;
       width: $selector_size;
-      border-radius: 5px;
+      border-radius: 999px;
       height: $selector_size;
       opacity: 0;
 
@@ -137,6 +143,7 @@ body {
 
       &.bump {
         animation: selector-bump 0.25s 1 ease-in-out;
+        animation-delay: 50ms;
       }
 
       &.bad {
@@ -146,6 +153,7 @@ body {
       &::after {
         margin: 5px;
         background-color: $board_color;
+        border-radius: 999px !important;
         opacity: 0.8;
       }
 
@@ -200,7 +208,7 @@ body {
     animation: orbit 2s 1 linear;
     top: $padding + $selector_border_size;
 
-    &.paused, &.remove::after {
+    &.paused {
       animation-play-state: paused;
     }
 
@@ -209,29 +217,45 @@ body {
       display: none;
     }
 
-    &.hide::after {
+    &.hide svg {
       animation: fadeout 1s 1;
       opacity: 0;
     }
 
-    &.key-left::after {
-      @include key("left");
+    .key-color-stroke {
+      stroke: currentColor;
     }
 
-    &.key-up::after {
-      @include key("up");
+    .key-color {
+      fill: currentColor;
     }
 
-    &.key-right::after {
-      @include key("right");
+    &.key-left {
+      color: $left_color;
+
+      svg {
+        transform: rotate(-90deg);
+      }
     }
 
-    &.key-down::after {
-      @include key("down");
+    &.key-up {
+      color: $up_color;
     }
 
-    &::after {
-      background-color: $key_color;
+    &.key-right {
+      color: $right_color;
+
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+
+    &.key-down {
+      color: $down_color;
+
+      svg {
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -321,29 +345,25 @@ body {
       .key {
         top: 0;
         opacity: 1;
-        animation: none;
+        animation: lowbump 0.8s infinite ease-out;
 
-        &::after {
-          animation: lowbump 0.8s infinite ease-out;
-        }
-
-        &.key-left::after {
+        &.key-left {
           top: $key_size + $helper_spacing;
-          right: $key_size + $helper_spacing;
+          right: $key_size + $helper_spacing * 6;
         }
 
-        &.key-up::after {
-          top: 0;
+        &.key-up {
+          top: $helper_spacing;
         }
 
-        &.key-down::after {
+        &.key-down {
           top: $key_size + $helper_spacing;
         }
 
-        &.key-right::after {
+        &.key-right {
           top: $key_size + $helper_spacing;
           right: 0;
-          left: $key_size + $helper_spacing;
+          left: $key_size + $helper_spacing * 6;
         }
       }
     }
@@ -358,7 +378,7 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #f0f0f0;
     border-radius: 5px;
     opacity: 0;
 
@@ -396,7 +416,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #cacaca;
+    background-color: #eaeaea;
     border-radius: 5px;
 
     &.show {

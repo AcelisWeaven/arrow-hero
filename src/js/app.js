@@ -1,5 +1,10 @@
 'use strict'
 
+import svg from '../images/key.svg'
+
+const keySvg = atob(svg.split(',')[1])
+const keyDomItem = new DOMParser().parseFromString(keySvg, 'image/svg+xml')
+
 function addMultipleEventListener (element, events, handler) {
 	events.forEach(e => element.addEventListener(e, handler))
 }
@@ -149,6 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	const mobileControls = document.querySelector('.mobile-controls')
 	const body = document.querySelector('body')
 
+	// initialize helpers
+	const bottom = document.querySelector('.bottom')
+	const bottomKeys = [ 'left', 'up', 'right', 'down' ]
+	bottomKeys.forEach(k =>
+		bottom.querySelector('.key-' + k).appendChild(keyDomItem.childNodes[0].cloneNode(true)))
+
 	function updatePoints (pts) {
 		if (pts < 1)
 			pts = 1
@@ -215,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let nextKey = container.querySelector('.idle')
 		if (nextKey === null) {
 			nextKey = document.createElement('div')
+			nextKey.appendChild(keyDomItem.childNodes[0].cloneNode(true))
 			nextKey.classList.add('key', direction)
 			nextKey.onanimationend = () => {
 
