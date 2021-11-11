@@ -1,14 +1,14 @@
 {
-  "name": "my-webpack-project",
-  "short_name": "my-webpack-project",
-  "description": "My webpack project",
+  "name": "arrow-hero",
+  "short_name": "arrow-hero",
+  "description": "Arrow Hero",
   "dir": "auto",
   "lang": "en-US",
   "display": "standalone",
   "orientation": "any",
   "start_url": "/?homescreen=1",
   "background_color": "#fff",
-  "theme_color": "#fff",
+  "theme_color": "#ff3232",
   "icons": [
     {
       "src": "android-chrome-36x36.png",
