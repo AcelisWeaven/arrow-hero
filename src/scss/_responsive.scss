@@ -54,7 +54,7 @@
         }
 
         &.bad {
-          animation: mobile-selector-bad 0.2s 1 linear;
+          animation: mobile-selector-bad 0.15s 1 ease-out;
         }
       }
     }
