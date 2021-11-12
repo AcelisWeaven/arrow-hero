@@ -394,6 +394,7 @@ body {
     height: 100%;
     background-color: #eaeaea;
     border-radius: 5px;
+    overflow: hidden;
 
     &.show {
       display: table;
