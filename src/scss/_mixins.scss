@@ -1,11 +1,7 @@
 @use "sass:math";
+@import "variables";
 
 @mixin key($direction, $_size:$key_size, $_border_size:3px, $_offset:5px) {
-  font: normal normal normal math.div($_size * 0.5, 1) FontAwesome;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translate(0, 0);
   position: absolute;
   text-align: center;
   display: block;
@@ -13,37 +9,39 @@
   line-height: $_size - 2 * $_border_size;
   width: $_size - 2 * $_border_size;
   height: $_size - 2 * $_border_size;
+  content: '';
   border-radius: 5px;
   border-style: solid;
   border-width: ($_border_size - 1px) $_border_size ($_border_size + 1px) $_border_size;
+  $color: transparent;
 
   @if ($direction == "left") {
-    border-color: $left_color;
-    color: $left_color;
-    content: "\f060";
+    transform: rotate(-90deg);
+    $color: $left_color;
     padding-right: $_offset;
     width: $_size - 2 * $_border_size - $_offset;
   } @else if ($direction == "up") {
-    border-color: $up_color;
-    color: $up_color;
-    content: "\f062";
+    $color: $up_color;
     padding-bottom: $_offset;
     line-height: $_size - 2 * $_border_size - $_offset;
     height: $_size - 2 * $_border_size - $_offset;
   }  @else if ($direction == "right") {
-    border-color: $right_color;
-    color: $right_color;
-    content: "\f061";
+    transform: rotate(90deg);
+    $color: $right_color;
     padding-left: $_offset;
     width: $_size - 2 * $_border_size - $_offset;
   }  @else if ($direction == "down") {
-    border-color: $down_color;
-    color: $down_color;
-    content: "\f063";
+    transform: rotate(180deg);
+    $color: $down_color;
     padding-top: $_offset;
     line-height: $_size - 2 * $_border_size - $_offset;
     height: $_size - 2 * $_border_size - $_offset;
-  } @else {
-    border-color: transparent;
   }
+
+  border-color: $color;
+  color: $color;
+  background-image: url("../inline/arrow.svg?color=#{str-slice(unquote("#{$color}"), 2)}");
+  background-size: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
