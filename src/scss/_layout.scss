@@ -185,13 +185,10 @@ body {
         margin: 0 auto;
         font-family: 'Inconsolata', monospace;
         font-size: 15pt;
-        font-weight: bold;
+        font-weight: bolder;
         animation: ding 0.5s 1 ease-out;
         opacity: 0;
-        color: black;
-        $stroke: 3px;
-        paint-order: stroke fill;
-        -webkit-text-stroke: 4px white;
+        color: $text_color;
       }
     }
   }
