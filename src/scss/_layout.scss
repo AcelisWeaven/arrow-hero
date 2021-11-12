@@ -148,7 +148,7 @@ body {
       }
 
       &.bad {
-        animation: selector-bad 0.2s 1 linear;
+        animation: selector-bad 0.15s 1 ease-out;
       }
 
       &::after {
