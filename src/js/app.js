@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (points > bestScore) {
 			// update best score
 			bestScore = points
-			sessionStorage.setItem('bestScore', bestScore)
+			localStorage.setItem('bestScore', bestScore)
 			document.querySelector('.best-points .value').textContent = bestScore
 			document.querySelector('.best').style.display = 'block'
 		}
