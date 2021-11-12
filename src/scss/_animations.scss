@@ -146,7 +146,7 @@
   0% {
     opacity: 1;
   }
-  30% {
+  60% {
     opacity: 1;
   }
   100% {
@@ -161,7 +161,7 @@
     transform: rotate(0deg) translateY(-5px);
   }
   15%, 35% {
-    color: $right_color_alt;
+    color: $right_color;
     transform: rotate(90deg) translateY(-5px);
   }
   40%, 60% {

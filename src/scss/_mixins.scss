@@ -10,9 +10,8 @@
   width: $_size - 2 * $_border_size;
   height: $_size - 2 * $_border_size;
   content: '';
-  border-radius: 5px;
+  border-radius: 999px;
   border-style: solid;
-  border-width: ($_border_size - 1px) $_border_size ($_border_size + 1px) $_border_size;
   $color: transparent;
 
   @if ($direction == "left") {

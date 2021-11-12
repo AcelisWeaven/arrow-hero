@@ -3,7 +3,7 @@ body {
   text-align: center;
   background-color: $background_color;
   padding-top: 20px;
-  color: #303030;
+  color: $text_color;
   border-top: 1px solid $right_color;
   margin: 0;
 
@@ -36,6 +36,7 @@ body {
   a {
     text-decoration: none;
     font-weight: bold;
+    color: $right_color;
   }
 
   strong {
@@ -133,7 +134,7 @@ body {
       border-bottom-color: $down_color;
 
       &.show {
-        opacity: 0.8;
+        opacity: 1;
       }
 
       &.fade {
@@ -152,7 +153,6 @@ body {
 
       &::after {
         margin: 5px;
-        background-color: $board_color;
         border-radius: 999px !important;
         opacity: 0.8;
       }
@@ -185,9 +185,13 @@ body {
         margin: 0 auto;
         font-family: 'Inconsolata', monospace;
         font-size: 15pt;
+        font-weight: bold;
         animation: ding 0.5s 1 ease-out;
         opacity: 0;
-        text-shadow: 3px 0 0 white, 0 -3px 0 white, 0 3px 0 white, -3px 0 0 white;
+        color: black;
+        $stroke: 3px;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 4px white;
       }
     }
   }
@@ -227,6 +231,7 @@ body {
     }
 
     .key-color-stroke {
+      fill: rgba(black, 0.7);
       stroke: currentColor;
     }
 
@@ -315,7 +320,7 @@ body {
         max-width: $size*0.75;
         margin: 0 auto;
         font-size: 14pt;
-        color: rgba(black, 0.7);
+        color: rgba($text_color, 0.7);
       }
 
       .key {
@@ -354,7 +359,7 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: #f0f0f0;
+    background-color: $board_color;
     border-radius: 5px;
     opacity: 0;
 
@@ -392,7 +397,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #eaeaea;
+    background-color: $board_color;
     border-radius: 5px;
     overflow: hidden;
 
@@ -502,12 +507,12 @@ body {
   }
 
   .prim {
-    color: #3F3E40;
+    color: $text_color;
     font-weight: bold;
   }
 
   .sec {
-    color: #3F3E40;
+    color: $text_color;
     font-weight: bold;
   }
 
@@ -616,7 +621,7 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: rgba(black, 0.1);
+    background-color: rgba($text_color, 0.1);
     padding: 13px 17px;
     margin-right: 7px;
     border-radius: 5px;
