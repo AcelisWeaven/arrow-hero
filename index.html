@@ -29,73 +29,78 @@
     </script>
 </head>
 <body>
-<h1>Arrow hero</h1>
-<h3 class="points-container"><span class="points">0</span> points</h3>
-<div class="container">
-    <div class="key-selector-container">
-        <div class="key-selector">
-            <!--<div class="ding">+15</div>-->
+<div class="fullscreen-container">
+    <h1>Arrow hero</h1>
+    <h3 class="points-container"><span class="points">0</span> points</h3>
+    <div class="container">
+        <div class="key-selector-container">
+            <div class="key-selector">
+                <!--<div class="ding">+15</div>-->
+            </div>
+        </div>
+        <div class="keys-container">
+            <!--<div class="key key-up"></div>-->
+        </div>
+        <div class="helper-container">
+            <div class="top"></div>
+            <div class="bottom">
+                <div class="key key-left helper"></div>
+                <div class="key key-up helper"></div>
+                <div class="key key-right helper"></div>
+                <div class="key key-down helper"></div>
+                <div class="text desktop-only">
+                    Press a key to begin
+                </div>
+                <div class="text not-desktop">
+                    Touch a key to begin
+                </div>
+            </div>
+        </div>
+        <div class="total">
+            <div class="percent" style="width: 0"></div>
+        </div>
+        <div class="level-message">Placeholder message</div>
+        <div class="results">
+            <div class="results-container">
+                <div class="results-content">
+                    <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
+                    <h3>You've made...</h3>
+                    <h2><span class="points">0</span> points</h2>
+                    <br/>
+                    <p class="desktop-only">Press <strong>Space</strong> to restart</p>
+                    <p class="not-desktop">Touch <em>Restart</em> to try again</p>
+                </div>
+            </div>
+        </div>
+        <div class="pause">
+            <div class="pause-container">
+                <div class="pause-content">
+                    <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
+                    <h3>Paused</h3>
+                    <br/>
+                    <p class="desktop-only">Press <strong>Space</strong> to resume</p>
+                    <p class="not-desktop">Touch <em>Pause</em> again to resume</p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="keys-container">
-        <!--<div class="key key-up"></div>-->
-    </div>
-    <div class="helper-container">
-        <div class="top"></div>
+    <div class="mobile-controls">
+        <div class="top">
+            <div class="key-up"></div>
+        </div>
         <div class="bottom">
-            <div class="key key-left helper"></div>
-            <div class="key key-up helper"></div>
-            <div class="key key-right helper"></div>
-            <div class="key key-down helper"></div>
-            <div class="text desktop-only">
-                Press a key to begin
-            </div>
-            <div class="text not-desktop">
-                Touch a key to begin
-            </div>
+            <div class="key-left"></div>
+            <div class="key-down"></div>
+            <div class="key-right"></div>
         </div>
+        <div class="pause-btn">Pause</div>
     </div>
-    <div class="total">
-        <div class="percent" style="width: 0"></div>
+    <div class="best" style="display: none">
+        Best: <span class="best-points"><span class="value">0</span> points</span>
     </div>
-    <div class="level-message">Placeholder message</div>
-    <div class="results">
-        <div class="results-container">
-            <div class="results-content">
-                <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
-                <h3>You've made...</h3>
-                <h2><span class="points">0</span> points</h2>
-                <br/>
-                <p class="desktop-only">Press <strong>Space</strong> to restart</p>
-                <p class="not-desktop">Touch <em>Restart</em> to try again</p>
-            </div>
-        </div>
+    <div class="fullscreen-btn">
+        <a id="toggle-fullscreen">Toggle fullscreen</a>
     </div>
-    <div class="pause">
-        <div class="pause-container">
-            <div class="pause-content">
-                <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
-                <h3>Paused</h3>
-                <br/>
-                <p class="desktop-only">Press <strong>Space</strong> to resume</p>
-                <p class="not-desktop">Touch <em>Pause</em> again to resume</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="mobile-controls">
-    <div class="top">
-        <div class="key-up"></div>
-    </div>
-    <div class="bottom">
-        <div class="key-left"></div>
-        <div class="key-down"></div>
-        <div class="key-right"></div>
-    </div>
-    <div class="pause-btn">Pause</div>
-</div>
-<div class="best" style="display: none">
-    Best: <span class="best-points"><span class="value">0</span> points</span>
 </div>
 
 <a class="banner" href="https://acelis.itch.io/inkys-pandemonium">
