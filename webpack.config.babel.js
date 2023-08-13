@@ -45,6 +45,7 @@ const config = {
             template: 'index.html',
         }),
         new GoogleFontsPlugin({
+            apiUrl: 'https://gwfh.mranftl.com/api/fonts', // alternate Google Fonts API, since the default is down
             fonts: [
                 {
                     family: 'Inconsolata',
