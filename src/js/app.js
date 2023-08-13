@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const pointContainers = document.querySelectorAll('.points')
 	let keypressed = 'key-'
 	const container = document.querySelector('.keys-container')
+	const fullscreenContainer = document.querySelector('.fullscreen-container')
+	const globalContainer = document.querySelector('.container')
 	const square = document.querySelector('.key-selector')
 	// array of objects: {score, speed, message, points}
 	const speeds = [
@@ -390,6 +392,39 @@ document.addEventListener('DOMContentLoaded', () => {
 		}, 1000)
 	}
 
+	function toggleFullscreen () {
+		const isFullscreen = document.fullscreenElement !== null
+
+		if (!isFullscreen) {
+			if (fullscreenContainer.requestFullscreen)
+				fullscreenContainer.requestFullscreen()
+		} else
+		if (document.exitFullscreen)
+			document.exitFullscreen()
+	}
+
+	function updateScaleFactor () {
+		// Original size is $size in _variables.scss
+		const size = 390
+		const height = globalContainer.offsetHeight
+
+		document.documentElement.style.setProperty('--scale-factor', height / size)
+	}
+
+	document.onfullscreenchange = () => {
+		const isFullscreen = document.fullscreenElement !== null
+
+		if (!isFullscreen)
+			fullscreenContainer.classList.remove('is-fullscreen')
+		else
+			fullscreenContainer.classList.add('is-fullscreen')
+
+		// timeout is needed, so browser can update the size of the container properly
+		setTimeout(updateScaleFactor, 100)
+	}
+
+	window.onresize = updateScaleFactor
+
 	document.body.onblur = () => {
 		if (gameState === 'running')
 			// auto pause
@@ -397,6 +432,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	document.onkeydown = e => {
+
+		if (e.key === 'F11') {
+			toggleFullscreen()
+			e.preventDefault()
+		}
+
 
 		if (e.keyCode === 32) {
 			e.preventDefault()
@@ -493,4 +534,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		e.preventDefault()
 		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
 	})
+
+	// If URL contains ?fullscreen, start in pseudo-fullscreen
+	if (window.location.search.includes('fullscreen'))
+		fullscreenContainer.classList.add('is-fullscreen')
+
+	document.getElementById('toggle-fullscreen').addEventListener('click', toggleFullscreen)
+
+	updateScaleFactor()
 })
