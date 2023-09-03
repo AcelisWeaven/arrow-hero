@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 import svg from '../images/key.svg'
 

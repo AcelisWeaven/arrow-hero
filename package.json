@@ -55,5 +55,8 @@
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"
   },
-  "description": "Arrow Hero"
+  "description": "Arrow Hero",
+  "dependencies": {
+    "babel-eslint": "^10.1.0"
+  }
 }
