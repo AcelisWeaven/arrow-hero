@@ -22,6 +22,22 @@ function addMultipleEventListener (element, events, handler) {
 	events.forEach(e => element.addEventListener(e, handler))
 }
 
+function readBestScore () {
+	try {
+		return localStorage.getItem('bestScore')
+	} catch (e) {
+		return null
+	}
+}
+
+function saveBestScore (score) {
+	try {
+		localStorage.setItem('bestScore', score)
+	} catch (e) {
+		return
+	}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	let points = 0
 	const pointContainers = document.querySelectorAll('.points')
@@ -165,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let currentLife = maxLife
 	// array of objects: {delay, started, interval}
 	let scheduledSpawns = []
-	let bestScore = localStorage.getItem('bestScore')
+	let bestScore = readBestScore()
 	const mobileControls = document.querySelector('.mobile-controls')
 	// Same breakpoint as the mobile layout in _responsive.scss
 	const mobileLayout = window.matchMedia('(max-width: 480px)')
@@ -358,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (points > bestScore) {
 			// update best score
 			bestScore = points
-			localStorage.setItem('bestScore', bestScore)
+			saveBestScore(bestScore)
 			document.querySelector('.best-points .value').textContent = bestScore
 			document.querySelector('.best').style.display = 'block'
 		}

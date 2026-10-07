@@ -23,15 +23,26 @@ function randomId () {
 	return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('')
 }
 
+let runDataOnWithoutStorage = false
+
 export function isRunDataOn () {
-	return localStorage.getItem(optOutKey) !== 'off'
+	try {
+		return localStorage.getItem(optOutKey) !== 'off'
+	} catch (e) {
+		return runDataOnWithoutStorage
+	}
 }
 
 export function setRunDataOn (on) {
-	if (on)
-		localStorage.removeItem(optOutKey)
-	else
-		localStorage.setItem(optOutKey, 'off')
+	runDataOnWithoutStorage = on
+	try {
+		if (on)
+			localStorage.removeItem(optOutKey)
+		else
+			localStorage.setItem(optOutKey, 'off')
+	} catch (e) {
+		return
+	}
 }
 
 // trusted: whether the key that started the run came from a real keyboard,
