@@ -9,8 +9,21 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
 const svgToMiniDataURI = require('mini-svg-data-uri');
+const { DefinePlugin } = require('webpack')
+const { execSync } = require('child_process')
 
 const isProduction = process.env.NODE_ENV === 'production'
+
+function commitHash () {
+    try {
+        return execSync('git rev-parse --short HEAD').toString().trim()
+    } catch (e) {
+        return 'dev'
+    }
+}
+
+// Where run records go. Set RUNS_URL to an empty string to send nothing.
+const runsUrl = process.env.RUNS_URL ?? (isProduction ? 'https://arrow-hero-runs.agraziani.workers.dev/run' : 'http://localhost:8787/run')
 
 const config = {
     entry: './src/index.js',
@@ -38,6 +51,10 @@ const config = {
         }),
         new ESLintPlugin({
             fix: true,
+        }),
+        new DefinePlugin({
+            BUILD: JSON.stringify(commitHash()),
+            RUNS_URL: JSON.stringify(runsUrl),
         }),
         new HtmlWebpackPlugin({
             hash: true,

@@ -1,5 +1,18 @@
 'use strict'
 
+import {
+	endRun,
+	isRunDataOn,
+	logArrival,
+	logInput,
+	logLayout,
+	logPause,
+	logResume,
+	logStance,
+	setRunDataOn,
+	snapshotRun,
+	startRun,
+} from './runLog'
 import svg from '../images/key.svg'
 
 const keySvg = atob(svg.split(',')[1])
@@ -154,6 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	let scheduledSpawns = []
 	let bestScore = localStorage.getItem('bestScore')
 	const mobileControls = document.querySelector('.mobile-controls')
+	// Same breakpoint as the mobile layout in _responsive.scss
+	const mobileLayout = window.matchMedia('(max-width: 480px)')
+	let focusLost = false
 
 	// initialize helpers
 	const bottom = document.querySelector('.bottom')
@@ -234,7 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (gameState === 'end' || gameState === 'restart' || nextKey.classList.contains('idle'))
 					return
 
-				if (nextKey.classList.contains(keypressed)) {
+				// Keys are recycled, so the direction comes from the class, not from the spawn
+				const hit = nextKey.classList.contains(keypressed)
+				logArrival(bottomKeys.find(k => nextKey.classList.contains('key-' + k)), hit)
+
+				if (hit) {
 					currentLife = Math.min(currentLife + 200, maxLife)
 
 					updatePoints(current.points)
@@ -315,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function endGame () {
 		gameState = 'end'
+		endRun(points)
 		document.querySelectorAll('.key').forEach(k => k.classList.add('hide'))
 
 		const keySelectorContainer = document.querySelector('.key-selector-container')
@@ -386,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			setTimeout(() => {
 				gameState = 'running'
+				startRunLog()
 				document.querySelector('.pause-btn').textContent = 'Pause'
 				scheduleSpawn(1)
 			}, 950)
@@ -426,9 +448,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.onresize = updateScaleFactor
 
 	document.body.onblur = () => {
-		if (gameState === 'running')
+		if (gameState === 'running') {
 			// auto pause
+			focusLost = true
 			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
+			focusLost = false
+		}
 	}
 
 	document.onkeydown = e => {
@@ -448,10 +473,13 @@ document.addEventListener('DOMContentLoaded', () => {
 				document.querySelectorAll('.key').forEach(k => k.classList.toggle('paused', gameState === 'paused'))
 				document.querySelector('.pause').classList.toggle('show', gameState === 'paused')
 
-				if (gameState === 'paused')
+				if (gameState === 'paused') {
 					pauseScheduledSpawns()
-				else if (gameState === 'running')
+					logPause(focusLost)
+				} else if (gameState === 'running') {
 					resumeScheduledSpawns()
+					logResume()
+				}
 
 			} else if (gameState === 'end')
 				restartGame()
@@ -464,10 +492,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			e.preventDefault()
 			if (gameState === false) {
-				startGame()
+				startGame(e.isTrusted)
 				return false
 			}
 
+			logInput(e.isTrusted)
+			const previous = keypressed
 			if (keypressed !== '')
 				square.classList.remove('s-' + keypressed)
 
@@ -493,12 +523,15 @@ document.addEventListener('DOMContentLoaded', () => {
 					break
 			}
 			square.classList.add('s-' + keypressed)
+			if (keypressed !== previous)
+				logStance(keypressed.replace('key-', ''))
 		}
 
 	}
 
-	function startGame () {
+	function startGame (trusted) {
 		gameState = 'running'
+		startRunLog(trusted)
 
 		document.querySelector('.points-container').classList.add('show')
 		document.querySelector('.helper-container').classList.add('hide')
@@ -510,6 +543,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		scheduleSpawn(1000)
 
 		document.querySelector('.percent').style.width = '100%'
+	}
+
+	function tierIndex (score) {
+		let index = 0
+		speeds.forEach((speed, i) => {
+			if (score >= speed.score)
+				index = i
+		})
+		return index
+	}
+
+	function startRunLog (trusted) {
+		const best = Number(bestScore)
+		const exp = bestScore === null || Number.isNaN(best) ? null : tierIndex(best)
+		let view = mobileLayout.matches ? 'mobile' : 'normal'
+		if (fullscreenContainer.classList.contains('is-fullscreen'))
+			view = 'full'
+
+		startRun(exp, view, trusted)
 	}
 
 	if (bestScore) {
@@ -540,6 +592,29 @@ document.addEventListener('DOMContentLoaded', () => {
 		fullscreenContainer.classList.add('is-fullscreen')
 
 	document.getElementById('toggle-fullscreen').addEventListener('click', toggleFullscreen)
+
+	document.addEventListener('visibilitychange', () => {
+		if (document.visibilityState === 'hidden')
+			snapshotRun(points)
+	})
+
+	mobileLayout.addEventListener('change', logLayout)
+
+	const runDataStatus = document.querySelector('.run-data-status')
+	const runDataToggle = document.getElementById('toggle-run-data')
+	const runDataOnText = runDataStatus.textContent
+
+	function updateRunData () {
+		const on = isRunDataOn()
+		runDataStatus.textContent = on ? runDataOnText : 'Run recording is off.'
+		runDataToggle.textContent = on ? 'Turn off' : 'Turn on'
+	}
+
+	runDataToggle.addEventListener('click', () => {
+		setRunDataOn(!isRunDataOn())
+		updateRunData()
+	})
+	updateRunData()
 
 	updateScaleFactor()
 })

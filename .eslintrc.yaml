@@ -5,3 +5,6 @@ extends:
   - recommended/node/style-guide
 env:
   browser: true
+globals:
+  BUILD: readonly
+  RUNS_URL: readonly
