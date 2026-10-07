@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		}
 
-		if ((e.keyCode >= 37 && e.keyCode <= 40 || e.keyCode >= 72 && e.keyCode <= 76)
+		if ([ 37 /* left */, 38 /* up */, 39 /* right */, 40 /* down */, 72 /* h */, 74 /* j */, 75 /* k */, 76 /* l */ ].includes(e.keyCode)
             && gameState !== 'paused' && gameState !== 'restart') {
 			// arrow keys pressed
 
@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					break
 
 				case 38: // up
-				case 75: // j
+				case 75: // k
 					keypressed = 'key-up'
 					break
 
