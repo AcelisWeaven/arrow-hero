@@ -192,6 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const bottomKeys = [ 'left', 'up', 'right', 'down' ]
 	bottomKeys.forEach(k =>
 		bottom.querySelector('.key-' + k).appendChild(keyDomItem.childNodes[0].cloneNode(true)))
+	document.querySelectorAll('.about .key-up').forEach(k =>
+		k.appendChild(keyDomItem.childNodes[0].cloneNode(true)))
 
 	function updatePoints (pts) {
 		if (pts < 1)
