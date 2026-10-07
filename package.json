@@ -4,6 +4,7 @@
   "author": "AcelisWeaven",
   "license": "MIT",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "repository": {
     "type": "git",
     "url": ""
