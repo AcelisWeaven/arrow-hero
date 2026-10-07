@@ -200,9 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		pts = Math.floor(pts)
 		points += pts
 		square.classList.add('bump')
-		square.onanimationend = () => {
-			square.classList.remove('bump')
-		}
 
 		pointContainers.forEach(pointContainer => {
 			pointContainer.textContent = points
@@ -221,6 +218,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		square.appendChild(ding)
 	}
+
+	const squareAnimations = {
+		'selector-bump': 'bump',
+		'selector-bad': 'bad',
+		'mobile-selector-bad': 'bad',
+		fadein: 'fade',
+	}
+
+	square.addEventListener('animationend', e => {
+		if (e.target === square && squareAnimations[e.animationName])
+			square.classList.remove(squareAnimations[e.animationName])
+	})
 
 	const levelMessage = document.querySelector('.level-message')
 
@@ -277,9 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					currentLife -= 1000
 					square.classList.add('bad')
-					square.onanimationend = () => {
-						square.classList.remove('bad')
-					}
 				}
 
 				updateSpeed()
@@ -560,7 +566,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		setTimeout(() => {
 			const keySelector = document.querySelector('.key-selector')
 			keySelector.classList.add('show', 'fade')
-			keySelector.onanimationend = () => keySelector.classList.remove('fade')
 		}, 500)
 		scheduleSpawn(1000)
 
