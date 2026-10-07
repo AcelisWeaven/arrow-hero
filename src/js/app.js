@@ -492,7 +492,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (gameState === 'paused') {
 					pauseScheduledSpawns()
 					logPause(focusLost)
-				} else if (gameState === 'running') {
+				} else if (currentLife <= 0)
+					endGame()
+				else {
 					resumeScheduledSpawns()
 					logResume()
 				}
