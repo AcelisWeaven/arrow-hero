@@ -426,6 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				startRunLog()
 				document.querySelector('.pause-btn').textContent = 'Pause'
 				scheduleSpawn(1)
+				if (!document.hasFocus())
+					autoPause()
 			}, 950)
 		}, 1000)
 	}
@@ -463,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	window.onresize = updateScaleFactor
 
-	document.body.onblur = () => {
+	function autoPause () {
 		if (gameState === 'running') {
 			// auto pause
 			focusLost = true
@@ -471,6 +473,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			focusLost = false
 		}
 	}
+
+	document.body.onblur = autoPause
 
 	document.onkeydown = e => {
 
