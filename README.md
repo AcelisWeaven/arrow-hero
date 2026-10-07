@@ -1,4 +1,4 @@
-Arrow hero
+Arrow Hero
 ===
 
 A minimalist game where your goal is to match your inputs with an unstoppable continuous overwhelming flow of arrows.
