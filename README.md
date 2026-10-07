@@ -1,9 +1,11 @@
 Arrow hero
 ===
 
-A minimalist game where your goal is to match your inputs with an unstoppable continuous overwelming flow of arrows.
+A minimalist game where your goal is to match your inputs with an unstoppable continuous overwhelming flow of arrows.
 
-Setting up Gulp
+Play it here: https://acelisweaven.github.io/arrow-hero/
+
+Setting up the project
 ---
 
 First, clone this repository (you can fork it too):
@@ -11,7 +13,7 @@ First, clone this repository (you can fork it too):
 git clone git@github.com:AcelisWeaven/arrow-hero.git
 ```
 
-Then, we need to install our dependencies:
+Then, we need to install our dependencies (the project uses Yarn 1):
 ```shell
 yarn install
 ```
