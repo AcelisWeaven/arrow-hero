@@ -2,7 +2,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
@@ -58,15 +57,6 @@ const config = {
             hash: true,
             inject: true,
             template: 'index.html',
-        }),
-        new GoogleFontsPlugin({
-            apiUrl: 'https://gwfh.mranftl.com/api/fonts', // alternate Google Fonts API, since the default is down
-            fonts: [
-                {
-                    family: 'Inconsolata',
-                    variants: ['400', '700', '900'],
-                },
-            ],
         }),
         new MiniCssExtractPlugin(),
         new FaviconsWebpackPlugin({
