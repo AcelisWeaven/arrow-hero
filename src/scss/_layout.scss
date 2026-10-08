@@ -113,7 +113,6 @@ body {
   border-radius: 5px;
   height: $size;
   position: relative;
-  overflow: hidden;
   border-radius: 0;
   margin: 0 auto 10px auto;
   padding: 0;
@@ -133,12 +132,10 @@ body {
     padding: $padding;
 
     &.hide {
-      animation: fadeout 1s 1;
       opacity: 0;
     }
 
     &.show {
-      animation: fadein 1s 1;
       opacity: 1;
     }
 
@@ -157,18 +154,8 @@ body {
         opacity: 1;
       }
 
-      &.fade {
-        animation: fadein 1s;
-        transform-origin: 50% 0;
-      }
-
-      &.bump {
-        animation: selector-bump 0.25s 1 ease-in-out;
-        animation-delay: 50ms;
-      }
-
       &.bad {
-        animation: selector-bad 0.15s 1 ease-out;
+        animation: selector-bad 0.15s 1 ease-out, selector-shake 0.25s 1 linear;
       }
 
       > svg {
@@ -180,18 +167,72 @@ body {
         overflow: visible;
       }
 
+      // The frame is the life band. It runs clockwise from the top middle, and a miss eats into it from the end.
+      .sel-life-track,
+      .sel-life-chunk,
+      .sel-life-band {
+        fill: none;
+        stroke-width: 4;
+      }
+
+      .sel-life-track {
+        stroke: $life_track_color;
+      }
+
+      .sel-life-chunk {
+        stroke: $life_chunk_color;
+        stroke-dasharray: 0 100;
+      }
+
+      .sel-life-band {
+        stroke: $life_color;
+        stroke-dasharray: 100 100;
+      }
+
+      &.heal .sel-life-band {
+        animation: life-heartbeat 0.27s 1 linear;
+      }
+
+      // the flash comes last so it wins the stroke while both run
+      &.heal.punch .sel-life-band {
+        animation: life-heartbeat 0.27s 1 linear, selector-frame-flash 0.1s 1 step-end;
+      }
+
+      .sel-body,
+      .sel-plate {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      // a catch seats the arrow: the selector presses in and the glyph flashes white
+      &.seat {
+        .sel-body {
+          animation: selector-seat 0.15s 1 linear;
+        }
+
+        .sel-glyph-shape {
+          animation: selector-seat-flash 0.07s 1 step-end;
+        }
+      }
+
       .sel-core {
         fill: transparent;
       }
 
-      .sel-frame {
-        fill: none;
-        stroke: white;
-        stroke-width: 4;
-      }
-
       .sel-glyph {
         visibility: hidden;
+        transform: rotate(var(--sel-angle));
+      }
+
+      // a stance change snaps at once: the glyph turns and the plate punches out
+      &.punch {
+        .sel-plate {
+          animation: selector-punch 0.15s 1 linear;
+        }
+
+        .sel-life-band {
+          animation: selector-frame-flash 0.1s 1 step-end;
+        }
       }
 
       .sel-glyph-base,
@@ -213,10 +254,10 @@ body {
       @each $direction, $color, $angle in (up, $up_color, 0deg), (right, $right_color, 90deg), (down, $down_color, 180deg), (left, $left_color, -90deg) {
         &.s-key-#{$direction} {
           color: $color;
+          --sel-angle: #{$angle};
 
           .sel-glyph {
             visibility: visible;
-            transform: rotate($angle);
           }
         }
       }
@@ -268,7 +309,6 @@ body {
     border: 2px solid #202020;
     border-radius: 50%;
     opacity: 0;
-    transition: opacity 1s;
 
     &.show {
       opacity: 1;
@@ -293,10 +333,6 @@ body {
     &.idle {
       animation: none;
       display: none;
-    }
-
-    svg {
-      transition: opacity 1s;
     }
 
     &.hide svg {
@@ -360,12 +396,7 @@ body {
     bottom: 0;
 
     &.hide {
-      animation: fadeout 1s;
       opacity: 0;
-    }
-
-    &:not(.hide) ~ .total {
-      visibility: hidden;
     }
 
     .start-screen {
@@ -424,6 +455,50 @@ body {
     }
   }
 
+  // One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
+  // stripes of the stance colors that lag each other, so it reaches past the board's right side by $shutter_overhang
+  // for the most lagging stripe to still cover it.
+  // the board lets things like the "+x" rise past its edge, so the shutter clips itself
+  .shutter-frame {
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .shutter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -$shutter_overhang;
+    transform: translateX(-100%);
+    pointer-events: none;
+
+    // the stripes lag each other, so the moving edges zigzag
+    @each $i, $color in (1, $left_color), (2, $up_color), (3, $right_color), (4, $down_color) {
+      > div:nth-child(#{$i}) {
+        position: absolute;
+        top: ($i - 1) * 25%;
+        // 1px taller, so no seam between stripes lets the board show through
+        height: calc(25% + 1px);
+        left: 0;
+        right: 0;
+        background-color: mix($color, black, $shutter_tint);
+        transform: translateX(nth($shutter_offsets, $i));
+      }
+    }
+
+    &.cover {
+      animation: shutter-cover $shutter_duration $shutter_easing both;
+    }
+
+    &.uncover {
+      animation: shutter-uncover $shutter_duration $shutter_easing both;
+    }
+  }
+
   .results {
     position: absolute;
     z-index: 2;
@@ -440,13 +515,11 @@ body {
 
     &.show {
       display: table;
-      animation: lowfadeinwithdelay 1.8s ease-in-out;
       opacity: 1;
     }
 
     &.hide {
       display: table;
-      animation: fadeout 0.8s ease-in-out;
       opacity: 0;
     }
 
@@ -523,21 +596,6 @@ body {
       }
     }
   }
-
-  .total {
-    position: absolute;
-    left: 24px;
-    right: 24px;
-    bottom: 22px;
-    height: 4px;
-    background-color: #2a2a2a;
-
-    .percent {
-      height: 4px;
-      transition: width 0.2s ease-in-out;
-      background-color: white;
-    }
-  }
 }
 
 .points-container {
@@ -554,17 +612,15 @@ body {
     display: inline-block;
 
     &.bump {
-      animation: selector-bump 0.3s 1 ease-in-out;
+      animation: points-bump 0.17s 1 linear;
     }
   }
 
   &.hide {
-    animation: fadeout 0.5s ease-out;
     opacity: 0;
   }
 
   &.show {
-    animation: fadein 0.5s ease-out;
     opacity: 1;
   }
 }

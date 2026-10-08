@@ -47,12 +47,8 @@
 
     .key-selector-container {
       .key-selector {
-        &.bump {
-          animation: none;
-        }
-
         &.bad {
-          animation: mobile-selector-bad 0.15s 1 ease-out;
+          animation: mobile-selector-bad 0.15s 1 ease-out, selector-shake 0.25s 1 linear;
         }
       }
     }
@@ -82,4 +78,4 @@
     padding-left: 15px;
     padding-right: 15px;
   }
-}
+}
