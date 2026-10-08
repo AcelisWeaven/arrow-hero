@@ -50,10 +50,6 @@ body {
 		font-weight: 500;
 	}
 
-	i {
-		padding-left: 1px;
-	}
-
 	hr {
 		border: none;
 		border-top: 1px solid #8b8b8b;
@@ -717,6 +713,16 @@ body {
 
 	.footer {
 		text-align: right;
+	}
+
+	/* the heading icons, sized like Font Awesome's inline SVGs */
+	.icon {
+		box-sizing: content-box;
+		display: inline-block;
+		width: 1.25em;
+		height: 1em;
+		overflow: visible;
+		vertical-align: -0.125em;
 	}
 }
 

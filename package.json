@@ -16,8 +16,6 @@
     "preview": "vp preview"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-svg-core": "^7.3.1",
-    "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "favicons": "^7.3.1",
     "vite-plus": "1.1.0"
   },

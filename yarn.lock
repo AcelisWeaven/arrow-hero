@@ -46,31 +46,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:7.3.1":
-  version: 7.3.1
-  resolution: "@fortawesome/fontawesome-common-types@npm:7.3.1"
-  checksum: 10c0/f443a0109773e57ceab3c35021c4f26baf8c29afc79efbea2324bcd9f7dd326f5ac415e46ead17eaf6e935bc23fce83993d4211a4cff375c19100ee65ea9e5cc
-  languageName: node
-  linkType: hard
-
-"@fortawesome/fontawesome-svg-core@npm:^7.3.1":
-  version: 7.3.1
-  resolution: "@fortawesome/fontawesome-svg-core@npm:7.3.1"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
-  checksum: 10c0/07c84a5751999d13d875f63e059ec2b0ab6dbed9cfe363fe8a870fd64e045c049367ae55bdee18973b38255967593d6eef403170a1e70cf4400de8216a932654
-  languageName: node
-  linkType: hard
-
-"@fortawesome/free-solid-svg-icons@npm:^7.3.1":
-  version: 7.3.1
-  resolution: "@fortawesome/free-solid-svg-icons@npm:7.3.1"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
-  checksum: 10c0/b00958ce2929419adc2371739f7552728218f0c502dab74dafb6070e6a6c51a811a8b66ab18ca555703ad71d2769a99c64742baca29b244d8a209d11ad25d8fc
-  languageName: node
-  linkType: hard
-
 "@img/colour@npm:^1.1.0":
   version: 1.1.0
   resolution: "@img/colour@npm:1.1.0"
@@ -1113,8 +1088,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "arrow-hero@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-svg-core": "npm:^7.3.1"
-    "@fortawesome/free-solid-svg-icons": "npm:^7.3.1"
     favicons: "npm:^7.3.1"
     vite-plus: "npm:1.1.0"
   languageName: unknown
