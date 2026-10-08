@@ -1,3 +1,5 @@
+@use "variables";
+
 @keyframes reversedfadein {
   0% {
     opacity: 0;
@@ -14,26 +16,26 @@
 @keyframes orbit {
   0% {
     opacity: 0;
-    transform: translateY($orbit_radius) rotate(0deg) translateY(-$orbit_radius) rotate(0deg) scale(1);
+    transform: translateY(variables.$orbit_radius) rotate(0deg) translateY(-(variables.$orbit_radius)) rotate(0deg) scale(1);
   }
   7% {
     opacity: 0;
-    transform: translateY($orbit_radius) rotate(#{-360*0.07}deg) translateY(-$orbit_radius) rotate(#{360*0.07}deg) scale(1);
+    transform: translateY(variables.$orbit_radius) rotate(#{-360*0.07}deg) translateY(-(variables.$orbit_radius)) rotate(#{360*0.07}deg) scale(1);
   }
   10% {
     opacity: 1;
-    transform: translateY($orbit_radius) rotate(#{-360*0.1}deg) translateY(-$orbit_radius) rotate(#{360*0.1}deg) scale(1);
+    transform: translateY(variables.$orbit_radius) rotate(#{-360*0.1}deg) translateY(-(variables.$orbit_radius)) rotate(#{360*0.1}deg) scale(1);
   }
   100% {
     opacity: 1;
-    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(1);
+    transform: translateY(variables.$orbit_radius) rotate(-360deg) translateY(-(variables.$orbit_radius)) rotate(360deg) scale(1);
   }
 }
 
 @keyframes mobile-orbit {
   0% {
     opacity: 0;
-    transform: translateY($orbit_radius * 0.6) rotate(0deg) translateY(-$orbit_radius * 0.6) rotate(0deg) scale(0.1);
+    transform: translateY(variables.$orbit_radius * 0.6) rotate(0deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(0deg) scale(0.1);
   }
   10% {
     opacity: 0;
@@ -42,11 +44,11 @@
     opacity: 1;
   }
   20% {
-    transform: translateY($orbit_radius * 0.6) rotate(-72deg) translateY(-$orbit_radius * 0.6) rotate(72deg) scale(1);
+    transform: translateY(variables.$orbit_radius * 0.6) rotate(-72deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(72deg) scale(1);
   }
   100% {
     opacity: 1;
-    transform: translateY($orbit_radius * 0.6) rotate(-360deg) translateY(-$orbit_radius * 0.6) rotate(360deg) scale(1);
+    transform: translateY(variables.$orbit_radius * 0.6) rotate(-360deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(360deg) scale(1);
   }
 }
 
@@ -121,23 +123,23 @@
 
 @keyframes color-arrow {
   0%, 10% {
-    color: $up_color;
+    color: variables.$up_color;
     transform: rotate(0deg) translateY(-5px);
   }
   15%, 35% {
-    color: $right_color;
+    color: variables.$right_color;
     transform: rotate(90deg) translateY(-5px);
   }
   40%, 60% {
-    color: $down_color;
+    color: variables.$down_color;
     transform: rotate(180deg) translateY(-5px);
   }
   65%, 85% {
-    color: $left_color;
+    color: variables.$left_color;
     transform: rotate(270deg) translateY(-5px);
   }
   90%, 100% {
-    color: $up_color;
+    color: variables.$up_color;
     transform: rotate(359deg) translateY(-5px);
   }
 }

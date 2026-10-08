@@ -1,3 +1,6 @@
+@use "mixins";
+@use "variables";
+
 // Desktop
 @media (min-width: 1024px) {
   .desktop-only {
@@ -42,7 +45,7 @@
   }
 
   .container {
-    height: $size * 0.7;
+    height: variables.$size * 0.7;
     margin-top: 0;
 
     .key-selector-container {
@@ -60,9 +63,9 @@
     }
 
     .track {
-      width: $orbit_size * 0.6;
-      height: $orbit_size * 0.6;
-      @include track-gap($orbit_size * 0.6);
+      width: variables.$orbit_size * 0.6;
+      height: variables.$orbit_size * 0.6;
+      @include mixins.track-gap(variables.$orbit_size * 0.6);
     }
 
     .pause .pause-container .pause-content h3 {

@@ -1,14 +1,19 @@
+@use "sass:color";
+@use "sass:list";
+@use "mixins";
+@use "variables";
+
 body {
-  font-family: $body_font;
+  font-family: variables.$body_font;
   text-align: center;
-  background-color: $background_color;
+  background-color: variables.$background_color;
   padding-top: 20px;
-  color: $text_color;
+  color: variables.$text_color;
   margin: 0;
   overflow-x: hidden;
 
   h1, h2, h3 {
-    font-family: $display_font;
+    font-family: variables.$display_font;
     font-weight: normal;
   }
 
@@ -41,7 +46,7 @@ body {
   a {
     text-decoration: none;
     font-weight: 500;
-    color: $right_color;
+    color: variables.$right_color;
   }
 
   strong {
@@ -60,7 +65,7 @@ body {
 }
 
 .mobile {
-  max-width: $size - 20px;
+  max-width: variables.$size - 20px;
   margin: 0 auto 20px auto;
   text-align: left;
   border-radius: 5px;
@@ -113,10 +118,10 @@ body {
 }
 
 .container {
-  max-width: $size;
-  background-color: $board_color;
+  max-width: variables.$size;
+  background-color: variables.$board_color;
   border-radius: 5px;
-  height: $size;
+  height: variables.$size;
   position: relative;
   border-radius: 0;
   margin: 0 auto 10px auto;
@@ -134,7 +139,7 @@ body {
   .key-selector-container {
     position: relative;
     z-index: 1;
-    padding: $padding;
+    padding: variables.$padding;
 
     &.hide {
       opacity: 0;
@@ -149,11 +154,11 @@ body {
       margin: 0 auto;
       left: 0;
       right: 0;
-      width: $selector_size;
-      height: $selector_size;
+      width: variables.$selector_size;
+      height: variables.$selector_size;
       opacity: 0;
 
-      border: $selector_border_size solid transparent;
+      border: variables.$selector_border_size solid transparent;
 
       &.show {
         opacity: 1;
@@ -165,10 +170,10 @@ body {
 
       > svg {
         position: absolute;
-        top: -$selector_border_size;
-        left: -$selector_border_size;
-        width: $real_selector_size;
-        height: $real_selector_size;
+        top: -(variables.$selector_border_size);
+        left: -(variables.$selector_border_size);
+        width: variables.$real_selector_size;
+        height: variables.$real_selector_size;
         overflow: visible;
       }
 
@@ -181,16 +186,16 @@ body {
       }
 
       .sel-life-track {
-        stroke: $life_track_color;
+        stroke: variables.$life_track_color;
       }
 
       .sel-life-chunk {
-        stroke: $life_chunk_color;
+        stroke: variables.$life_chunk_color;
         stroke-dasharray: 0 100;
       }
 
       .sel-life-band {
-        stroke: $life_color;
+        stroke: variables.$life_color;
         stroke-dasharray: 100 100;
       }
 
@@ -256,7 +261,7 @@ body {
         stroke-width: 11;
       }
 
-      @each $direction, $color, $angle in (up, $up_color, 0deg), (right, $right_color, 90deg), (down, $down_color, 180deg), (left, $left_color, -90deg) {
+      @each $direction, $color, $angle in (up, variables.$up_color, 0deg), (right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg), (left, variables.$left_color, -90deg) {
         &.s-key-#{$direction} {
           color: $color;
           --sel-angle: #{$angle};
@@ -277,11 +282,11 @@ body {
         left: 0;
         right: 0;
         margin: 0 auto;
-        font-family: $display_font;
+        font-family: variables.$display_font;
         font-size: 13pt;
         animation: ding 0.5s 1 ease-out;
         opacity: 0;
-        color: $text_color;
+        color: variables.$text_color;
       }
     }
   }
@@ -305,13 +310,13 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    top: $padding + $selector_border_size + $selector_size * 0.5;
-    width: $orbit_size;
-    height: $orbit_size;
+    top: variables.$padding + variables.$selector_border_size + variables.$selector_size * 0.5;
+    width: variables.$orbit_size;
+    height: variables.$orbit_size;
     margin: 0 auto;
     overflow: visible;
     opacity: 0;
-    @include track-gap($orbit_size);
+    @include mixins.track-gap(variables.$orbit_size);
 
     circle {
       fill: none;
@@ -327,13 +332,13 @@ body {
   .key {
     $scale_adjustment: 1;
     position: absolute;
-    margin: (($selector_size - $key_size) * 0.5) auto;
+    margin: ((variables.$selector_size - variables.$key_size) * 0.5) auto;
     left: 0;
     right: 0;
-    width: $key_size;
-    height: $key_size;
+    width: variables.$key_size;
+    height: variables.$key_size;
     animation: orbit 2s 1 linear;
-    top: $padding + $selector_border_size;
+    top: variables.$padding + variables.$selector_border_size;
 
     &.paused {
       animation-play-state: paused;
@@ -349,7 +354,7 @@ body {
     }
 
     &.key-left {
-      color: $left_color;
+      color: variables.$left_color;
 
       svg {
         transform: rotate(-90deg) scale($scale_adjustment);
@@ -357,14 +362,14 @@ body {
     }
 
     &.key-up {
-      color: $up_color;
+      color: variables.$up_color;
       svg {
         transform: scale($scale_adjustment);
       }
     }
 
     &.key-right {
-      color: $right_color;
+      color: variables.$right_color;
 
       svg {
         transform: rotate(90deg) scale($scale_adjustment);
@@ -372,7 +377,7 @@ body {
     }
 
     &.key-down {
-      color: $down_color;
+      color: variables.$down_color;
 
       svg {
         transform: rotate(180deg) scale($scale_adjustment);
@@ -385,7 +390,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    line-height: calc($size * var(--scale-factor));
+    line-height: calc(variables.$size * var(--scale-factor));
     width: 100%;
     height: 100%;
     font-size: 17px;
@@ -415,12 +420,12 @@ body {
     }
 
     text {
-      font-family: $body_font;
+      font-family: variables.$body_font;
       fill: white;
     }
 
     .cta {
-      font-family: $display_font;
+      font-family: variables.$display_font;
       font-size: 17px;
       text-anchor: middle;
     }
@@ -428,7 +433,7 @@ body {
     .sub {
       font-size: 14px;
       font-weight: 500;
-      fill: $muted_color;
+      fill: variables.$muted_color;
       text-anchor: middle;
     }
 
@@ -448,7 +453,7 @@ body {
       stroke-width: 11;
     }
 
-    @each $direction, $color in (up, $up_color), (right, $right_color), (down, $down_color), (left, $left_color) {
+    @each $direction, $color in (up, variables.$up_color), (right, variables.$right_color), (down, variables.$down_color), (left, variables.$left_color) {
       .#{$direction} {
         color: $color;
       }
@@ -472,12 +477,12 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    right: -$shutter_overhang;
+    right: -(variables.$shutter_overhang);
     transform: translateX(-100%);
     pointer-events: none;
 
     // the stripes lag each other, so the moving edges zigzag
-    @each $i, $color in (1, $left_color), (2, $up_color), (3, $right_color), (4, $down_color) {
+    @each $i, $color in (1, variables.$left_color), (2, variables.$up_color), (3, variables.$right_color), (4, variables.$down_color) {
       > div:nth-child(#{$i}) {
         position: absolute;
         top: ($i - 1) * 25%;
@@ -485,17 +490,17 @@ body {
         height: calc(25% + 1px);
         left: 0;
         right: 0;
-        background-color: mix($color, black, $shutter_tint);
-        transform: translateX(nth($shutter_offsets, $i));
+        background-color: color.mix($color, black, variables.$shutter_tint);
+        transform: translateX(list.nth(variables.$shutter_offsets, $i));
       }
     }
 
     &.cover {
-      animation: shutter-cover $shutter_duration $shutter_easing both;
+      animation: shutter-cover variables.$shutter_duration variables.$shutter_easing both;
     }
 
     &.uncover {
-      animation: shutter-uncover $shutter_duration $shutter_easing both;
+      animation: shutter-uncover variables.$shutter_duration variables.$shutter_easing both;
     }
   }
 
@@ -509,7 +514,7 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: $board_color;
+    background-color: variables.$board_color;
     border-radius: 5px;
     opacity: 0;
 
@@ -541,7 +546,7 @@ body {
       }
 
         h3 {
-          color: $muted_color;
+          color: variables.$muted_color;
         }
 
         h2 {
@@ -560,7 +565,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: $board_color;
+    background-color: variables.$board_color;
     border-radius: 5px;
     overflow: hidden;
 
@@ -596,9 +601,9 @@ body {
 }
 
 .points-container {
-  max-width: $size + 2*$padding;
+  max-width: variables.$size + 2*variables.$padding;
   text-align: center;
-  font-family: $display_font;
+  font-family: variables.$display_font;
   font-size: 18px;
   color: white;
   margin: 0 auto 20px auto;
@@ -622,7 +627,7 @@ body {
 }
 
 .best {
-  max-width: $size;
+  max-width: variables.$size;
   margin: 0 auto;
   text-align: right;
   padding-right: 5px;
@@ -634,7 +639,7 @@ body {
 }
 
 .fullscreen-btn {
-  max-width: $size;
+  max-width: variables.$size;
   margin: 5px auto 0;
   text-align: right;
   padding-right: 5px;
@@ -642,7 +647,7 @@ body {
 }
 
 .about {
-  max-width: $size - 20px;
+  max-width: variables.$size - 20px;
   margin: 0 auto;
   text-align: justify;
   font-size: 16px;
@@ -654,17 +659,17 @@ body {
   }
 
   .prim {
-    color: $text_color;
+    color: variables.$text_color;
     font-weight: 500;
   }
 
   .sec {
-    color: $text_color;
+    color: variables.$text_color;
     font-weight: 500;
   }
 
   .third {
-    color: $up_color;
+    color: variables.$up_color;
     font-weight: 500;
   }
 
@@ -673,7 +678,7 @@ body {
     width: 16px;
     height: 16px;
     vertical-align: top;
-    color: $up_color;
+    color: variables.$up_color;
 
     svg {
       display: block;
@@ -719,7 +724,7 @@ body {
 .mobile-controls {
   position: relative;
   display: none;
-  max-width: $size;
+  max-width: variables.$size;
   margin: 0 auto;
   user-select: none;
 
@@ -735,8 +740,8 @@ body {
   .key-left,
   .key-down,
   .key-right {
-    width: $key_size + 15px;
-    height: $key_size + 15px;
+    width: variables.$key_size + 15px;
+    height: variables.$key_size + 15px;
     box-sizing: border-box;
     border: 3px solid white;
     background-color: black;
@@ -760,7 +765,7 @@ body {
     }
   }
 
-  @each $direction, $color, $angle in (up, $up_color, 0deg), (right, $right_color, 90deg), (down, $down_color, 180deg), (left, $left_color, -90deg) {
+  @each $direction, $color, $angle in (up, variables.$up_color, 0deg), (right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg), (left, variables.$left_color, -90deg) {
     .key-#{$direction} {
       color: $color;
 
@@ -778,7 +783,7 @@ body {
     padding: 12px 14px;
     background-color: white;
     color: black;
-    font-family: $display_font;
+    font-family: variables.$display_font;
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }

@@ -33,7 +33,7 @@ function addMultipleEventListener (element, events, handler) {
 function readBestScore () {
 	try {
 		return localStorage.getItem('bestScore')
-	} catch (e) {
+	} catch {
 		return null
 	}
 }
@@ -41,7 +41,7 @@ function readBestScore () {
 function saveBestScore (score) {
 	try {
 		localStorage.setItem('bestScore', score)
-	} catch (e) {
+	} catch {
 		return
 	}
 }

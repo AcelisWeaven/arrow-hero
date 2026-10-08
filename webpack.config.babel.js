@@ -4,7 +4,6 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
@@ -70,17 +69,6 @@ const config = {
             ],
         }),
         new MiniCssExtractPlugin(),
-        new ImageMinimizerPlugin({
-            minimizerOptions: {
-                // Lossless optimization
-                plugins: [
-                    ['jpegtran', {progressive: true}],
-                    ['optipng', {optimizationLevel: 9}],
-                ],
-            },
-            // Ignore favicons implicitly (else, Github build time shoots up to 20 minutes)
-            include: /images/
-        }),
         new FaviconsWebpackPlugin({
             logo: './src/images/favicon.svg',
             favicons: {
