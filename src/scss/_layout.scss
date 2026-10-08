@@ -425,19 +425,11 @@ body {
       text-anchor: middle;
     }
 
-    .sub,
-    .hint {
-      font-weight: 500;
-      fill: $muted_color;
-    }
-
     .sub {
       font-size: 14px;
+      font-weight: 500;
+      fill: $muted_color;
       text-anchor: middle;
-    }
-
-    .hint {
-      font-size: 12px;
     }
 
     .key-base,
