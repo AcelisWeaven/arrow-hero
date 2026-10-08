@@ -706,18 +706,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	if (bestScore) showBest()
 
-	function addMobileListener(selector, /* @deprecated */ keyCode) {
-		const keyElem = mobileControls.querySelector(selector)
-		addMultipleEventListener(keyElem, ['touchstart', 'click'], () => {
-			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode }))
-		})
-		blurAfterClick(keyElem)
+	const arrowCodes = { 'key-left': 37, 'key-up': 38, 'key-right': 39, 'key-down': 40 }
+	const slideDelay = 40
+	const fingers = new Map()
+	let lastGestureEnd = 0
+
+	function arrowCode(button) {
+		return arrowCodes[[...button.classList].find(c => c in arrowCodes)]
 	}
 
-	addMobileListener('.key-left', 37)
-	addMobileListener('.key-up', 38)
-	addMobileListener('.key-right', 39)
-	addMobileListener('.key-down', 40)
+	function arrowAt(x, y) {
+		const button = document.elementFromPoint(x, y)?.closest('.mobile-controls button')
+		return button && arrowCode(button) ? button : null
+	}
+
+	function pressArrow(button) {
+		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: arrowCode(button) }))
+	}
+
+	function showPressed() {
+		const held = [...fingers.values()].map(f => f.arrow)
+		mobileControls
+			.querySelectorAll('button')
+			.forEach(b => b.classList.toggle('pressed', held.includes(b)))
+	}
+
+	function settle(finger) {
+		finger.arrow = finger.pending
+		finger.pending = null
+		pressArrow(finger.arrow)
+		showPressed()
+	}
+
+	function liftFinger(e, lifted) {
+		const finger = fingers.get(e.pointerId)
+		if (!finger) return
+
+		clearTimeout(finger.timer)
+		if (lifted && finger.pending) settle(finger)
+		fingers.delete(e.pointerId)
+		showPressed()
+		lastGestureEnd = performance.now()
+	}
+
+	mobileControls.addEventListener('pointerdown', e => {
+		const arrow = arrowAt(e.clientX, e.clientY)
+		if (!arrow) return
+
+		mobileControls.setPointerCapture(e.pointerId)
+		fingers.set(e.pointerId, { arrow, pending: null, timer: null })
+		pressArrow(arrow)
+		showPressed()
+	})
+
+	mobileControls.addEventListener('pointermove', e => {
+		const finger = fingers.get(e.pointerId)
+		if (!finger) return
+
+		const arrow = arrowAt(e.clientX, e.clientY)
+		if (arrow === finger.pending) return
+
+		clearTimeout(finger.timer)
+		finger.pending = null
+		if (!arrow || arrow === finger.arrow) return
+
+		finger.pending = arrow
+		finger.timer = setTimeout(settle, slideDelay, finger)
+	})
+
+	mobileControls.addEventListener('pointerup', e => liftFinger(e, true))
+	mobileControls.addEventListener('pointercancel', e => liftFinger(e, false))
+	mobileControls.addEventListener('lostpointercapture', e => liftFinger(e, false))
+
+	mobileControls.addEventListener('contextmenu', e => e.preventDefault())
+	window.addEventListener('blur', () => {
+		fingers.forEach(f => clearTimeout(f.timer))
+		fingers.clear()
+		showPressed()
+	})
+
+	Object.keys(arrowCodes).forEach(cls => {
+		const button = mobileControls.querySelector('.' + cls)
+		button.addEventListener('click', () => {
+			if (fingers.size === 0 && performance.now() - lastGestureEnd > 500) pressArrow(button)
+		})
+		blurAfterClick(button)
+	})
 
 	blurAfterClick(mobileControls.querySelector('.pause-btn'))
 	addMultipleEventListener(
