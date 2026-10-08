@@ -78,12 +78,6 @@ export default defineConfig(({ mode }) => {
 		build: {
 			// one chunk, so nothing to preload
 			modulePreload: { polyfill: false },
-			rolldownOptions: {
-				output: {
-					// keeps the Font Awesome license header
-					comments: { legal: true },
-				},
-			},
 		},
 		plugins: lazyPlugins(() => [favicons('src/images/favicon.svg')]),
 		lint: {
