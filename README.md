@@ -13,17 +13,23 @@ First, clone this repository (you can fork it too):
 git clone git@github.com:AcelisWeaven/arrow-hero.git
 ```
 
-Then, we need to install our dependencies (the project uses Yarn 1):
+Then, install [Vite+](https://viteplus.dev/guide/) and our dependencies:
 ```shell
-yarn install
+curl -fsSL https://vite.plus | bash
+vp install
 ```
 
 Finally, let's start the dev server:
 ```shell
-yarn serve
+vp dev
+```
+
+Before committing, run the formatter and linter:
+```shell
+vp check --fix
 ```
 
 You can also build the project, if you want to release it yourself.
 ```shell
-yarn build
+vp build
 ```
