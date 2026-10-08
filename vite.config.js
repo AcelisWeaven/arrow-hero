@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { basename } from 'node:path'
 import { defineConfig, lazyPlugins } from 'vite-plus'
+import { viteSingleFile } from 'vite-plugin-singlefile'
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
 
@@ -163,6 +164,7 @@ export default defineConfig(({ mode }) => {
 					file: '@fontsource/rubik-mono-one/files/rubik-mono-one-latin-400-normal.woff2',
 				},
 			]),
+			viteSingleFile({ inlinePattern: ['**/*.css'], useRecommendedBuildConfig: false }),
 		]),
 		lint: {
 			ignorePatterns: ['dist/**'],
