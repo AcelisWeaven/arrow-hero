@@ -13,14 +13,13 @@ import {
 	snapshotRun,
 	startRun,
 } from './runLog'
-import keySmallSvg from '../images/key-small.svg'
-import selectorSvg from '../images/selector.svg'
-import svg from '../images/key.svg'
+import keySmallSvg from '../images/key-small.svg?raw'
+import selectorSvg from '../images/selector.svg?raw'
+import keySvg from '../images/key.svg?raw'
 
-const keySvg = atob(svg.split(',')[1])
 const keyDomItem = new DOMParser().parseFromString(keySvg, 'image/svg+xml')
-const keySmallDomItem = new DOMParser().parseFromString(atob(keySmallSvg.split(',')[1]), 'image/svg+xml')
-const selectorDomItem = new DOMParser().parseFromString(atob(selectorSvg.split(',')[1]), 'image/svg+xml')
+const keySmallDomItem = new DOMParser().parseFromString(keySmallSvg, 'image/svg+xml')
+const selectorDomItem = new DOMParser().parseFromString(selectorSvg, 'image/svg+xml')
 
 function pointsLabel (value) {
 	return Number(value) === 1 ? 'point' : 'points'
