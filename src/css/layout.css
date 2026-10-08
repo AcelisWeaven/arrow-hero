@@ -777,6 +777,8 @@ footer.about {
 	max-width: var(--size);
 	margin: 0 auto;
 	user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-tap-highlight-color: transparent;
 
 	.top,
 	.bottom {
@@ -797,6 +799,8 @@ footer.about {
 		border: 3px solid white;
 		background-color: black;
 		cursor: pointer;
+		/* a slide that starts on an arrow plays, one that starts beside them still scrolls the page */
+		touch-action: none;
 
 		svg {
 			display: block;
@@ -804,7 +808,7 @@ footer.about {
 			height: 100%;
 		}
 
-		&:active {
+		&.pressed {
 			background-color: currentColor;
 
 			.key-base {
