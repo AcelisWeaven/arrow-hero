@@ -1,5 +1,5 @@
 body {
-  font-family: 'Inconsolata', monospace;
+  font-family: $body_font;
   text-align: center;
   background-color: $background_color;
   padding-top: 20px;
@@ -8,23 +8,28 @@ body {
   overflow-x: hidden;
 
   h1, h2, h3 {
-    font-weight: bold;
+    font-family: $display_font;
+    font-weight: normal;
   }
 
   h1 {
-    font-size: 16pt;
+    display: inline-block;
+    padding: 6px 10px 4px;
+    border: 2px solid white;
+    color: white;
+    font-size: 11pt;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
 
   h2 {
-    font-size: 14pt;
+    font-size: 12pt;
     margin-top: 23px;
     margin-bottom: 13px;
   }
 
   h3 {
-    font-size: 12pt;
+    font-size: 10pt;
     margin-top: 6px;
     margin-bottom: 11px;
   }
@@ -35,12 +40,12 @@ body {
 
   a {
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
     color: $right_color;
   }
 
   strong {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   i {
@@ -272,9 +277,8 @@ body {
         left: 0;
         right: 0;
         margin: 0 auto;
-        font-family: 'Inconsolata', monospace;
-        font-size: 15pt;
-        font-weight: bolder;
+        font-family: $display_font;
+        font-size: 13pt;
         animation: ding 0.5s 1 ease-out;
         opacity: 0;
         color: $text_color;
@@ -411,20 +415,19 @@ body {
     }
 
     text {
-      font-family: 'Inconsolata', monospace;
+      font-family: $body_font;
       fill: white;
     }
 
     .cta {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: 0.01em;
+      font-family: $display_font;
+      font-size: 17px;
       text-anchor: middle;
     }
 
     .sub,
     .hint {
-      font-weight: 700;
+      font-weight: 500;
       fill: $muted_color;
     }
 
@@ -542,7 +545,7 @@ body {
         margin: 0;
         color: white;
         font-size: 16px;
-        font-weight: 700;
+        font-weight: 500;
       }
 
         h3 {
@@ -551,8 +554,7 @@ body {
 
         h2 {
           margin: 6px 0 20px;
-          font-size: 48px;
-          font-weight: 900;
+          font-size: 34px;
         }
       }
     }
@@ -588,14 +590,12 @@ body {
         margin: 0;
         color: white;
         font-size: 16px;
-        font-weight: 700;
+        font-weight: 500;
       }
 
         h3 {
           margin-bottom: 10px;
-          font-size: 46px;
-          font-weight: 900;
-          letter-spacing: 0.02em;
+          font-size: 34px;
           text-transform: uppercase;
         }
       }
@@ -606,9 +606,8 @@ body {
 .points-container {
   max-width: $size + 2*$padding;
   text-align: center;
-  font-family: 'Inconsolata', monospace;
-  font-size: 30px;
-  font-weight: 900;
+  font-family: $display_font;
+  font-size: 18px;
   color: white;
   margin: 0 auto 20px auto;
   opacity: 0;
@@ -638,7 +637,7 @@ body {
   font-size: 16px;
 
   .best-points {
-    font-weight: bold;
+    font-weight: 500;
   }
 }
 
@@ -664,17 +663,17 @@ body {
 
   .prim {
     color: $text_color;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .sec {
     color: $text_color;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .third {
     color: $up_color;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .key-up {
@@ -787,8 +786,8 @@ body {
     padding: 12px 14px;
     background-color: white;
     color: black;
-    font-weight: 900;
-    letter-spacing: 0.1em;
+    font-family: $display_font;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 }
