@@ -20,7 +20,6 @@
     "@babel/core": "^8.0.7",
     "@babel/preset-env": "^8.0.7",
     "@babel/register": "^8.0.6",
-    "@beyonk/google-fonts-webpack-plugin": "^1.7.0",
     "@eslint/js": "^10.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
