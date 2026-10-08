@@ -82,11 +82,11 @@ const config = {
             include: /images/
         }),
         new FaviconsWebpackPlugin({
-            logo: './src/images/arrow-hero.png',
+            logo: './src/images/favicon.svg',
             favicons: {
+                background: "#000",
                 theme_color: "#ff3232",
                 logging: true,
-                pixel_art: true,
             }
         })
     ],
