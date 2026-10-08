@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74 74">
+  <g class="sel-body">
+    <g class="sel-plate">
+      <rect class="sel-core" x="4" y="4" width="66" height="66"/>
+      <path class="sel-life-track" d="M37 2H72V72H2V2Z" pathLength="100"/>
+      <path class="sel-life-chunk" d="M37 2H72V72H2V2Z" pathLength="100"/>
+      <path class="sel-life-band" d="M37 2H72V72H2V2Z" pathLength="100"/>
+    </g>
+    <g transform="translate(37 37)">
+      <g class="sel-glyph">
+        <path class="sel-glyph-base" d="M-18.66 13.99 0-7 18.66 13.99"/>
+        <path class="sel-glyph-shape" d="M-16 11 0-7 16 11"/>
+      </g>
+    </g>
+  </g>
+</svg>
