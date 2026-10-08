@@ -521,10 +521,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			// arrow keys pressed
 
 			e.preventDefault()
-			if (gameState === false) {
+			if (gameState === false)
 				startGame(e.isTrusted)
-				return false
-			}
 
 			logInput(e.isTrusted)
 			const previous = keypressed
