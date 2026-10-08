@@ -28,7 +28,7 @@ let runDataOnWithoutStorage = false
 export function isRunDataOn () {
 	try {
 		return localStorage.getItem(optOutKey) !== 'off'
-	} catch (e) {
+	} catch {
 		return runDataOnWithoutStorage
 	}
 }
@@ -40,7 +40,7 @@ export function setRunDataOn (on) {
 			localStorage.removeItem(optOutKey)
 		else
 			localStorage.setItem(optOutKey, 'off')
-	} catch (e) {
+	} catch {
 		return
 	}
 }
