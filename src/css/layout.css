@@ -37,7 +37,7 @@ body {
 	}
 
 	em {
-		font-style: italic;
+		color: var(--up-color);
 	}
 
 	a {
