@@ -1,3 +1,15 @@
 @use "sass:math";
 @import "variables";
 
+// Leaves a gap in the orbit ring where the selector sits, plus 10px of air on each side.
+// The ring is drawn with pathLength 360, so dash lengths are in degrees.
+@mixin track-gap($diameter) {
+  $gap: math.div(math.asin(math.div($real_selector_size * 0.5 + 10px, $diameter * 0.5)), 1deg);
+
+  circle {
+    stroke-dasharray: 360 - 2 * $gap 2 * $gap;
+    // the viewBox is 300 wide, so scale the stroke back to 2px on screen
+    stroke-width: math.div(2px * 300px, $diameter);
+    transform: rotate(-90deg + $gap * 1deg);
+  }
+}

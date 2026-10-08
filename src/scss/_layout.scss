@@ -305,10 +305,15 @@ body {
     width: $orbit_size;
     height: $orbit_size;
     margin: 0 auto;
-    box-sizing: border-box;
-    border: 2px solid #202020;
-    border-radius: 50%;
+    overflow: visible;
     opacity: 0;
+    @include track-gap($orbit_size);
+
+    circle {
+      fill: none;
+      stroke: #202020;
+      transform-origin: center;
+    }
 
     &.show {
       opacity: 1;

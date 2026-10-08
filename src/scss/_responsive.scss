@@ -62,6 +62,7 @@
     .track {
       width: $orbit_size * 0.6;
       height: $orbit_size * 0.6;
+      @include track-gap($orbit_size * 0.6);
     }
 
     .pause .pause-container .pause-content h3 {
