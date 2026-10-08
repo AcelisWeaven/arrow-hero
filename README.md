@@ -38,3 +38,8 @@ You can also build the project, if you want to release it yourself.
 ```shell
 vp build
 ```
+
+License
+---
+
+MIT, see [LICENSE](LICENSE).
