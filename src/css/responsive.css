@@ -1,26 +1,24 @@
-/* Desktop */
-@media (min-width: 1024px) {
+.not-desktop {
+	display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
 	.desktop-only {
-		display: block;
+		display: none;
 	}
 	.not-desktop {
-		display: none;
+		display: block;
+	}
+}
+
+@media (any-pointer: coarse) {
+	.mobile-controls {
+		display: block;
 	}
 }
 
 /* Tablet */
 @media (max-width: 1024px) {
-	.mobile-controls {
-		display: block;
-	}
-
-	.desktop-only {
-		display: none;
-	}
-	.not-desktop {
-		display: block;
-	}
-
 	.container {
 		.emblem {
 			width: 64px;
@@ -72,7 +70,7 @@
 			}
 		}
 
-		.pause .pause-container .pause-content h3 {
+		.pause .pause-container .pause-content h2 {
 			font-size: 28px;
 		}
 
@@ -85,5 +83,11 @@
 	.about {
 		padding-left: 15px;
 		padding-right: 15px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.container .shutter > div:nth-child(n) {
+		background-color: var(--board-color);
 	}
 }

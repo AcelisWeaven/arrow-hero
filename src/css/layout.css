@@ -40,10 +40,25 @@ body {
 		color: var(--up-color);
 	}
 
-	a {
+	a,
+	.link {
 		text-decoration: none;
 		font-weight: 500;
 		color: var(--right-color);
+	}
+
+	.link {
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--text-color);
+		outline-offset: 2px;
 	}
 
 	strong {
@@ -57,13 +72,30 @@ body {
 	}
 }
 
+/* read by screen readers, not shown */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* the page can be zoomed, but a double tap while playing shouldn't zoom it! */
+.fullscreen-container {
+	touch-action: manipulation;
+}
+
 .fullscreen-container.is-fullscreen {
 	.container {
 		height: calc(100vh - 150px);
 		width: calc(100vh - 150px);
 		max-width: 100vw;
 
-		@media (max-width: 1024px) {
+		@media (any-pointer: coarse) {
 			height: calc(100vh - 350px);
 		}
 	}
@@ -393,6 +425,7 @@ body {
 
 		&.hide {
 			opacity: 0;
+			visibility: hidden;
 		}
 
 		.start-screen {
@@ -550,6 +583,7 @@ body {
 		&.hide {
 			display: table;
 			opacity: 0;
+			visibility: hidden;
 		}
 
 		.results-container {
@@ -561,7 +595,6 @@ body {
 				margin-right: auto;
 
 				h2,
-				h3,
 				p {
 					margin: 0;
 					color: white;
@@ -569,7 +602,8 @@ body {
 					font-weight: 500;
 				}
 
-				h3 {
+				.results-label {
+					font-family: var(--display-font);
 					color: var(--muted-color);
 				}
 
@@ -606,7 +640,6 @@ body {
 				margin-right: auto;
 
 				h2,
-				h3,
 				p {
 					margin: 0;
 					color: white;
@@ -614,7 +647,7 @@ body {
 					font-weight: 500;
 				}
 
-				h3 {
+				h2 {
 					margin-bottom: 10px;
 					font-size: 34px;
 					text-transform: uppercase;
@@ -632,6 +665,7 @@ body {
 	color: white;
 	margin: 0 auto 20px auto;
 	opacity: 0;
+	visibility: hidden;
 
 	.points {
 		display: inline-block;
@@ -643,10 +677,12 @@ body {
 
 	&.hide {
 		opacity: 0;
+		visibility: hidden;
 	}
 
 	&.show {
 		opacity: 1;
+		visibility: visible;
 	}
 }
 
@@ -711,6 +747,11 @@ body {
 		}
 	}
 
+	a,
+	.link {
+		text-decoration: underline;
+	}
+
 	.footer {
 		text-align: right;
 	}
@@ -724,6 +765,10 @@ body {
 		overflow: visible;
 		vertical-align: -0.125em;
 	}
+}
+
+footer.about {
+	padding-top: 0;
 }
 
 .mobile-controls {
@@ -748,8 +793,10 @@ body {
 		width: calc(var(--key-size) + 15px);
 		height: calc(var(--key-size) + 15px);
 		box-sizing: border-box;
+		padding: 0;
 		border: 3px solid white;
 		background-color: black;
+		cursor: pointer;
 
 		svg {
 			display: block;
@@ -808,9 +855,12 @@ body {
 		right: 0;
 		margin-right: 7px;
 		padding: 12px 14px;
+		border: 0;
 		background-color: white;
 		color: black;
+		font: inherit;
 		font-family: var(--display-font);
+		cursor: pointer;
 		letter-spacing: 0.05em;
 		text-transform: uppercase;
 	}
