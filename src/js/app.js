@@ -18,6 +18,10 @@ import svg from '../images/key.svg'
 const keySvg = atob(svg.split(',')[1])
 const keyDomItem = new DOMParser().parseFromString(keySvg, 'image/svg+xml')
 
+function pointsLabel (value) {
+	return Number(value) === 1 ? 'point' : 'points'
+}
+
 function addMultipleEventListener (element, events, handler) {
 	events.forEach(e => element.addEventListener(e, handler))
 }
@@ -203,8 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		points += pts
 		square.classList.add('bump')
 
+		showPoints()
 		pointContainers.forEach(pointContainer => {
-			pointContainer.textContent = points
 			pointContainer.classList.add('bump')
 			pointContainer.onanimationend = () => {
 				pointContainer.classList.remove('bump')
@@ -232,6 +236,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (e.target === square && squareAnimations[e.animationName])
 			square.classList.remove(squareAnimations[e.animationName])
 	})
+
+	function showPoints () {
+		pointContainers.forEach(pointContainer => pointContainer.textContent = points)
+		document.querySelectorAll('.points + .points-label').forEach(label => label.textContent = pointsLabel(points))
+	}
+
+	function showBest () {
+		document.querySelector('.best-points .value').textContent = bestScore
+		document.querySelector('.best-points .points-label').textContent = pointsLabel(bestScore)
+		document.querySelector('.best').style.display = 'block'
+	}
 
 	const levelMessage = document.querySelector('.level-message')
 
@@ -383,8 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			// update best score
 			bestScore = points
 			saveBestScore(bestScore)
-			document.querySelector('.best-points .value').textContent = bestScore
-			document.querySelector('.best').style.display = 'block'
+			showBest()
 		}
 	}
 
@@ -423,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				clearInterval(obj.interval)
 			}
 			scheduledSpawns = []
-			pointContainers.forEach(pointContainer => pointContainer.textContent = points)
+			showPoints()
 
 			const percent = document.querySelector('.percent')
 			percent.style.width = '100%'
@@ -591,10 +605,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		startRun(exp, view, trusted)
 	}
 
-	if (bestScore) {
-		document.querySelector('.best-points .value').textContent = bestScore
-		document.querySelector('.best').style.display = 'block'
-	}
+	if (bestScore)
+		showBest()
 
 
 	function addMobileListener (selector, /* @deprecated */ keyCode) {
