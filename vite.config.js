@@ -35,6 +35,8 @@ function favicons(logo) {
 				developerName: pkg.author,
 				background: '#000',
 				theme_color: '#ff3232',
+				// relative to assets/manifest.webmanifest, so the installed app opens /arrow-hero/
+				start_url: '../',
 			})
 		},
 		generateBundle() {
