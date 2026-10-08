@@ -1,5 +1,7 @@
 import { execSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
+import { basename } from 'node:path'
 import { defineConfig, lazyPlugins } from 'vite-plus'
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
@@ -57,6 +59,66 @@ function favicons(logo) {
 	}
 }
 
+// The fonts, cut down to the given characters and written to assets/, with their @font-face rules and preload
+// hints in the page head. Dev inlines them instead. Fontsource ships the files Google Fonts serves.
+function fonts(text, faces) {
+	let isBuild
+	let base
+	let subsets
+
+	return {
+		name: 'fonts',
+		configResolved(config) {
+			isBuild = config.command === 'build'
+			base = config.base
+		},
+		async buildStart() {
+			const { default: subsetFont } = await import('subset-font')
+			subsets = await Promise.all(
+				faces.map(async face => {
+					const { id } = await this.resolve(face.file)
+					// name ID 14 is the OFL link, the copyright notice is kept by default
+					const source = await subsetFont(readFileSync(id), text, {
+						targetFormat: 'woff2',
+						preserveNameIds: [14],
+					})
+					const hash = createHash('sha256').update(source).digest('base64url').slice(0, 8)
+					return {
+						...face,
+						source,
+						fileName: `assets/${basename(face.file, '.woff2')}-${hash}.woff2`,
+					}
+				}),
+			)
+		},
+		generateBundle() {
+			for (const { fileName, source } of subsets) this.emitFile({ type: 'asset', fileName, source })
+		},
+		transformIndexHtml() {
+			const url = font =>
+				isBuild ? base + font.fileName : `data:font/woff2;base64,${font.source.toString('base64')}`
+			const rules = subsets.map(
+				font =>
+					`@font-face{font-family:'${font.family}';font-style:${font.style};font-weight:${font.weight};font-display:swap;src:url(${url(font)}) format('woff2')}`,
+			)
+			const preloads = subsets
+				.filter(font => isBuild && font.preload)
+				.map(font => ({
+					tag: 'link',
+					attrs: {
+						rel: 'preload',
+						href: url(font),
+						as: 'font',
+						type: 'font/woff2',
+						crossorigin: true,
+					},
+					injectTo: 'head',
+				}))
+			return [...preloads, { tag: 'style', children: rules.join(''), injectTo: 'head' }]
+		},
+	}
+}
+
 export default defineConfig(({ mode }) => {
 	// Where run records go. Set RUNS_URL to an empty string to send nothing.
 	const runsUrl =
@@ -79,7 +141,40 @@ export default defineConfig(({ mode }) => {
 			// one chunk, so nothing to preload
 			modulePreload: { polyfill: false },
 		},
-		plugins: lazyPlugins(() => [favicons('src/images/favicon.svg')]),
+		plugins: lazyPlugins(() => [
+			favicons('src/images/favicon.svg'),
+			// the punctuation the texts use, and the whole alphabet so a reworded text still has its letters
+			fonts("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 \u00a0!'()+,-.:?", [
+				{
+					family: 'DM Mono',
+					style: 'normal',
+					weight: 400,
+					file: '@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2',
+					preload: true,
+				},
+				{
+					family: 'DM Mono',
+					style: 'normal',
+					weight: 500,
+					file: '@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2',
+					preload: true,
+				},
+				// not preloaded: only the touch layouts show it, on the pause and results screens
+				{
+					family: 'DM Mono',
+					style: 'italic',
+					weight: 400,
+					file: '@fontsource/dm-mono/files/dm-mono-latin-400-italic.woff2',
+				},
+				{
+					family: 'Rubik Mono One',
+					style: 'normal',
+					weight: 400,
+					file: '@fontsource/rubik-mono-one/files/rubik-mono-one-latin-400-normal.woff2',
+					preload: true,
+				},
+			]),
+		]),
 		lint: {
 			ignorePatterns: ['dist/**'],
 			categories: {
