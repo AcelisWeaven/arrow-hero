@@ -29,22 +29,20 @@
             </div>
         </div>
         <div class="keys-container">
+            <div class="track"></div>
             <!--<div class="key key-up"></div>-->
         </div>
         <div class="helper-container">
-            <div class="top"></div>
-            <div class="bottom">
-                <div class="key key-left helper"></div>
-                <div class="key key-up helper"></div>
-                <div class="key key-right helper"></div>
-                <div class="key key-down helper"></div>
-                <div class="text desktop-only">
-                    Press a key to begin
-                </div>
-                <div class="text not-desktop">
-                    Touch a key to begin
-                </div>
-            </div>
+            <svg class="start-screen" viewBox="0 0 390 390">
+                <g class="up" transform="translate(195 98) rotate(0) scale(1.5)"><path class="key-base" d="M-16 11 0-7 16 11"/><path class="key-shape" d="M-16 11 0-7 16 11"/></g>
+                <g class="down" transform="translate(195 232) rotate(180) scale(1.5)"><path class="key-base" d="M-16 11 0-7 16 11"/><path class="key-shape" d="M-16 11 0-7 16 11"/></g>
+                <g class="left" transform="translate(120 165) rotate(-90) scale(1.5)"><path class="key-base" d="M-16 11 0-7 16 11"/><path class="key-shape" d="M-16 11 0-7 16 11"/></g>
+                <g class="right" transform="translate(270 165) rotate(90) scale(1.5)"><path class="key-base" d="M-16 11 0-7 16 11"/><path class="key-shape" d="M-16 11 0-7 16 11"/></g>
+                <text class="cta desktop-only" x="195" y="296">PRESS AN ARROW KEY</text>
+                <text class="cta not-desktop" x="195" y="296">TOUCH AN ARROW</text>
+                <text class="sub" x="195" y="320">to start</text>
+                <text class="hint desktop-only" x="24" y="372">Space pauses</text>
+            </svg>
         </div>
         <div class="total">
             <div class="percent" style="width: 0"></div>
@@ -53,7 +51,7 @@
         <div class="results">
             <div class="results-container">
                 <div class="results-content">
-                    <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
+                    <svg class="emblem" viewBox="0 0 96 96"><rect class="emblem-block" width="96" height="96"/><rect x="-28" y="-7" width="56" height="14" transform="translate(48 48) rotate(45)"/><rect x="-28" y="-7" width="56" height="14" transform="translate(48 48) rotate(-45)"/></svg>
                     <h3>You've made...</h3>
                     <h2><span class="points">0</span> <span class="points-label">points</span></h2>
                     <br/>
@@ -65,7 +63,7 @@
         <div class="pause">
             <div class="pause-container">
                 <div class="pause-content">
-                    <img src="images/arrow-hero.svg" alt="Arrow Hero" class="img-logo"/>
+                    <svg class="emblem" viewBox="0 0 96 96"><rect class="emblem-block" width="96" height="96"/><rect x="25" y="24" width="16" height="48"/><rect x="55" y="24" width="16" height="48"/></svg>
                     <h3>Paused</h3>
                     <br/>
                     <p class="desktop-only">Press <strong>Space</strong> to resume</p>

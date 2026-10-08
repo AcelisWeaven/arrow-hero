@@ -13,10 +13,14 @@ import {
 	snapshotRun,
 	startRun,
 } from './runLog'
+import keySmallSvg from '../images/key-small.svg'
+import selectorSvg from '../images/selector.svg'
 import svg from '../images/key.svg'
 
 const keySvg = atob(svg.split(',')[1])
 const keyDomItem = new DOMParser().parseFromString(keySvg, 'image/svg+xml')
+const keySmallDomItem = new DOMParser().parseFromString(atob(keySmallSvg.split(',')[1]), 'image/svg+xml')
+const selectorDomItem = new DOMParser().parseFromString(atob(selectorSvg.split(',')[1]), 'image/svg+xml')
 
 function pointsLabel (value) {
 	return Number(value) === 1 ? 'point' : 'points'
@@ -191,13 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	const mobileLayout = window.matchMedia('(max-width: 480px)')
 	let focusLost = false
 
-	// initialize helpers
-	const bottom = document.querySelector('.bottom')
 	const bottomKeys = [ 'left', 'up', 'right', 'down' ]
-	bottomKeys.forEach(k =>
-		bottom.querySelector('.key-' + k).appendChild(keyDomItem.childNodes[0].cloneNode(true)))
 	document.querySelectorAll('.about .key-up').forEach(k =>
-		k.appendChild(keyDomItem.childNodes[0].cloneNode(true)))
+		k.appendChild(keySmallDomItem.childNodes[0].cloneNode(true)))
+	square.appendChild(selectorDomItem.childNodes[0].cloneNode(true))
+	bottomKeys.forEach(k =>
+		document.querySelector('.mobile-controls .key-' + k).appendChild(keyDomItem.childNodes[0].cloneNode(true)))
 
 	function updatePoints (pts) {
 		if (pts < 1)
@@ -577,6 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		document.querySelector('.points-container').classList.add('show')
 		document.querySelector('.helper-container').classList.add('hide')
+		document.querySelector('.track').classList.add('show')
 		setTimeout(() => {
 			const keySelector = document.querySelector('.key-selector')
 			keySelector.classList.add('show', 'fade')

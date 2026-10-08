@@ -113,6 +113,8 @@ body {
   border-radius: 5px;
   height: $size;
   position: relative;
+  overflow: hidden;
+  border-radius: 0;
   margin: 0 auto 10px auto;
   padding: 0;
   user-select: text;
@@ -123,12 +125,11 @@ body {
     left: 0;
     right: 0;
 
-    svg {
-      shape-rendering: optimizeSpeed;
-    }
   }
 
   .key-selector-container {
+    position: relative;
+    z-index: 1;
     padding: $padding;
 
     &.hide {
@@ -147,16 +148,10 @@ body {
       left: 0;
       right: 0;
       width: $selector_size;
-      border-radius: 999px;
       height: $selector_size;
       opacity: 0;
 
-      border-width: $selector_border_size;
-      border-style: solid;
-      border-left-color: $left_color;
-      border-top-color: $up_color;
-      border-right-color: $right_color;
-      border-bottom-color: $down_color;
+      border: $selector_border_size solid transparent;
 
       &.show {
         opacity: 1;
@@ -176,30 +171,58 @@ body {
         animation: selector-bad 0.15s 1 ease-out;
       }
 
-      &::after {
-        margin: 5px;
-        border-radius: 999px !important;
-        opacity: 0.8;
+      > svg {
+        position: absolute;
+        top: -$selector_border_size;
+        left: -$selector_border_size;
+        width: $real_selector_size;
+        height: $real_selector_size;
+        overflow: visible;
       }
 
-      &.s-key-left::after {
-        @include key("left");
-        border: none;
+      .sel-core {
+        fill: transparent;
       }
 
-      &.s-key-up::after {
-        @include key("up");
-        border: none;
+      .sel-frame {
+        fill: none;
+        stroke: white;
+        stroke-width: 4;
       }
 
-      &.s-key-right::after {
-        @include key("right");
-        border: none;
+      .sel-glyph {
+        visibility: hidden;
       }
 
-      &.s-key-down::after {
-        @include key("down");
-        border: none;
+      .sel-glyph-base,
+      .sel-glyph-shape {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .sel-glyph-base {
+        stroke: black;
+        stroke-width: 19;
+      }
+
+      .sel-glyph-shape {
+        stroke: currentColor;
+        stroke-width: 11;
+      }
+
+      @each $direction, $color, $angle in (up, $up_color, 0deg), (right, $right_color, 90deg), (down, $down_color, 180deg), (left, $left_color, -90deg) {
+        &.s-key-#{$direction} {
+          color: $color;
+
+          .sel-glyph {
+            visibility: visible;
+            transform: rotate($angle);
+          }
+        }
+      }
+
+      &.bad .sel-core {
+        animation: selector-core-bad 0.15s 1 ease-out;
       }
 
       .ding {
@@ -218,14 +241,42 @@ body {
     }
   }
 
-  .img-logo {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px auto;
+  .emblem {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 28px auto;
+
+    rect {
+      fill: black;
+    }
+
+    .emblem-block {
+      fill: white;
+    }
+  }
+
+  .track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: $padding + $selector_border_size + $selector_size * 0.5;
+    width: $orbit_size;
+    height: $orbit_size;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border: 2px solid #202020;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 1s;
+
+    &.show {
+      opacity: 1;
+    }
   }
 
   .key {
-    $scale_adjustment: 1.15;
+    $scale_adjustment: 1;
     position: absolute;
     margin: (($selector_size - $key_size) * 0.5) auto;
     left: 0;
@@ -250,15 +301,6 @@ body {
 
     &.hide svg {
       opacity: 0;
-    }
-
-    .key-color-stroke {
-      fill: rgba(black, 0.7);
-      stroke: currentColor;
-    }
-
-    .key-color {
-      fill: currentColor;
     }
 
     &.key-left {
@@ -322,58 +364,69 @@ body {
       opacity: 0;
     }
 
-    .top {
-      text-align: left;
+    &:not(.hide) ~ .total {
+      visibility: hidden;
     }
 
-    .bottom {
-      position: absolute;
-      bottom: (2 * $key_size + $helper_spacing*5);
-      left: 0;
-      right: 0;
-      max-width: $size;
-      margin: 0 auto;
+    .start-screen {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-      .text {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: $key_size * 2 + $helper_spacing * 2;
-        max-width: $size*0.75;
-        margin: 0 auto;
-        font-size: 14pt;
-        color: rgba($text_color, 0.7);
-      }
+    text {
+      font-family: 'Inconsolata', monospace;
+      fill: white;
+    }
 
-      .key {
-        top: 0;
-        opacity: 1;
-        animation: lowbump 0.8s infinite ease-out;
+    .cta {
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      text-anchor: middle;
+    }
 
-        &.key-left {
-          top: $key_size + $helper_spacing;
-          right: $key_size + $helper_spacing * 6;
-        }
+    .sub,
+    .hint {
+      font-weight: 700;
+      fill: $muted_color;
+    }
 
-        &.key-up {
-          top: $helper_spacing;
-        }
+    .sub {
+      font-size: 14px;
+      text-anchor: middle;
+    }
 
-        &.key-down {
-          top: $key_size + $helper_spacing;
-        }
+    .hint {
+      font-size: 12px;
+    }
 
-        &.key-right {
-          top: $key_size + $helper_spacing;
-          right: 0;
-          left: $key_size + $helper_spacing * 6;
-        }
+    .key-base,
+    .key-shape {
+      fill: none;
+      stroke-miterlimit: 10;
+    }
+
+    .key-base {
+      stroke: black;
+      stroke-width: 17;
+    }
+
+    .key-shape {
+      stroke: currentColor;
+      stroke-width: 11;
+    }
+
+    @each $direction, $color in (up, $up_color), (right, $right_color), (down, $down_color), (left, $left_color) {
+      .#{$direction} {
+        color: $color;
       }
     }
   }
 
   .results {
     position: absolute;
+    z-index: 2;
     display: none;
     top: 0;
     left: 0;
@@ -405,8 +458,23 @@ body {
         margin-left: auto;
         margin-right: auto;
 
-        p {
-          animation: lowbump 0.8s infinite ease-out;
+      h2,
+      h3,
+      p {
+        margin: 0;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+        h3 {
+          color: $muted_color;
+        }
+
+        h2 {
+          margin: 6px 0 20px;
+          font-size: 48px;
+          font-weight: 900;
         }
       }
     }
@@ -414,6 +482,7 @@ body {
 
   .pause {
     position: absolute;
+    z-index: 2;
     display: none;
     top: 0;
     left: 0;
@@ -435,8 +504,21 @@ body {
         margin-left: auto;
         margin-right: auto;
 
-        p {
-          animation: lowbump 0.8s infinite ease-out;
+      h2,
+      h3,
+      p {
+        margin: 0;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+        h3 {
+          margin-bottom: 10px;
+          font-size: 46px;
+          font-weight: 900;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
         }
       }
     }
@@ -444,27 +526,16 @@ body {
 
   .total {
     position: absolute;
-    max-width: $size;
-    border-radius: 0 0 5px 5px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 24px;
+    right: 24px;
+    bottom: 22px;
+    height: 4px;
+    background-color: #2a2a2a;
 
     .percent {
-      height: 6px;
-      margin: 0 auto;
-      transition: width 0.2s ease-in-out, background-color 0.2s linear;
-      background-color: rgb(0, 219, 0);
-      border-radius: 5px;
-
-      &.medium {
-        background-color: rgb(255, 208, 0);
-      }
-
-      &.low {
-        background-color: rgb(255, 57, 45);
-      }
+      height: 4px;
+      transition: width 0.2s ease-in-out;
+      background-color: white;
     }
   }
 }
@@ -473,6 +544,9 @@ body {
   max-width: $size + 2*$padding;
   text-align: center;
   font-family: 'Inconsolata', monospace;
+  font-size: 30px;
+  font-weight: 900;
+  color: white;
   margin: 0 auto 20px auto;
   opacity: 0;
 
@@ -544,24 +618,15 @@ body {
 
   .key-up {
     display: inline-block;
-    width: 18px;
+    width: 16px;
     height: 16px;
-    vertical-align: -3px;
+    vertical-align: top;
     color: $up_color;
 
     svg {
       display: block;
       width: 100%;
       height: 100%;
-    }
-
-    .key-color-stroke {
-      fill: rgba(black, 0.7);
-      stroke: currentColor;
-    }
-
-    .key-color {
-      fill: currentColor;
     }
   }
 
@@ -606,48 +671,49 @@ body {
   margin: 0 auto;
   user-select: none;
 
-  .top {
-    text-align: center;
+  .top,
+  .bottom {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     padding-bottom: 10px;
+  }
 
-    .key-up {
-      display: inline-block;
+  .key-up,
+  .key-left,
+  .key-down,
+  .key-right {
+    width: $key_size + 15px;
+    height: $key_size + 15px;
+    box-sizing: border-box;
+    border: 3px solid white;
+    background-color: black;
 
-      &::after {
-        @include key("up", $key_size+15px);
-        position: relative;
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:active {
+      background-color: currentColor;
+
+      .key-base {
+        display: none;
+      }
+
+      .key-shape {
+        stroke: black;
       }
     }
   }
 
-  .bottom {
-    text-align: center;
-    padding-bottom: 10px;
+  @each $direction, $color, $angle in (up, $up_color, 0deg), (right, $right_color, 90deg), (down, $down_color, 180deg), (left, $left_color, -90deg) {
+    .key-#{$direction} {
+      color: $color;
 
-    .key-left {
-      display: inline-block;
-
-      &::after {
-        @include key("left", $key_size+15px);
-        position: relative;
-      }
-    }
-
-    .key-down {
-      display: inline-block;
-
-      &::after {
-        @include key("down", $key_size+15px);
-        position: relative;
-      }
-    }
-
-    .key-right {
-      display: inline-block;
-
-      &::after {
-        @include key("right", $key_size+15px);
-        position: relative;
+      svg {
+        transform: rotate($angle);
       }
     }
   }
@@ -656,9 +722,12 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: rgba($text_color, 0.1);
-    padding: 13px 17px;
     margin-right: 7px;
-    border-radius: 5px;
+    padding: 12px 14px;
+    background-color: white;
+    color: black;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 }

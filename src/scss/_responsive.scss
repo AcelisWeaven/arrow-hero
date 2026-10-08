@@ -13,11 +13,7 @@
   .mobile-controls {
     display: block;
   }
-  .helper-container {
-    .key {
-      display: none;
-    }
-  }
+
   .desktop-only {
     display: none;
   }
@@ -26,8 +22,10 @@
   }
 
   .container {
-    .img-logo {
-      height: 80px;
+    .emblem {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
     }
   }
 
@@ -63,6 +61,20 @@
       backface-visibility: hidden;
       animation: mobile-orbit 2s 1 linear;
       opacity: 1;
+    }
+
+    .track {
+      width: $orbit_size * 0.6;
+      height: $orbit_size * 0.6;
+    }
+
+    .pause .pause-container .pause-content h3 {
+      font-size: 32px;
+    }
+
+    .results .results-container .results-content h2 {
+      margin-bottom: 12px;
+      font-size: 34px;
     }
   }
 

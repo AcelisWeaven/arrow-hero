@@ -8,7 +8,6 @@ const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
-const svgToMiniDataURI = require('mini-svg-data-uri');
 const { DefinePlugin } = require('webpack')
 const { execSync } = require('child_process')
 
@@ -66,7 +65,7 @@ const config = {
             fonts: [
                 {
                     family: 'Inconsolata',
-                    variants: ['400', '700'],
+                    variants: ['400', '700', '900'],
                 },
             ],
         }),
@@ -102,29 +101,8 @@ const config = {
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader', 'postcss-loader'],
             },
             {
-                test: /\.svg$/i,
-                type: 'asset/inline',
-                include: [
-                    path.resolve(__dirname, "src/inline")
-                ],
-                generator: {
-                    dataUrl: (content, settings) => {
-                        const urlParams = new URLSearchParams(settings.module.resourceResolveData.query);
-                        const color = urlParams.get('color');
-                        content = content.toString();
-                        if (color)
-                            content = content.replace("currentColor", '#'+color)
-                        content = svgToMiniDataURI(content);
-                        return content;
-                    }
-                }
-            },
-            {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpe?g|gif)$/i,
                 type: 'asset',
-                exclude: [
-                    path.resolve(__dirname, "src/inline")
-                ],
             },
 
             // Add your rules for custom modules here

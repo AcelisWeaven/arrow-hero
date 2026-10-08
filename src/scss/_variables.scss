@@ -6,6 +6,8 @@ $selector_border_size: 5px;
 $real_selector_size: $selector_size + 2*$selector_border_size;
 $size: $key_size * 6 + $padding * 2 + $selector_border_size * 2;
 $orbit_radius: 250%;
+$orbit_size: $key_size * 5;
+$muted_color: #8c8c8c;
 $helper_spacing: 10px;
 $background_color: #181818;
 $text_color: #e1e1e1;

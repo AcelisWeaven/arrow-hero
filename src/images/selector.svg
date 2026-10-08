@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74 74">
+  <rect class="sel-core" x="4" y="4" width="66" height="66"/>
+  <rect class="sel-frame" x="2" y="2" width="70" height="70"/>
+  <g transform="translate(37 37)">
+    <g class="sel-glyph">
+      <path class="sel-glyph-base" d="M-16 11 0-7 16 11"/>
+      <path class="sel-glyph-shape" d="M-16 11 0-7 16 11"/>
+    </g>
+  </g>
+</svg>
