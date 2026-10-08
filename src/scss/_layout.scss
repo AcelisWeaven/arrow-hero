@@ -458,6 +458,21 @@ body {
         color: $color;
       }
     }
+
+    // The arrows breathe together: a 3.6s breath of 1.6s in, 1.6s out and 0.4s rest, three blinks of the prompt long.
+    @media (prefers-reduced-motion: no-preference) {
+      $breath: 3.6s;
+
+      .cap {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: start-breathe $breath ease-in-out infinite;
+      }
+
+      .prompt {
+        animation: start-blink 1.2s step-end infinite;
+      }
+    }
   }
 
   // One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
