@@ -269,14 +269,14 @@
 	}
 }
 
-/* a steady arcade blink: on for two thirds of the beat, off for the rest */
+/* a steady arcade blink: full for two thirds of the beat, dimmed for the rest */
 @keyframes start-blink {
 	0%,
 	100% {
 		opacity: 1;
 	}
 	67% {
-		opacity: 0;
+		opacity: 0.5;
 	}
 }
 
