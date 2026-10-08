@@ -49,36 +49,37 @@
     opacity: 0;
     transform: translateY($orbit_radius) rotate(0deg) translateY(-$orbit_radius) rotate(0deg) scale(1);
   }
-  5% {
+  7% {
     opacity: 0;
-    transform: translateY($orbit_radius) rotate(#{-360*0.05}deg) translateY(-$orbit_radius) rotate(#{360*0.05}deg) scale(1);
+    transform: translateY($orbit_radius) rotate(#{-360*0.07}deg) translateY(-$orbit_radius) rotate(#{360*0.07}deg) scale(1);
   }
-  20% {
+  10% {
     opacity: 1;
-    transform: translateY($orbit_radius) rotate(#{-360*0.2}deg) translateY(-$orbit_radius) rotate(#{360*0.2}deg) scale(1);
-  }
-  96% {
-    opacity: 1;
-    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(1);
+    transform: translateY($orbit_radius) rotate(#{-360*0.1}deg) translateY(-$orbit_radius) rotate(#{360*0.1}deg) scale(1);
   }
   100% {
-    opacity: 0.5;
-    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(0.3);
+    opacity: 1;
+    transform: translateY($orbit_radius) rotate(-360deg) translateY(-$orbit_radius) rotate(360deg) scale(1);
   }
 }
 
 @keyframes mobile-orbit {
   0% {
+    opacity: 0;
     transform: translateY($orbit_radius * 0.6) rotate(0deg) translateY(-$orbit_radius * 0.6) rotate(0deg) scale(0.1);
+  }
+  10% {
+    opacity: 0;
+  }
+  13% {
+    opacity: 1;
   }
   20% {
     transform: translateY($orbit_radius * 0.6) rotate(-72deg) translateY(-$orbit_radius * 0.6) rotate(72deg) scale(1);
   }
-  96% {
-    transform: translateY($orbit_radius * 0.6) rotate(-359deg) translateY(-$orbit_radius * 0.6) rotate(359deg) scale(1);
-  }
   100% {
-    transform: translateY($orbit_radius * 0.6) rotate(-359deg) translateY(-$orbit_radius * 0.6) rotate(359deg) scale(0.3);
+    opacity: 1;
+    transform: translateY($orbit_radius * 0.6) rotate(-360deg) translateY(-$orbit_radius * 0.6) rotate(360deg) scale(1);
   }
 }
 
@@ -125,6 +126,12 @@
   100% {
     background-color: rgba(255, 0, 0, 0);
     transform: scale(1);
+  }
+}
+
+@keyframes selector-core-bad {
+  50% {
+    fill: rgba(255, 40, 40, 0.35);
   }
 }
 
