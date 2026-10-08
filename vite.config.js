@@ -60,7 +60,8 @@ function favicons(logo) {
 }
 
 // The fonts, cut down to the given characters and written to assets/, with their @font-face rules and preload
-// hints in the page head. Dev inlines them instead. Fontsource ships the files Google Fonts serves.
+// hints in the page head, so declare only the faces the first screen uses. Dev inlines them instead.
+// Fontsource ships the files Google Fonts serves.
 function fonts(text, faces) {
 	let isBuild
 	let base
@@ -101,19 +102,17 @@ function fonts(text, faces) {
 				font =>
 					`@font-face{font-family:'${font.family}';font-style:${font.style};font-weight:${font.weight};font-display:swap;src:url(${url(font)}) format('woff2')}`,
 			)
-			const preloads = subsets
-				.filter(font => isBuild && font.preload)
-				.map(font => ({
-					tag: 'link',
-					attrs: {
-						rel: 'preload',
-						href: url(font),
-						as: 'font',
-						type: 'font/woff2',
-						crossorigin: true,
-					},
-					injectTo: 'head',
-				}))
+			const preloads = (isBuild ? subsets : []).map(font => ({
+				tag: 'link',
+				attrs: {
+					rel: 'preload',
+					href: url(font),
+					as: 'font',
+					type: 'font/woff2',
+					crossorigin: true,
+				},
+				injectTo: 'head',
+			}))
 			return [...preloads, { tag: 'style', children: rules.join(''), injectTo: 'head' }]
 		},
 	}
@@ -150,28 +149,18 @@ export default defineConfig(({ mode }) => {
 					style: 'normal',
 					weight: 400,
 					file: '@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2',
-					preload: true,
 				},
 				{
 					family: 'DM Mono',
 					style: 'normal',
 					weight: 500,
 					file: '@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2',
-					preload: true,
-				},
-				// not preloaded: only the touch layouts show it, on the pause and results screens
-				{
-					family: 'DM Mono',
-					style: 'italic',
-					weight: 400,
-					file: '@fontsource/dm-mono/files/dm-mono-latin-400-italic.woff2',
 				},
 				{
 					family: 'Rubik Mono One',
 					style: 'normal',
 					weight: 400,
 					file: '@fontsource/rubik-mono-one/files/rubik-mono-one-latin-400-normal.woff2',
-					preload: true,
 				},
 			]),
 		]),
