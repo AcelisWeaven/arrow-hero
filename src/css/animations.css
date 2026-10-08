@@ -279,3 +279,85 @@
 		opacity: 0;
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	@keyframes selector-bad {
+		0%,
+		100% {
+			background-color: rgba(255, 0, 0, 0);
+		}
+		50% {
+			background-color: rgba(255, 0, 0, 0.3);
+		}
+	}
+
+	@keyframes selector-shake {
+		from,
+		to {
+			transform: none;
+		}
+	}
+
+	@keyframes selector-punch {
+		from,
+		to {
+			transform: none;
+		}
+	}
+
+	@keyframes selector-seat {
+		from,
+		to {
+			transform: none;
+		}
+	}
+
+	@keyframes points-bump {
+		from,
+		to {
+			transform: none;
+		}
+	}
+
+	@keyframes ding {
+		0%,
+		60% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes reversedfadein {
+		0%,
+		100% {
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes shutter-cover {
+		from {
+			transform: translateX(0);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes shutter-uncover {
+		from {
+			transform: translateX(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 0;
+		}
+	}
+}

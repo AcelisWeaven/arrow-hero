@@ -29,6 +29,19 @@ function addMultipleEventListener(element, events, handler) {
 	events.forEach(e => element.addEventListener(e, handler))
 }
 
+// A link or button that has the keyboard focus, so Space belongs to it. Synthetic events target the document.
+function onControl(e) {
+	return e.target instanceof Element && e.target.closest('a, button') !== null
+}
+
+// A clicked button keeps the focus, so Space would press it again instead of reaching the game. Keyboard
+// presses (detail 0) keep it, so keyboard users stay where they are.
+function blurAfterClick(button) {
+	button.addEventListener('click', e => {
+		if (e.detail > 0) button.blur()
+	})
+}
+
 function readBestScore() {
 	try {
 		return localStorage.getItem('bestScore')
@@ -192,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const mobileControls = document.querySelector('.mobile-controls')
 	// Same breakpoint as the mobile layout in responsive.css
 	const mobileLayout = window.matchMedia('(max-width: 480px)')
+	// Same as the instruction texts in responsive.css: a touch screen and no mouse
+	const touchOnly = window.matchMedia('(hover: none) and (pointer: coarse)')
 	let focusLost = false
 
 	const bottomKeys = ['left', 'up', 'right', 'down']
@@ -333,6 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const levelMessage = document.querySelector('.level-message')
 
+	// Screen readers hear the game's state changes, not every point
+	const announcer = document.getElementById('announcer')
+	function announce(text) {
+		// cleared first, so the same text twice in a row is read again
+		announcer.textContent = ''
+		setTimeout(() => (announcer.textContent = text), 100)
+	}
+
 	function updateSpeed() {
 		const oldSpeed = current
 		for (const i in speeds) {
@@ -463,12 +486,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 		}, 250)
 
-		if (points > bestScore) {
+		const isBest = points > bestScore
+		if (isBest) {
 			// update best score
 			bestScore = points
 			saveBestScore(bestScore)
 			showBest()
 		}
+
+		const restart = touchOnly.matches ? 'Touch Restart' : 'Press Space'
+		announce(
+			`Game over: ${points} ${pointsLabel(points)}${isBest ? ', a new best' : ''}. ${restart} to try again.`,
+		)
 	}
 
 	function restartGame() {
@@ -511,6 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			() => {
 				gameState = 'running'
 				startRunLog()
+				announce('Game started')
 				document.querySelector('.pause-btn').textContent = 'Pause'
 				scheduleSpawn(1)
 				if (!document.hasFocus()) autoPause()
@@ -564,6 +594,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		if (e.keyCode === 32) {
+			// before the first run, Space presses the focused button. After that it restarts, as the game over
+			// screen says, and Enter presses buttons.
+			if (onControl(e) && gameState === false) return
+
 			e.preventDefault()
 			if (gameState === 'running' || gameState === 'paused') {
 				// space bar pressed
@@ -577,10 +611,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (gameState === 'paused') {
 					pauseScheduledSpawns()
 					logPause(focusLost)
+					announce('Paused')
 				} else if (currentLife <= 0) endGame()
 				else {
 					resumeScheduledSpawns()
 					logResume()
+					announce('Resumed')
 				}
 			} else if (gameState === 'end') restartGame()
 		}
@@ -631,9 +667,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
+	// The game took this Space on keydown, so the focused button must not get it as a press on keyup
+	document.onkeyup = e => {
+		if (e.keyCode === 32 && onControl(e) && gameState !== false) e.preventDefault()
+	}
+
 	function startGame(trusted) {
 		gameState = 'running'
 		startRunLog(trusted)
+		announce('Game started')
 
 		shutterSwap(() => {
 			document.querySelector('.points-container').classList.add('show')
@@ -669,6 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		addMultipleEventListener(keyElem, ['touchstart', 'click'], () => {
 			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode }))
 		})
+		blurAfterClick(keyElem)
 	}
 
 	addMobileListener('.key-left', 37)
@@ -676,6 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	addMobileListener('.key-right', 39)
 	addMobileListener('.key-down', 40)
 
+	blurAfterClick(mobileControls.querySelector('.pause-btn'))
 	addMultipleEventListener(
 		mobileControls.querySelector('.pause-btn'),
 		['click', 'touchstart'],
@@ -690,6 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		fullscreenContainer.classList.add('is-fullscreen')
 
 	document.getElementById('toggle-fullscreen').addEventListener('click', toggleFullscreen)
+	blurAfterClick(document.getElementById('toggle-fullscreen'))
 
 	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'hidden') snapshotRun(points)
@@ -710,7 +755,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	runDataToggle.addEventListener('click', () => {
 		setRunDataOn(!isRunDataOn())
 		updateRunData()
+		announce(runDataStatus.textContent)
 	})
+	blurAfterClick(runDataToggle)
 	updateRunData()
 
 	updateScaleFactor()
