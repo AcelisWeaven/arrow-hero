@@ -3,7 +3,7 @@ $key_size: 60px;
 $key_color: white;
 $selector_size: $key_size + 4;
 $selector_border_size: 5px;
-$real_selector_size: $selector_size + 2*$selector_border_size;
+$real_selector_size: $selector_size + 2 * $selector_border_size;
 $size: $key_size * 6 + $padding * 2 + $selector_border_size * 2;
 $orbit_radius: 250%;
 $orbit_size: $key_size * 5;

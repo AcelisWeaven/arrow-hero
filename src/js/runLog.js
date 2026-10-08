@@ -18,14 +18,14 @@ let run = null
 let runCount = 0
 let lastRunEnd = null
 
-function randomId () {
+function randomId() {
 	const bytes = crypto.getRandomValues(new Uint8Array(8))
 	return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('')
 }
 
 let runDataOnWithoutStorage = false
 
-export function isRunDataOn () {
+export function isRunDataOn() {
 	try {
 		return localStorage.getItem(optOutKey) !== 'off'
 	} catch {
@@ -33,13 +33,11 @@ export function isRunDataOn () {
 	}
 }
 
-export function setRunDataOn (on) {
+export function setRunDataOn(on) {
 	runDataOnWithoutStorage = on
 	try {
-		if (on)
-			localStorage.removeItem(optOutKey)
-		else
-			localStorage.setItem(optOutKey, 'off')
+		if (on) localStorage.removeItem(optOutKey)
+		else localStorage.setItem(optOutKey, 'off')
 	} catch {
 		return
 	}
@@ -47,7 +45,7 @@ export function setRunDataOn (on) {
 
 // trusted: whether the key that started the run came from a real keyboard,
 // undefined when the run was restarted with Space
-export function startRun (exp, view, trusted) {
+export function startRun(exp, view, trusted) {
 	const now = performance.now()
 	runCount++
 	run = {
@@ -64,9 +62,8 @@ export function startRun (exp, view, trusted) {
 	}
 }
 
-function log (token) {
-	if (run === null)
-		return
+function log(token) {
+	if (run === null) return
 
 	// Rounding the offset, not each delay, keeps long runs from drifting
 	const t = Math.round((performance.now() - run.start) / 10)
@@ -74,40 +71,36 @@ function log (token) {
 	run.last = t
 }
 
-export function logStance (direction) {
+export function logStance(direction) {
 	log(direction[0].toUpperCase())
 }
 
-export function logArrival (direction, hit) {
+export function logArrival(direction, hit) {
 	log(direction[0] + (hit ? '' : 'x'))
 }
 
-export function logPause (focusLost) {
+export function logPause(focusLost) {
 	log(focusLost ? 'F' : 'P')
 }
 
-export function logResume () {
+export function logResume() {
 	log('p')
 }
 
-export function logLayout () {
+export function logLayout() {
 	log('Z')
 }
 
 // Touch buttons dispatch synthetic key events, real keys are trusted
-export function logInput (trusted) {
-	if (run === null)
-		return
+export function logInput(trusted) {
+	if (run === null) return
 
-	if (trusted)
-		run.keyboard = true
-	else
-		run.touch = true
+	if (trusted) run.keyboard = true
+	else run.touch = true
 }
 
-function send (end, score) {
-	if (RUNS_URL === '' || !isRunDataOn())
-		return
+function send(end, score) {
+	if (RUNS_URL === '' || !isRunDataOn()) return
 
 	const body = JSON.stringify({
 		v: 2,
@@ -135,16 +128,14 @@ function send (end, score) {
 	}).catch(() => null)
 }
 
-export function endRun (score) {
-	if (run === null)
-		return
+export function endRun(score) {
+	if (run === null) return
 
 	send('dead', score)
 	lastRunEnd = performance.now()
 	run = null
 }
 
-export function snapshotRun (score) {
-	if (run !== null)
-		send('hidden', score)
+export function snapshotRun(score) {
+	if (run !== null) send('hidden', score)
 }

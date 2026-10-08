@@ -21,15 +21,15 @@ const keyDomItem = new DOMParser().parseFromString(keySvg, 'image/svg+xml')
 const keySmallDomItem = new DOMParser().parseFromString(keySmallSvg, 'image/svg+xml')
 const selectorDomItem = new DOMParser().parseFromString(selectorSvg, 'image/svg+xml')
 
-function pointsLabel (value) {
+function pointsLabel(value) {
 	return Number(value) === 1 ? 'point' : 'points'
 }
 
-function addMultipleEventListener (element, events, handler) {
+function addMultipleEventListener(element, events, handler) {
 	events.forEach(e => element.addEventListener(e, handler))
 }
 
-function readBestScore () {
+function readBestScore() {
 	try {
 		return localStorage.getItem('bestScore')
 	} catch {
@@ -37,7 +37,7 @@ function readBestScore () {
 	}
 }
 
-function saveBestScore (score) {
+function saveBestScore(score) {
 	try {
 		localStorage.setItem('bestScore', score)
 	} catch {
@@ -149,14 +149,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		{
 			score: 4300,
 			speed: 290,
-			message: 'Don\'t ever stop!!',
+			message: "Don't ever stop!!",
 			points: 32,
 			keys: 4,
 		},
 		{
 			score: 5500,
 			speed: 280,
-			message: 'I\'m really impressed.',
+			message: "I'm really impressed.",
 			points: 35,
 			keys: 4,
 		},
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		{
 			score: 10000,
 			speed: 260,
-			message: 'You\'re really still here?',
+			message: "You're really still here?",
 			points: 40,
 			keys: 4,
 		},
@@ -194,16 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	const mobileLayout = window.matchMedia('(max-width: 480px)')
 	let focusLost = false
 
-	const bottomKeys = [ 'left', 'up', 'right', 'down' ]
-	document.querySelectorAll('.about .key-up').forEach(k =>
-		k.appendChild(keySmallDomItem.childNodes[0].cloneNode(true)))
+	const bottomKeys = ['left', 'up', 'right', 'down']
+	document
+		.querySelectorAll('.about .key-up')
+		.forEach(k => k.appendChild(keySmallDomItem.childNodes[0].cloneNode(true)))
 	square.appendChild(selectorDomItem.childNodes[0].cloneNode(true))
 	bottomKeys.forEach(k =>
-		document.querySelector('.mobile-controls .key-' + k).appendChild(keyDomItem.childNodes[0].cloneNode(true)))
+		document
+			.querySelector('.mobile-controls .key-' + k)
+			.appendChild(keyDomItem.childNodes[0].cloneNode(true)),
+	)
 
-	function updatePoints (pts) {
-		if (pts < 1)
-			pts = 1
+	function updatePoints(pts) {
+		if (pts < 1) pts = 1
 
 		pts = Math.floor(pts)
 		points += pts
@@ -219,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const ding = document.createElement('div')
 		ding.classList.add('ding')
-		ding.textContent = `+${ pts }`
+		ding.textContent = `+${pts}`
 		ding.onanimationend = () => {
 			ding.remove()
 		}
@@ -241,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	// Restarts a selector animation, even if its class is still on from the last time
-	function replay (cls) {
+	function replay(cls) {
 		square.classList.remove(cls)
 		square.getBoundingClientRect()
 		square.classList.add(cls)
@@ -252,9 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const shutter = document.querySelector('.shutter')
 	let pendingSwap = null
 
-	function shutterSwap (swap, done) {
-		if (pendingSwap)
-			pendingSwap()
+	function shutterSwap(swap, done) {
+		if (pendingSwap) pendingSwap()
 
 		pendingSwap = swap
 		shutter.classList.remove('cover', 'uncover')
@@ -266,8 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			shutter.classList.replace('cover', 'uncover')
 			shutter.onanimationend = () => {
 				shutter.classList.remove('uncover')
-				if (done)
-					done()
+				if (done) done()
 			}
 		}
 	}
@@ -282,15 +283,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	let lastHeartbeat = 0
 	let lastLifeFrame = performance.now()
 
-	function loseLife (amount) {
+	function loseLife(amount) {
 		const life = Math.max(0, currentLife)
-		if (lagHold <= 0 && lifeLag <= life + 1)
-			lifeLag = life
+		if (lagHold <= 0 && lifeLag <= life + 1) lifeLag = life
 		lagHold = 0.45
 		currentLife -= amount
 	}
 
-	function gainLife (amount) {
+	function gainLife(amount) {
 		// a heal beats like a heart, at most once per beat so fast catches don't flutter, and not at full life
 		const now = performance.now()
 		if (currentLife < maxLife && now - lastHeartbeat >= 300) {
@@ -300,33 +300,32 @@ document.addEventListener('DOMContentLoaded', () => {
 		currentLife = Math.min(currentLife + amount, maxLife)
 	}
 
-	function drawLife (now) {
+	function drawLife(now) {
 		const dt = Math.min(0.05, (now - lastLifeFrame) / 1000)
 		lastLifeFrame = now
 		const life = Math.max(0, currentLife)
 		// about 90% of the way in 0.05s
 		lifeShown += (life - lifeShown) * Math.min(1, dt * 45)
-		if (life >= lifeLag)
-			lifeLag = lifeShown
-		else if (lagHold > 0)
-			lagHold -= dt
-		else
-			lifeLag = Math.max(life, lifeLag - maxLife * 0.5 * dt)
+		if (life >= lifeLag) lifeLag = lifeShown
+		else if (lagHold > 0) lagHold -= dt
+		else lifeLag = Math.max(life, lifeLag - maxLife * 0.5 * dt)
 
-		const shown = lifeShown * 100 / maxLife
-		lifeBand.style.strokeDasharray = `${ shown } 100`
-		lifeChunk.style.strokeDasharray = `${ (lifeLag - lifeShown) * 100 / maxLife } 100`
+		const shown = (lifeShown * 100) / maxLife
+		lifeBand.style.strokeDasharray = `${shown} 100`
+		lifeChunk.style.strokeDasharray = `${((lifeLag - lifeShown) * 100) / maxLife} 100`
 		lifeChunk.style.strokeDashoffset = -shown
 		requestAnimationFrame(drawLife)
 	}
 	requestAnimationFrame(drawLife)
 
-	function showPoints () {
-		pointContainers.forEach(pointContainer => pointContainer.textContent = points)
-		document.querySelectorAll('.points + .points-label').forEach(label => label.textContent = pointsLabel(points))
+	function showPoints() {
+		pointContainers.forEach(pointContainer => (pointContainer.textContent = points))
+		document
+			.querySelectorAll('.points + .points-label')
+			.forEach(label => (label.textContent = pointsLabel(points)))
 	}
 
-	function showBest () {
+	function showBest() {
 		document.querySelector('.best-points .value').textContent = bestScore
 		document.querySelector('.best-points .points-label').textContent = pointsLabel(bestScore)
 		document.querySelector('.best').style.display = 'block'
@@ -334,15 +333,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const levelMessage = document.querySelector('.level-message')
 
-	function updateSpeed () {
+	function updateSpeed() {
 		const oldSpeed = current
 		for (const i in speeds) {
 			const _speed = speeds[i]
-			if (points >= _speed.score)
-				current = _speed
-			else if (points < _speed.score)
-				break
-
+			if (points >= _speed.score) current = _speed
+			else if (points < _speed.score) break
 		}
 
 		if (current.speed !== oldSpeed.speed) {
@@ -353,18 +349,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				levelMessage.classList.remove('show')
 			}
 		}
-
-
 	}
 
-	function spawnRandomKey (obj) {
-		if (gameState !== 'paused') // running or ended
+	function spawnRandomKey(obj) {
+		if (gameState !== 'paused')
+			// running or ended
 			removeScheduledSpawn(obj)
 
-		if (gameState === 'end' || gameState === 'paused' || gameState === 'restart')
-			return
+		if (gameState === 'end' || gameState === 'paused' || gameState === 'restart') return
 
-		const arr = [ 'key-right', 'key-left', 'key-down', 'key-up' ]
+		const arr = ['key-right', 'key-left', 'key-down', 'key-up']
 		const direction = arr[Math.floor(Math.random() * current.keys)]
 		let nextKey = container.querySelector('.idle')
 		if (nextKey === null) {
@@ -372,13 +366,15 @@ document.addEventListener('DOMContentLoaded', () => {
 			nextKey.appendChild(keyDomItem.childNodes[0].cloneNode(true))
 			nextKey.classList.add('key', direction)
 			nextKey.onanimationend = () => {
-
 				if (gameState === 'end' || gameState === 'restart' || nextKey.classList.contains('idle'))
 					return
 
 				// Keys are recycled, so the direction comes from the class, not from the spawn
 				const hit = nextKey.classList.contains(keypressed)
-				logArrival(bottomKeys.find(k => nextKey.classList.contains('key-' + k)), hit)
+				logArrival(
+					bottomKeys.find(k => nextKey.classList.contains('key-' + k)),
+					hit,
+				)
 
 				if (hit) {
 					gainLife(200)
@@ -391,8 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				updateSpeed()
 
-				if (currentLife <= 0 && gameState === 'running')
-					endGame()
+				if (currentLife <= 0 && gameState === 'running') endGame()
 
 				nextKey.classList.add('idle')
 				nextKey.classList.remove('key-up', 'key-down', 'key-left', 'key-right')
@@ -403,12 +398,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			nextKey.classList.add(direction)
 		}
 
-
 		// Spawn next key
 		scheduleSpawn(current.speed)
 	}
 
-	function scheduleSpawn (delay) {
+	function scheduleSpawn(delay) {
 		const now = new Date()
 		const obj = {
 			delay,
@@ -418,14 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		scheduledSpawns.push(obj)
 	}
 
-	function removeScheduledSpawn (obj) {
+	function removeScheduledSpawn(obj) {
 		const index = scheduledSpawns.indexOf(obj)
-		if (index > -1)
-			scheduledSpawns.splice(index, 1)
-
+		if (index > -1) scheduledSpawns.splice(index, 1)
 	}
 
-	function pauseScheduledSpawns () {
+	function pauseScheduledSpawns() {
 		const now = new Date()
 		for (const i in scheduledSpawns) {
 			const obj = scheduledSpawns[i]
@@ -435,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	function resumeScheduledSpawns () {
+	function resumeScheduledSpawns() {
 		const now = new Date()
 		for (const i in scheduledSpawns) {
 			const obj = scheduledSpawns[i]
@@ -444,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	function endGame () {
+	function endGame() {
 		gameState = 'end'
 		endRun(points)
 		document.querySelector('.pause-btn').textContent = 'Restart'
@@ -452,8 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// the arrows freeze for a moment so the loss reads before the board changes
 		document.querySelectorAll('.key').forEach(k => k.classList.add('paused'))
 		setTimeout(() => {
-			if (gameState !== 'end')
-				return
+			if (gameState !== 'end') return
 
 			shutterSwap(() => {
 				document.querySelectorAll('.key').forEach(k => k.classList.add('hide'))
@@ -480,64 +471,62 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	function restartGame () {
+	function restartGame() {
 		gameState = 'restart'
 		points = 0
 		maxLife = 5000
 		currentLife = maxLife
 		current = speeds[0]
 
-		if (keypressed !== '')
-			square.classList.remove('s-' + keypressed)
+		if (keypressed !== '') square.classList.remove('s-' + keypressed)
 
 		keypressed = ''
 
-		shutterSwap(() => {
-			container.querySelectorAll('.key').forEach(key => {
-				key.classList.remove('key-up', 'key-down', 'key-left', 'key-right', 'hide', 'paused')
-				key.classList.add('idle')
-			})
+		shutterSwap(
+			() => {
+				container.querySelectorAll('.key').forEach(key => {
+					key.classList.remove('key-up', 'key-down', 'key-left', 'key-right', 'hide', 'paused')
+					key.classList.add('idle')
+				})
 
-			const keySelectorContainer = document.querySelector('.key-selector-container')
-			keySelectorContainer.classList.add('show')
-			keySelectorContainer.classList.remove('hide')
+				const keySelectorContainer = document.querySelector('.key-selector-container')
+				keySelectorContainer.classList.add('show')
+				keySelectorContainer.classList.remove('hide')
 
-			const results = document.querySelector('.results')
-			results.classList.add('hide')
-			results.classList.remove('show')
+				const results = document.querySelector('.results')
+				results.classList.add('hide')
+				results.classList.remove('show')
 
-			const pointsContainer = document.querySelector('.points-container')
-			pointsContainer.classList.add('show')
-			pointsContainer.classList.remove('hide')
+				const pointsContainer = document.querySelector('.points-container')
+				pointsContainer.classList.add('show')
+				pointsContainer.classList.remove('hide')
 
-			for (const i in scheduledSpawns) {
-				const obj = scheduledSpawns[i]
-				clearInterval(obj.interval)
-			}
-			scheduledSpawns = []
-			showPoints()
-		}, () => {
-			gameState = 'running'
-			startRunLog()
-			document.querySelector('.pause-btn').textContent = 'Pause'
-			scheduleSpawn(1)
-			if (!document.hasFocus())
-				autoPause()
-		})
+				for (const i in scheduledSpawns) {
+					const obj = scheduledSpawns[i]
+					clearInterval(obj.interval)
+				}
+				scheduledSpawns = []
+				showPoints()
+			},
+			() => {
+				gameState = 'running'
+				startRunLog()
+				document.querySelector('.pause-btn').textContent = 'Pause'
+				scheduleSpawn(1)
+				if (!document.hasFocus()) autoPause()
+			},
+		)
 	}
 
-	function toggleFullscreen () {
+	function toggleFullscreen() {
 		const isFullscreen = document.fullscreenElement !== null
 
 		if (!isFullscreen) {
-			if (fullscreenContainer.requestFullscreen)
-				fullscreenContainer.requestFullscreen()
-		} else
-		if (document.exitFullscreen)
-			document.exitFullscreen()
+			if (fullscreenContainer.requestFullscreen) fullscreenContainer.requestFullscreen()
+		} else if (document.exitFullscreen) document.exitFullscreen()
 	}
 
-	function updateScaleFactor () {
+	function updateScaleFactor() {
 		// Original size is $size in _variables.scss
 		const size = 390
 		const height = globalContainer.offsetHeight
@@ -548,10 +537,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.onfullscreenchange = () => {
 		const isFullscreen = document.fullscreenElement !== null
 
-		if (!isFullscreen)
-			fullscreenContainer.classList.remove('is-fullscreen')
-		else
-			fullscreenContainer.classList.add('is-fullscreen')
+		if (!isFullscreen) fullscreenContainer.classList.remove('is-fullscreen')
+		else fullscreenContainer.classList.add('is-fullscreen')
 
 		// timeout is needed, so browser can update the size of the container properly
 		setTimeout(updateScaleFactor, 100)
@@ -559,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	window.onresize = updateScaleFactor
 
-	function autoPause () {
+	function autoPause() {
 		if (gameState === 'running') {
 			// auto pause
 			focusLost = true
@@ -571,12 +558,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.body.onblur = autoPause
 
 	document.onkeydown = e => {
-
 		if (e.key === 'F11') {
 			toggleFullscreen()
 			e.preventDefault()
 		}
-
 
 		if (e.keyCode === 32) {
 			e.preventDefault()
@@ -584,36 +569,38 @@ document.addEventListener('DOMContentLoaded', () => {
 				// space bar pressed
 
 				gameState = gameState === 'running' ? 'paused' : 'running'
-				document.querySelectorAll('.key').forEach(k => k.classList.toggle('paused', gameState === 'paused'))
+				document
+					.querySelectorAll('.key')
+					.forEach(k => k.classList.toggle('paused', gameState === 'paused'))
 				document.querySelector('.pause').classList.toggle('show', gameState === 'paused')
 
 				if (gameState === 'paused') {
 					pauseScheduledSpawns()
 					logPause(focusLost)
-				} else if (currentLife <= 0)
-					endGame()
+				} else if (currentLife <= 0) endGame()
 				else {
 					resumeScheduledSpawns()
 					logResume()
 				}
-
-			} else if (gameState === 'end')
-				restartGame()
-
+			} else if (gameState === 'end') restartGame()
 		}
 
-		if ([ 37 /* left */, 38 /* up */, 39 /* right */, 40 /* down */, 72 /* h */, 74 /* j */, 75 /* k */, 76 /* l */ ].includes(e.keyCode)
-            && gameState !== 'paused' && gameState !== 'restart') {
+		if (
+			[
+				37 /* left */, 38 /* up */, 39 /* right */, 40 /* down */, 72 /* h */, 74 /* j */,
+				75 /* k */, 76 /* l */,
+			].includes(e.keyCode) &&
+			gameState !== 'paused' &&
+			gameState !== 'restart'
+		) {
 			// arrow keys pressed
 
 			e.preventDefault()
-			if (gameState === false)
-				startGame(e.isTrusted)
+			if (gameState === false) startGame(e.isTrusted)
 
 			logInput(e.isTrusted)
 			const previous = keypressed
-			if (keypressed !== '')
-				square.classList.remove('s-' + keypressed)
+			if (keypressed !== '') square.classList.remove('s-' + keypressed)
 
 			switch (e.keyCode) {
 				case 37: // left
@@ -642,10 +629,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				replay('punch')
 			}
 		}
-
 	}
 
-	function startGame (trusted) {
+	function startGame(trusted) {
 		gameState = 'running'
 		startRunLog(trusted)
 
@@ -659,32 +645,28 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 	}
 
-	function tierIndex (score) {
+	function tierIndex(score) {
 		let index = 0
 		speeds.forEach((speed, i) => {
-			if (score >= speed.score)
-				index = i
+			if (score >= speed.score) index = i
 		})
 		return index
 	}
 
-	function startRunLog (trusted) {
+	function startRunLog(trusted) {
 		const best = Number(bestScore)
 		const exp = bestScore === null || Number.isNaN(best) ? null : tierIndex(best)
 		let view = mobileLayout.matches ? 'mobile' : 'normal'
-		if (fullscreenContainer.classList.contains('is-fullscreen'))
-			view = 'full'
+		if (fullscreenContainer.classList.contains('is-fullscreen')) view = 'full'
 
 		startRun(exp, view, trusted)
 	}
 
-	if (bestScore)
-		showBest()
+	if (bestScore) showBest()
 
-
-	function addMobileListener (selector, /* @deprecated */ keyCode) {
+	function addMobileListener(selector, /* @deprecated */ keyCode) {
 		const keyElem = mobileControls.querySelector(selector)
-		addMultipleEventListener(keyElem, [ 'touchstart', 'click' ], () => {
+		addMultipleEventListener(keyElem, ['touchstart', 'click'], () => {
 			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode }))
 		})
 	}
@@ -694,10 +676,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	addMobileListener('.key-right', 39)
 	addMobileListener('.key-down', 40)
 
-	addMultipleEventListener(mobileControls.querySelector('.pause-btn'), [ 'click', 'touchstart' ], e => {
-		e.preventDefault()
-		document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
-	})
+	addMultipleEventListener(
+		mobileControls.querySelector('.pause-btn'),
+		['click', 'touchstart'],
+		e => {
+			e.preventDefault()
+			document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32 /* space */ }))
+		},
+	)
 
 	// If URL contains ?fullscreen, start in pseudo-fullscreen
 	if (window.location.search.includes('fullscreen'))
@@ -706,8 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('toggle-fullscreen').addEventListener('click', toggleFullscreen)
 
 	document.addEventListener('visibilitychange', () => {
-		if (document.visibilityState === 'hidden')
-			snapshotRun(points)
+		if (document.visibilityState === 'hidden') snapshotRun(points)
 	})
 
 	mobileLayout.addEventListener('change', logLayout)
@@ -716,7 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const runDataToggle = document.getElementById('toggle-run-data')
 	const runDataOnText = runDataStatus.textContent
 
-	function updateRunData () {
+	function updateRunData() {
 		const on = isRunDataOn()
 		runDataStatus.textContent = on ? runDataOnText : 'Run recording is off.'
 		runDataToggle.textContent = on ? 'Turn off' : 'Turn on'
