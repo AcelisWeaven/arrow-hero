@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		pts = Math.floor(pts)
 		points += pts
-		square.classList.add('bump')
+		replay('seat')
 
 		showPoints()
 		pointContainers.forEach(pointContainer => {
@@ -228,17 +228,99 @@ document.addEventListener('DOMContentLoaded', () => {
 		square.appendChild(ding)
 	}
 
+	// the longest animation each class runs, on the selector or one of its parts
 	const squareAnimations = {
-		'selector-bump': 'bump',
-		'selector-bad': 'bad',
-		'mobile-selector-bad': 'bad',
-		fadein: 'fade',
+		'selector-seat': 'seat',
+		'selector-shake': 'bad',
+		'selector-punch': 'punch',
+		'life-heartbeat': 'heal',
 	}
 
 	square.addEventListener('animationend', e => {
-		if (e.target === square && squareAnimations[e.animationName])
+		if (square.contains(e.target) && squareAnimations[e.animationName])
 			square.classList.remove(squareAnimations[e.animationName])
 	})
+
+	// Restarts a selector animation, even if its class is still on from the last time
+	function replay (cls) {
+		square.classList.remove(cls)
+		square.getBoundingClientRect()
+		square.classList.add(cls)
+	}
+
+	// Screens change under a panel that covers the board: it slides on, the screens swap in one frame
+	// (swap), it slides off, then done runs. A new transition finishes the pending swap first.
+	const shutter = document.querySelector('.shutter')
+	let pendingSwap = null
+
+	function shutterSwap (swap, done) {
+		if (pendingSwap)
+			pendingSwap()
+
+		pendingSwap = swap
+		shutter.classList.remove('cover', 'uncover')
+		shutter.getBoundingClientRect()
+		shutter.classList.add('cover')
+		shutter.onanimationend = () => {
+			pendingSwap = null
+			swap()
+			shutter.classList.replace('cover', 'uncover')
+			shutter.onanimationend = () => {
+				shutter.classList.remove('uncover')
+				if (done)
+					done()
+			}
+		}
+	}
+
+	// The life band around the selector eases toward the real life. A miss leaves a red chunk that holds
+	// for a moment, then drains, like a fighting game's health bar.
+	const lifeBand = square.querySelector('.sel-life-band')
+	const lifeChunk = square.querySelector('.sel-life-chunk')
+	let lifeShown = maxLife
+	let lifeLag = maxLife
+	let lagHold = 0
+	let lastHeartbeat = 0
+	let lastLifeFrame = performance.now()
+
+	function loseLife (amount) {
+		const life = Math.max(0, currentLife)
+		if (lagHold <= 0 && lifeLag <= life + 1)
+			lifeLag = life
+		lagHold = 0.45
+		currentLife -= amount
+	}
+
+	function gainLife (amount) {
+		// a heal beats like a heart, at most once per beat so fast catches don't flutter, and not at full life
+		const now = performance.now()
+		if (currentLife < maxLife && now - lastHeartbeat >= 300) {
+			lastHeartbeat = now
+			replay('heal')
+		}
+		currentLife = Math.min(currentLife + amount, maxLife)
+	}
+
+	function drawLife (now) {
+		const dt = Math.min(0.05, (now - lastLifeFrame) / 1000)
+		lastLifeFrame = now
+		const life = Math.max(0, currentLife)
+		// about 90% of the way in 0.05s
+		lifeShown += (life - lifeShown) * Math.min(1, dt * 45)
+		if (life >= lifeLag)
+			lifeLag = lifeShown
+		else if (lagHold > 0)
+			lagHold -= dt
+		else
+			lifeLag = Math.max(life, lifeLag - maxLife * 0.5 * dt)
+
+		const shown = lifeShown * 100 / maxLife
+		lifeBand.style.strokeDasharray = `${ shown } 100`
+		lifeChunk.style.strokeDasharray = `${ (lifeLag - lifeShown) * 100 / maxLife } 100`
+		lifeChunk.style.strokeDashoffset = -shown
+		requestAnimationFrame(drawLife)
+	}
+	requestAnimationFrame(drawLife)
 
 	function showPoints () {
 		pointContainers.forEach(pointContainer => pointContainer.textContent = points)
@@ -300,27 +382,15 @@ document.addEventListener('DOMContentLoaded', () => {
 				logArrival(bottomKeys.find(k => nextKey.classList.contains('key-' + k)), hit)
 
 				if (hit) {
-					currentLife = Math.min(currentLife + 200, maxLife)
+					gainLife(200)
 
 					updatePoints(current.points)
 				} else {
-					currentLife -= 1000
-					square.classList.add('bad')
+					loseLife(1000)
+					replay('bad')
 				}
 
 				updateSpeed()
-
-				const percent = currentLife * 100 / maxLife
-				const percentElem = document.querySelector('.percent')
-				percentElem.style.width = percent + '%'
-
-				if (percent < 20)
-					percentElem.classList.add('low')
-				else if (percent < 60) {
-					percentElem.classList.add('medium')
-					percentElem.classList.remove('low')
-				} else
-					percentElem.classList.remove('low', 'medium')
 
 				if (currentLife <= 0 && gameState === 'running')
 					endGame()
@@ -378,24 +448,30 @@ document.addEventListener('DOMContentLoaded', () => {
 	function endGame () {
 		gameState = 'end'
 		endRun(points)
-		document.querySelectorAll('.key').forEach(k => k.classList.add('hide'))
-
-		const keySelectorContainer = document.querySelector('.key-selector-container')
-		keySelectorContainer.classList.add('hide')
-		keySelectorContainer.classList.remove('show')
-
-		const results = document.querySelector('.results')
-		results.classList.add('show')
-		results.classList.remove('hide')
-
-		const pointsContainer = document.querySelector('.points-container')
-		pointsContainer.classList.add('hide')
-		pointsContainer.classList.remove('show')
-
-		const percent = document.querySelector('.percent')
-		percent.style.width = '0%'
-
 		document.querySelector('.pause-btn').textContent = 'Restart'
+
+		// the arrows freeze for a moment so the loss reads before the board changes
+		document.querySelectorAll('.key').forEach(k => k.classList.add('paused'))
+		setTimeout(() => {
+			if (gameState !== 'end')
+				return
+
+			shutterSwap(() => {
+				document.querySelectorAll('.key').forEach(k => k.classList.add('hide'))
+
+				const keySelectorContainer = document.querySelector('.key-selector-container')
+				keySelectorContainer.classList.add('hide')
+				keySelectorContainer.classList.remove('show')
+
+				const results = document.querySelector('.results')
+				results.classList.add('show')
+				results.classList.remove('hide')
+
+				const pointsContainer = document.querySelector('.points-container')
+				pointsContainer.classList.add('hide')
+				pointsContainer.classList.remove('show')
+			})
+		}, 250)
 
 		if (points > bestScore) {
 			// update best score
@@ -417,20 +493,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		keypressed = ''
 
-		container.querySelectorAll('.key').forEach(key => {
-			key.classList.remove('key-up', 'key-down', 'key-left', 'key-right', 'hide')
-			key.classList.add('idle')
-		})
+		shutterSwap(() => {
+			container.querySelectorAll('.key').forEach(key => {
+				key.classList.remove('key-up', 'key-down', 'key-left', 'key-right', 'hide', 'paused')
+				key.classList.add('idle')
+			})
 
-		const keySelectorContainer = document.querySelector('.key-selector-container')
-		keySelectorContainer.classList.add('show')
-		keySelectorContainer.classList.remove('hide')
+			const keySelectorContainer = document.querySelector('.key-selector-container')
+			keySelectorContainer.classList.add('show')
+			keySelectorContainer.classList.remove('hide')
 
-		const results = document.querySelector('.results')
-		results.classList.add('hide')
-		results.classList.remove('show')
+			const results = document.querySelector('.results')
+			results.classList.add('hide')
+			results.classList.remove('show')
 
-		setTimeout(() => {
 			const pointsContainer = document.querySelector('.points-container')
 			pointsContainer.classList.add('show')
 			pointsContainer.classList.remove('hide')
@@ -441,20 +517,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			scheduledSpawns = []
 			showPoints()
-
-			const percent = document.querySelector('.percent')
-			percent.style.width = '100%'
-			percent.classList.remove('low', 'medium')
-
-			setTimeout(() => {
-				gameState = 'running'
-				startRunLog()
-				document.querySelector('.pause-btn').textContent = 'Pause'
-				scheduleSpawn(1)
-				if (!document.hasFocus())
-					autoPause()
-			}, 950)
-		}, 1000)
+		}, () => {
+			gameState = 'running'
+			startRunLog()
+			document.querySelector('.pause-btn').textContent = 'Pause'
+			scheduleSpawn(1)
+			if (!document.hasFocus())
+				autoPause()
+		})
 	}
 
 	function toggleFullscreen () {
@@ -568,8 +638,10 @@ document.addEventListener('DOMContentLoaded', () => {
 					break
 			}
 			square.classList.add('s-' + keypressed)
-			if (keypressed !== previous)
+			if (keypressed !== previous) {
 				logStance(keypressed.replace('key-', ''))
+				replay('punch')
+			}
 		}
 
 	}
@@ -578,16 +650,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		gameState = 'running'
 		startRunLog(trusted)
 
-		document.querySelector('.points-container').classList.add('show')
-		document.querySelector('.helper-container').classList.add('hide')
-		document.querySelector('.track').classList.add('show')
-		setTimeout(() => {
-			const keySelector = document.querySelector('.key-selector')
-			keySelector.classList.add('show', 'fade')
-		}, 500)
-		scheduleSpawn(1000)
-
-		document.querySelector('.percent').style.width = '100%'
+		shutterSwap(() => {
+			document.querySelector('.points-container').classList.add('show')
+			document.querySelector('.helper-container').classList.add('hide')
+			document.querySelector('.track').classList.add('show')
+			document.querySelector('.key-selector').classList.add('show')
+			// an arrow is invisible for the first 7% of its orbit, so the first one shows as the panel slides off
+			scheduleSpawn(1)
+		})
 	}
 
 	function tierIndex (score) {
