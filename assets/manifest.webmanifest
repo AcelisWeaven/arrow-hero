@@ -6,7 +6,7 @@
   "lang": "en-US",
   "display": "standalone",
   "orientation": "any",
-  "start_url": "/?homescreen=1",
+  "start_url": "../",
   "background_color": "#000",
   "theme_color": "#ff3232",
   "icons": [
