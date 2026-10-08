@@ -1,805 +1,819 @@
-@use "sass:color";
-@use "sass:list";
-@use "mixins";
-@use "variables";
+@use 'sass:color';
+@use 'sass:list';
+@use 'mixins';
+@use 'variables';
 
 body {
-  font-family: variables.$body_font;
-  text-align: center;
-  background-color: variables.$background_color;
-  padding-top: 20px;
-  color: variables.$text_color;
-  margin: 0;
-  overflow-x: hidden;
+	font-family: variables.$body_font;
+	text-align: center;
+	background-color: variables.$background_color;
+	padding-top: 20px;
+	color: variables.$text_color;
+	margin: 0;
+	overflow-x: hidden;
 
-  h1, h2, h3 {
-    font-family: variables.$display_font;
-    font-weight: normal;
-  }
+	h1,
+	h2,
+	h3 {
+		font-family: variables.$display_font;
+		font-weight: normal;
+	}
 
-  h1 {
-    display: inline-block;
-    padding: 6px 10px 4px;
-    border: 2px solid white;
-    color: white;
-    font-size: 11pt;
-    margin-top: 10px;
-    margin-bottom: 14px;
-  }
+	h1 {
+		display: inline-block;
+		padding: 6px 10px 4px;
+		border: 2px solid white;
+		color: white;
+		font-size: 11pt;
+		margin-top: 10px;
+		margin-bottom: 14px;
+	}
 
-  h2 {
-    font-size: 12pt;
-    margin-top: 23px;
-    margin-bottom: 13px;
-  }
+	h2 {
+		font-size: 12pt;
+		margin-top: 23px;
+		margin-bottom: 13px;
+	}
 
-  h3 {
-    font-size: 10pt;
-    margin-top: 6px;
-    margin-bottom: 11px;
-  }
+	h3 {
+		font-size: 10pt;
+		margin-top: 6px;
+		margin-bottom: 11px;
+	}
 
-  em {
-    font-style: italic;
-  }
+	em {
+		font-style: italic;
+	}
 
-  a {
-    text-decoration: none;
-    font-weight: 500;
-    color: variables.$right_color;
-  }
+	a {
+		text-decoration: none;
+		font-weight: 500;
+		color: variables.$right_color;
+	}
 
-  strong {
-    font-weight: 500;
-  }
+	strong {
+		font-weight: 500;
+	}
 
-  i {
-    padding-left: 1px;
-  }
+	i {
+		padding-left: 1px;
+	}
 
-  hr {
-    border: none;
-    border-top: 1px solid #8b8b8b;
-    margin-top: 40px;
-  }
+	hr {
+		border: none;
+		border-top: 1px solid #8b8b8b;
+		margin-top: 40px;
+	}
 }
 
 .mobile {
-  max-width: variables.$size - 20px;
-  margin: 0 auto 20px auto;
-  text-align: left;
-  border-radius: 5px;
-  background-color: rgba(black, 0.5);
-  padding: 15px 10px;
-  color: white;
+	max-width: variables.$size - 20px;
+	margin: 0 auto 20px auto;
+	text-align: left;
+	border-radius: 5px;
+	background-color: rgba(black, 0.5);
+	padding: 15px 10px;
+	color: white;
 
-  .centered {
-    text-align: center;
-  }
+	.centered {
+		text-align: center;
+	}
 
-  a {
-    color: white;
-  }
+	a {
+		color: white;
+	}
 
-  p {
-    padding-bottom: 10px;
-  }
+	p {
+		padding-bottom: 10px;
+	}
 
-  ul {
-    text-align: center;
+	ul {
+		text-align: center;
 
-    li {
-      padding: 5px 20px;
-      margin: 5px 0;
-      display: inline-block;
-      background-color: rgba(white, 0.1);
-    }
-  }
+		li {
+			padding: 5px 20px;
+			margin: 5px 0;
+			display: inline-block;
+			background-color: rgba(white, 0.1);
+		}
+	}
 }
 
 .fullscreen-container.is-fullscreen {
-  .container {
-    height: calc(100vh - 150px);
-    width: calc(100vh - 150px);
-    max-width: 100vw;
+	.container {
+		height: calc(100vh - 150px);
+		width: calc(100vh - 150px);
+		max-width: 100vw;
 
-    @media (max-width: 1024px) {
-      height: calc(100vh - 350px);
-    }
-  }
+		@media (max-width: 1024px) {
+			height: calc(100vh - 350px);
+		}
+	}
 
-  // scale sub containers to fit the parent, using some magic calculations
-  .keys-container,
-  .key-selector-container,
-  .level-message,
-  {
-    transform: scale(var(--scale-factor));
-  }
+	// scale sub containers to fit the parent, using some magic calculations
+	.keys-container,
+	.key-selector-container,
+	.level-message {
+		transform: scale(var(--scale-factor));
+	}
 }
 
 .container {
-  max-width: variables.$size;
-  background-color: variables.$board_color;
-  border-radius: 5px;
-  height: variables.$size;
-  position: relative;
-  border-radius: 0;
-  margin: 0 auto 10px auto;
-  padding: 0;
-  user-select: text;
-
-  .keys-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-
-  }
-
-  .key-selector-container {
-    position: relative;
-    z-index: 1;
-    padding: variables.$padding;
-
-    &.hide {
-      opacity: 0;
-    }
-
-    &.show {
-      opacity: 1;
-    }
-
-    .key-selector {
-      position: absolute;
-      margin: 0 auto;
-      left: 0;
-      right: 0;
-      width: variables.$selector_size;
-      height: variables.$selector_size;
-      opacity: 0;
-
-      border: variables.$selector_border_size solid transparent;
-
-      &.show {
-        opacity: 1;
-      }
-
-      &.bad {
-        animation: selector-bad 0.15s 1 ease-out, selector-shake 0.25s 1 linear;
-      }
-
-      > svg {
-        position: absolute;
-        top: -(variables.$selector_border_size);
-        left: -(variables.$selector_border_size);
-        width: variables.$real_selector_size;
-        height: variables.$real_selector_size;
-        overflow: visible;
-      }
-
-      // The frame is the life band. It runs clockwise from the top middle, and a miss eats into it from the end.
-      .sel-life-track,
-      .sel-life-chunk,
-      .sel-life-band {
-        fill: none;
-        stroke-width: 4;
-      }
-
-      .sel-life-track {
-        stroke: variables.$life_track_color;
-      }
-
-      .sel-life-chunk {
-        stroke: variables.$life_chunk_color;
-        stroke-dasharray: 0 100;
-      }
-
-      .sel-life-band {
-        stroke: variables.$life_color;
-        stroke-dasharray: 100 100;
-      }
-
-      &.heal .sel-life-band {
-        animation: life-heartbeat 0.27s 1 linear;
-      }
-
-      // the flash comes last so it wins the stroke while both run
-      &.heal.punch .sel-life-band {
-        animation: life-heartbeat 0.27s 1 linear, selector-frame-flash 0.1s 1 step-end;
-      }
-
-      .sel-body,
-      .sel-plate {
-        transform-box: fill-box;
-        transform-origin: center;
-      }
-
-      // a catch seats the arrow: the selector presses in and the glyph flashes white
-      &.seat {
-        .sel-body {
-          animation: selector-seat 0.15s 1 linear;
-        }
-
-        .sel-glyph-shape {
-          animation: selector-seat-flash 0.07s 1 step-end;
-        }
-      }
-
-      .sel-core {
-        fill: transparent;
-      }
-
-      .sel-glyph {
-        visibility: hidden;
-        transform: rotate(var(--sel-angle));
-      }
-
-      // a stance change snaps at once: the glyph turns and the plate punches out
-      &.punch {
-        .sel-plate {
-          animation: selector-punch 0.15s 1 linear;
-        }
-
-        .sel-life-band {
-          animation: selector-frame-flash 0.1s 1 step-end;
-        }
-      }
-
-      .sel-glyph-base,
-      .sel-glyph-shape {
-        fill: none;
-        stroke-miterlimit: 10;
-      }
-
-      .sel-glyph-base {
-        stroke: black;
-        stroke-width: 19;
-      }
-
-      .sel-glyph-shape {
-        stroke: currentColor;
-        stroke-width: 11;
-      }
-
-      @each $direction, $color, $angle in (up, variables.$up_color, 0deg), (right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg), (left, variables.$left_color, -90deg) {
-        &.s-key-#{$direction} {
-          color: $color;
-          --sel-angle: #{$angle};
-
-          .sel-glyph {
-            visibility: visible;
-          }
-        }
-      }
-
-      &.bad .sel-core {
-        animation: selector-core-bad 0.15s 1 ease-out;
-      }
-
-      .ding {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        font-family: variables.$display_font;
-        font-size: 13pt;
-        animation: ding 0.5s 1 ease-out;
-        opacity: 0;
-        color: variables.$text_color;
-      }
-    }
-  }
-
-  .emblem {
-    display: block;
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 28px auto;
-
-    rect {
-      fill: black;
-    }
-
-    .emblem-block {
-      fill: white;
-    }
-  }
-
-  .track {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: variables.$padding + variables.$selector_border_size + variables.$selector_size * 0.5;
-    width: variables.$orbit_size;
-    height: variables.$orbit_size;
-    margin: 0 auto;
-    overflow: visible;
-    opacity: 0;
-    @include mixins.track-gap(variables.$orbit_size);
-
-    circle {
-      fill: none;
-      stroke: #202020;
-      transform-origin: center;
-    }
-
-    &.show {
-      opacity: 1;
-    }
-  }
-
-  .key {
-    $scale_adjustment: 1;
-    position: absolute;
-    margin: ((variables.$selector_size - variables.$key_size) * 0.5) auto;
-    left: 0;
-    right: 0;
-    width: variables.$key_size;
-    height: variables.$key_size;
-    animation: orbit 2s 1 linear;
-    top: variables.$padding + variables.$selector_border_size;
-
-    &.paused {
-      animation-play-state: paused;
-    }
-
-    &.idle {
-      animation: none;
-      display: none;
-    }
-
-    &.hide svg {
-      opacity: 0;
-    }
-
-    &.key-left {
-      color: variables.$left_color;
-
-      svg {
-        transform: rotate(-90deg) scale($scale_adjustment);
-      }
-    }
-
-    &.key-up {
-      color: variables.$up_color;
-      svg {
-        transform: scale($scale_adjustment);
-      }
-    }
-
-    &.key-right {
-      color: variables.$right_color;
-
-      svg {
-        transform: rotate(90deg) scale($scale_adjustment);
-      }
-    }
-
-    &.key-down {
-      color: variables.$down_color;
-
-      svg {
-        transform: rotate(180deg) scale($scale_adjustment);
-      }
-    }
-  }
-
-  .level-message {
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    line-height: calc(variables.$size * var(--scale-factor));
-    width: 100%;
-    height: 100%;
-    font-size: 17px;
-
-    &.show {
-      display: block;
-      animation: reversedfadein 1s;
-    }
-  }
-
-  .helper-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-
-    &.hide {
-      opacity: 0;
-    }
-
-    .start-screen {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    text {
-      font-family: variables.$body_font;
-      fill: white;
-    }
-
-    .cta {
-      font-family: variables.$display_font;
-      font-size: 17px;
-      text-anchor: middle;
-    }
-
-    .sub {
-      font-size: 14px;
-      font-weight: 500;
-      fill: variables.$muted_color;
-      text-anchor: middle;
-    }
-
-    .key-base,
-    .key-shape {
-      fill: none;
-      stroke-miterlimit: 10;
-    }
-
-    .key-base {
-      stroke: black;
-      stroke-width: 17;
-    }
-
-    .key-shape {
-      stroke: currentColor;
-      stroke-width: 11;
-    }
-
-    @each $direction, $color in (up, variables.$up_color), (right, variables.$right_color), (down, variables.$down_color), (left, variables.$left_color) {
-      .#{$direction} {
-        color: $color;
-      }
-    }
-
-    // The arrows breathe together: a 3.6s breath of 1.6s in, 1.6s out and 0.4s rest, three blinks of the prompt long.
-    @media (prefers-reduced-motion: no-preference) {
-      $breath: 3.6s;
-
-      .cap {
-        transform-box: fill-box;
-        transform-origin: center;
-        animation: start-breathe $breath ease-in-out infinite;
-      }
-
-      .prompt {
-        animation: start-blink 1.2s step-end infinite;
-      }
-    }
-  }
-
-  // One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
-  // stripes of the stance colors that lag each other, so it reaches past the board's right side by $shutter_overhang
-  // for the most lagging stripe to still cover it.
-  // the board lets things like the "+x" rise past its edge, so the shutter clips itself
-  .shutter-frame {
-    position: absolute;
-    z-index: 10;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .shutter {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: -(variables.$shutter_overhang);
-    transform: translateX(-100%);
-    pointer-events: none;
-
-    // the stripes lag each other, so the moving edges zigzag
-    @each $i, $color in (1, variables.$left_color), (2, variables.$up_color), (3, variables.$right_color), (4, variables.$down_color) {
-      > div:nth-child(#{$i}) {
-        position: absolute;
-        top: ($i - 1) * 25%;
-        // 1px taller, so no seam between stripes lets the board show through
-        height: calc(25% + 1px);
-        left: 0;
-        right: 0;
-        background-color: color.mix($color, black, variables.$shutter_tint);
-        transform: translateX(list.nth(variables.$shutter_offsets, $i));
-      }
-    }
-
-    &.cover {
-      animation: shutter-cover variables.$shutter_duration variables.$shutter_easing both;
-    }
-
-    &.uncover {
-      animation: shutter-uncover variables.$shutter_duration variables.$shutter_easing both;
-    }
-  }
-
-  .results {
-    position: absolute;
-    z-index: 2;
-    display: none;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: variables.$board_color;
-    border-radius: 5px;
-    opacity: 0;
-
-    &.show {
-      display: table;
-      opacity: 1;
-    }
-
-    &.hide {
-      display: table;
-      opacity: 0;
-    }
-
-    .results-container {
-      display: table-cell;
-      vertical-align: middle;
-
-      .results-content {
-        margin-left: auto;
-        margin-right: auto;
-
-      h2,
-      h3,
-      p {
-        margin: 0;
-        color: white;
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-        h3 {
-          color: variables.$muted_color;
-        }
-
-        h2 {
-          margin: 6px 0 20px;
-          font-size: 34px;
-        }
-      }
-    }
-  }
-
-  .pause {
-    position: absolute;
-    z-index: 2;
-    display: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: variables.$board_color;
-    border-radius: 5px;
-    overflow: hidden;
-
-    &.show {
-      display: table;
-    }
-
-    .pause-container {
-      display: table-cell;
-      vertical-align: middle;
-
-      .pause-content {
-        margin-left: auto;
-        margin-right: auto;
-
-      h2,
-      h3,
-      p {
-        margin: 0;
-        color: white;
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-        h3 {
-          margin-bottom: 10px;
-          font-size: 34px;
-          text-transform: uppercase;
-        }
-      }
-    }
-  }
+	max-width: variables.$size;
+	background-color: variables.$board_color;
+	border-radius: 5px;
+	height: variables.$size;
+	position: relative;
+	border-radius: 0;
+	margin: 0 auto 10px auto;
+	padding: 0;
+	user-select: text;
+
+	.keys-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.key-selector-container {
+		position: relative;
+		z-index: 1;
+		padding: variables.$padding;
+
+		&.hide {
+			opacity: 0;
+		}
+
+		&.show {
+			opacity: 1;
+		}
+
+		.key-selector {
+			position: absolute;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
+			width: variables.$selector_size;
+			height: variables.$selector_size;
+			opacity: 0;
+
+			border: variables.$selector_border_size solid transparent;
+
+			&.show {
+				opacity: 1;
+			}
+
+			&.bad {
+				animation:
+					selector-bad 0.15s 1 ease-out,
+					selector-shake 0.25s 1 linear;
+			}
+
+			> svg {
+				position: absolute;
+				top: -(variables.$selector_border_size);
+				left: -(variables.$selector_border_size);
+				width: variables.$real_selector_size;
+				height: variables.$real_selector_size;
+				overflow: visible;
+			}
+
+			// The frame is the life band. It runs clockwise from the top middle, and a miss eats into it from the end.
+			.sel-life-track,
+			.sel-life-chunk,
+			.sel-life-band {
+				fill: none;
+				stroke-width: 4;
+			}
+
+			.sel-life-track {
+				stroke: variables.$life_track_color;
+			}
+
+			.sel-life-chunk {
+				stroke: variables.$life_chunk_color;
+				stroke-dasharray: 0 100;
+			}
+
+			.sel-life-band {
+				stroke: variables.$life_color;
+				stroke-dasharray: 100 100;
+			}
+
+			&.heal .sel-life-band {
+				animation: life-heartbeat 0.27s 1 linear;
+			}
+
+			// the flash comes last so it wins the stroke while both run
+			&.heal.punch .sel-life-band {
+				animation:
+					life-heartbeat 0.27s 1 linear,
+					selector-frame-flash 0.1s 1 step-end;
+			}
+
+			.sel-body,
+			.sel-plate {
+				transform-box: fill-box;
+				transform-origin: center;
+			}
+
+			// a catch seats the arrow: the selector presses in and the glyph flashes white
+			&.seat {
+				.sel-body {
+					animation: selector-seat 0.15s 1 linear;
+				}
+
+				.sel-glyph-shape {
+					animation: selector-seat-flash 0.07s 1 step-end;
+				}
+			}
+
+			.sel-core {
+				fill: transparent;
+			}
+
+			.sel-glyph {
+				visibility: hidden;
+				transform: rotate(var(--sel-angle));
+			}
+
+			// a stance change snaps at once: the glyph turns and the plate punches out
+			&.punch {
+				.sel-plate {
+					animation: selector-punch 0.15s 1 linear;
+				}
+
+				.sel-life-band {
+					animation: selector-frame-flash 0.1s 1 step-end;
+				}
+			}
+
+			.sel-glyph-base,
+			.sel-glyph-shape {
+				fill: none;
+				stroke-miterlimit: 10;
+			}
+
+			.sel-glyph-base {
+				stroke: black;
+				stroke-width: 19;
+			}
+
+			.sel-glyph-shape {
+				stroke: currentColor;
+				stroke-width: 11;
+			}
+
+			@each $direction, $color, $angle in (up, variables.$up_color, 0deg),
+				(right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg),
+				(left, variables.$left_color, -90deg)
+			{
+				&.s-key-#{$direction} {
+					color: $color;
+					--sel-angle: #{$angle};
+
+					.sel-glyph {
+						visibility: visible;
+					}
+				}
+			}
+
+			&.bad .sel-core {
+				animation: selector-core-bad 0.15s 1 ease-out;
+			}
+
+			.ding {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+				font-family: variables.$display_font;
+				font-size: 13pt;
+				animation: ding 0.5s 1 ease-out;
+				opacity: 0;
+				color: variables.$text_color;
+			}
+		}
+	}
+
+	.emblem {
+		display: block;
+		width: 96px;
+		height: 96px;
+		margin: 0 auto 28px auto;
+
+		rect {
+			fill: black;
+		}
+
+		.emblem-block {
+			fill: white;
+		}
+	}
+
+	.track {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: variables.$padding + variables.$selector_border_size + variables.$selector_size * 0.5;
+		width: variables.$orbit_size;
+		height: variables.$orbit_size;
+		margin: 0 auto;
+		overflow: visible;
+		opacity: 0;
+		@include mixins.track-gap(variables.$orbit_size);
+
+		circle {
+			fill: none;
+			stroke: #202020;
+			transform-origin: center;
+		}
+
+		&.show {
+			opacity: 1;
+		}
+	}
+
+	.key {
+		$scale_adjustment: 1;
+		position: absolute;
+		margin: ((variables.$selector_size - variables.$key_size) * 0.5) auto;
+		left: 0;
+		right: 0;
+		width: variables.$key_size;
+		height: variables.$key_size;
+		animation: orbit 2s 1 linear;
+		top: variables.$padding + variables.$selector_border_size;
+
+		&.paused {
+			animation-play-state: paused;
+		}
+
+		&.idle {
+			animation: none;
+			display: none;
+		}
+
+		&.hide svg {
+			opacity: 0;
+		}
+
+		&.key-left {
+			color: variables.$left_color;
+
+			svg {
+				transform: rotate(-90deg) scale($scale_adjustment);
+			}
+		}
+
+		&.key-up {
+			color: variables.$up_color;
+			svg {
+				transform: scale($scale_adjustment);
+			}
+		}
+
+		&.key-right {
+			color: variables.$right_color;
+
+			svg {
+				transform: rotate(90deg) scale($scale_adjustment);
+			}
+		}
+
+		&.key-down {
+			color: variables.$down_color;
+
+			svg {
+				transform: rotate(180deg) scale($scale_adjustment);
+			}
+		}
+	}
+
+	.level-message {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+		line-height: calc(variables.$size * var(--scale-factor));
+		width: 100%;
+		height: 100%;
+		font-size: 17px;
+
+		&.show {
+			display: block;
+			animation: reversedfadein 1s;
+		}
+	}
+
+	.helper-container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		bottom: 0;
+
+		&.hide {
+			opacity: 0;
+		}
+
+		.start-screen {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		text {
+			font-family: variables.$body_font;
+			fill: white;
+		}
+
+		.cta {
+			font-family: variables.$display_font;
+			font-size: 17px;
+			text-anchor: middle;
+		}
+
+		.sub {
+			font-size: 14px;
+			font-weight: 500;
+			fill: variables.$muted_color;
+			text-anchor: middle;
+		}
+
+		.key-base,
+		.key-shape {
+			fill: none;
+			stroke-miterlimit: 10;
+		}
+
+		.key-base {
+			stroke: black;
+			stroke-width: 17;
+		}
+
+		.key-shape {
+			stroke: currentColor;
+			stroke-width: 11;
+		}
+
+		@each $direction, $color in (up, variables.$up_color), (right, variables.$right_color),
+			(down, variables.$down_color), (left, variables.$left_color)
+		{
+			.#{$direction} {
+				color: $color;
+			}
+		}
+
+		// The arrows breathe together: a 3.6s breath of 1.6s in, 1.6s out and 0.4s rest, three blinks of the prompt long.
+		@media (prefers-reduced-motion: no-preference) {
+			$breath: 3.6s;
+
+			.cap {
+				transform-box: fill-box;
+				transform-origin: center;
+				animation: start-breathe $breath ease-in-out infinite;
+			}
+
+			.prompt {
+				animation: start-blink 1.2s step-end infinite;
+			}
+		}
+	}
+
+	// One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
+	// stripes of the stance colors that lag each other, so it reaches past the board's right side by $shutter_overhang
+	// for the most lagging stripe to still cover it.
+	// the board lets things like the "+x" rise past its edge, so the shutter clips itself
+	.shutter-frame {
+		position: absolute;
+		z-index: 10;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.shutter {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: -(variables.$shutter_overhang);
+		transform: translateX(-100%);
+		pointer-events: none;
+
+		// the stripes lag each other, so the moving edges zigzag
+		@each $i, $color in (1, variables.$left_color), (2, variables.$up_color),
+			(3, variables.$right_color), (4, variables.$down_color)
+		{
+			> div:nth-child(#{$i}) {
+				position: absolute;
+				top: ($i - 1) * 25%;
+				// 1px taller, so no seam between stripes lets the board show through
+				height: calc(25% + 1px);
+				left: 0;
+				right: 0;
+				background-color: color.mix($color, black, variables.$shutter_tint);
+				transform: translateX(list.nth(variables.$shutter_offsets, $i));
+			}
+		}
+
+		&.cover {
+			animation: shutter-cover variables.$shutter_duration variables.$shutter_easing both;
+		}
+
+		&.uncover {
+			animation: shutter-uncover variables.$shutter_duration variables.$shutter_easing both;
+		}
+	}
+
+	.results {
+		position: absolute;
+		z-index: 2;
+		display: none;
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		background-color: variables.$board_color;
+		border-radius: 5px;
+		opacity: 0;
+
+		&.show {
+			display: table;
+			opacity: 1;
+		}
+
+		&.hide {
+			display: table;
+			opacity: 0;
+		}
+
+		.results-container {
+			display: table-cell;
+			vertical-align: middle;
+
+			.results-content {
+				margin-left: auto;
+				margin-right: auto;
+
+				h2,
+				h3,
+				p {
+					margin: 0;
+					color: white;
+					font-size: 16px;
+					font-weight: 500;
+				}
+
+				h3 {
+					color: variables.$muted_color;
+				}
+
+				h2 {
+					margin: 6px 0 20px;
+					font-size: 34px;
+				}
+			}
+		}
+	}
+
+	.pause {
+		position: absolute;
+		z-index: 2;
+		display: none;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: variables.$board_color;
+		border-radius: 5px;
+		overflow: hidden;
+
+		&.show {
+			display: table;
+		}
+
+		.pause-container {
+			display: table-cell;
+			vertical-align: middle;
+
+			.pause-content {
+				margin-left: auto;
+				margin-right: auto;
+
+				h2,
+				h3,
+				p {
+					margin: 0;
+					color: white;
+					font-size: 16px;
+					font-weight: 500;
+				}
+
+				h3 {
+					margin-bottom: 10px;
+					font-size: 34px;
+					text-transform: uppercase;
+				}
+			}
+		}
+	}
 }
 
 .points-container {
-  max-width: variables.$size + 2*variables.$padding;
-  text-align: center;
-  font-family: variables.$display_font;
-  font-size: 18px;
-  color: white;
-  margin: 0 auto 20px auto;
-  opacity: 0;
+	max-width: variables.$size + 2 * variables.$padding;
+	text-align: center;
+	font-family: variables.$display_font;
+	font-size: 18px;
+	color: white;
+	margin: 0 auto 20px auto;
+	opacity: 0;
 
-  .points {
-    display: inline-block;
+	.points {
+		display: inline-block;
 
-    &.bump {
-      animation: points-bump 0.17s 1 linear;
-    }
-  }
+		&.bump {
+			animation: points-bump 0.17s 1 linear;
+		}
+	}
 
-  &.hide {
-    opacity: 0;
-  }
+	&.hide {
+		opacity: 0;
+	}
 
-  &.show {
-    opacity: 1;
-  }
+	&.show {
+		opacity: 1;
+	}
 }
 
 .best {
-  max-width: variables.$size;
-  margin: 0 auto;
-  text-align: right;
-  padding-right: 5px;
-  font-size: 16px;
+	max-width: variables.$size;
+	margin: 0 auto;
+	text-align: right;
+	padding-right: 5px;
+	font-size: 16px;
 
-  .best-points {
-    font-weight: 500;
-  }
+	.best-points {
+		font-weight: 500;
+	}
 }
 
 .fullscreen-btn {
-  max-width: variables.$size;
-  margin: 5px auto 0;
-  text-align: right;
-  padding-right: 5px;
-  font-size: 16px;
+	max-width: variables.$size;
+	margin: 5px auto 0;
+	text-align: right;
+	padding-right: 5px;
+	font-size: 16px;
 }
 
 .about {
-  max-width: variables.$size - 20px;
-  margin: 0 auto;
-  text-align: justify;
-  font-size: 16px;
-  padding-top: 20px;
+	max-width: variables.$size - 20px;
+	margin: 0 auto;
+	text-align: justify;
+	font-size: 16px;
+	padding-top: 20px;
 
-  p {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+	p {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
 
-  .prim {
-    color: variables.$text_color;
-    font-weight: 500;
-  }
+	.prim {
+		color: variables.$text_color;
+		font-weight: 500;
+	}
 
-  .sec {
-    color: variables.$text_color;
-    font-weight: 500;
-  }
+	.sec {
+		color: variables.$text_color;
+		font-weight: 500;
+	}
 
-  .third {
-    color: variables.$up_color;
-    font-weight: 500;
-  }
+	.third {
+		color: variables.$up_color;
+		font-weight: 500;
+	}
 
-  .key-up {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    vertical-align: top;
-    color: variables.$up_color;
+	.key-up {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		vertical-align: top;
+		color: variables.$up_color;
 
-    svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  }
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+	}
 
-  .tiny {
-    font-size: 12px;
-  }
+	.tiny {
+		font-size: 12px;
+	}
 
-  .share {
-    padding-bottom: 20px;
-    padding-top: 10px;
-    text-align: center;
-    min-height: 30px;
+	.share {
+		padding-bottom: 20px;
+		padding-top: 10px;
+		text-align: center;
+		min-height: 30px;
 
-    &.big {
-      min-height: 100px;
-    }
+		&.big {
+			min-height: 100px;
+		}
 
-    .reddit-share-button {
-      top: -3px;
-      vertical-align: middle;
-      padding-bottom: 6px;
-    }
+		.reddit-share-button {
+			top: -3px;
+			vertical-align: middle;
+			padding-bottom: 6px;
+		}
 
-    .fb-share-button {
-      top: -3px;
-    }
+		.fb-share-button {
+			top: -3px;
+		}
 
-    .reddit-share-button {
-      vertical-align: top;
-    }
-  }
+		.reddit-share-button {
+			vertical-align: top;
+		}
+	}
 
-  .footer {
-    text-align: right;
-  }
+	.footer {
+		text-align: right;
+	}
 }
 
 .mobile-controls {
-  position: relative;
-  display: none;
-  max-width: variables.$size;
-  margin: 0 auto;
-  user-select: none;
+	position: relative;
+	display: none;
+	max-width: variables.$size;
+	margin: 0 auto;
+	user-select: none;
 
-  .top,
-  .bottom {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding-bottom: 10px;
-  }
+	.top,
+	.bottom {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		padding-bottom: 10px;
+	}
 
-  .key-up,
-  .key-left,
-  .key-down,
-  .key-right {
-    width: variables.$key_size + 15px;
-    height: variables.$key_size + 15px;
-    box-sizing: border-box;
-    border: 3px solid white;
-    background-color: black;
+	.key-up,
+	.key-left,
+	.key-down,
+	.key-right {
+		width: variables.$key_size + 15px;
+		height: variables.$key_size + 15px;
+		box-sizing: border-box;
+		border: 3px solid white;
+		background-color: black;
 
-    svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
 
-    &:active {
-      background-color: currentColor;
+		&:active {
+			background-color: currentColor;
 
-      .key-base {
-        display: none;
-      }
+			.key-base {
+				display: none;
+			}
 
-      .key-shape {
-        stroke: black;
-      }
-    }
-  }
+			.key-shape {
+				stroke: black;
+			}
+		}
+	}
 
-  @each $direction, $color, $angle in (up, variables.$up_color, 0deg), (right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg), (left, variables.$left_color, -90deg) {
-    .key-#{$direction} {
-      color: $color;
+	@each $direction, $color, $angle in (up, variables.$up_color, 0deg),
+		(right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg),
+		(left, variables.$left_color, -90deg)
+	{
+		.key-#{$direction} {
+			color: $color;
 
-      svg {
-        transform: rotate($angle);
-      }
-    }
-  }
+			svg {
+				transform: rotate($angle);
+			}
+		}
+	}
 
-  .pause-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-right: 7px;
-    padding: 12px 14px;
-    background-color: white;
-    color: black;
-    font-family: variables.$display_font;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+	.pause-btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-right: 7px;
+		padding: 12px 14px;
+		background-color: white;
+		color: black;
+		font-family: variables.$display_font;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
 }

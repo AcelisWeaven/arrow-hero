@@ -1,85 +1,86 @@
-@use "mixins";
-@use "variables";
+@use 'mixins';
+@use 'variables';
 
 // Desktop
 @media (min-width: 1024px) {
-  .desktop-only {
-    display: block;
-  }
-  .not-desktop {
-    display: none;
-  }
+	.desktop-only {
+		display: block;
+	}
+	.not-desktop {
+		display: none;
+	}
 }
 
 // Tablet
 @media (max-width: 1024px) {
-  .mobile-controls {
-    display: block;
-  }
+	.mobile-controls {
+		display: block;
+	}
 
-  .desktop-only {
-    display: none;
-  }
-  .not-desktop {
-    display: block;
-  }
+	.desktop-only {
+		display: none;
+	}
+	.not-desktop {
+		display: block;
+	}
 
-  .container {
-    .emblem {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 16px;
-    }
-  }
-
+	.container {
+		.emblem {
+			width: 64px;
+			height: 64px;
+			margin-bottom: 16px;
+		}
+	}
 }
 
 // Mobile
 @media (max-width: 480px) {
-  body {
-    padding-top: 0;
+	body {
+		padding-top: 0;
 
-    h1 {
-      margin-top: 5px;
-    }
-  }
+		h1 {
+			margin-top: 5px;
+		}
+	}
 
-  .container {
-    height: variables.$size * 0.7;
-    margin-top: 0;
+	.container {
+		height: variables.$size * 0.7;
+		margin-top: 0;
 
-    .key-selector-container {
-      .key-selector {
-        &.bad {
-          animation: mobile-selector-bad 0.15s 1 ease-out, selector-shake 0.25s 1 linear;
-        }
-      }
-    }
+		.key-selector-container {
+			.key-selector {
+				&.bad {
+					animation:
+						mobile-selector-bad 0.15s 1 ease-out,
+						selector-shake 0.25s 1 linear;
+				}
+			}
+		}
 
-    .key {
-      backface-visibility: hidden;
-      animation: mobile-orbit 2s 1 linear;
-      opacity: 1;
-    }
+		.key {
+			backface-visibility: hidden;
+			animation: mobile-orbit 2s 1 linear;
+			opacity: 1;
+		}
 
-    .track {
-      width: variables.$orbit_size * 0.6;
-      height: variables.$orbit_size * 0.6;
-      @include mixins.track-gap(variables.$orbit_size * 0.6);
-    }
+		.track {
+			width: variables.$orbit_size * 0.6;
+			height: variables.$orbit_size * 0.6;
+			@include mixins.track-gap(variables.$orbit_size * 0.6);
+		}
 
-    .pause .pause-container .pause-content h3 {
-      font-size: 28px;
-    }
+		.pause .pause-container .pause-content h3 {
+			font-size: 28px;
+		}
 
-    .results .results-container .results-content h2 {
-      margin-bottom: 12px;
-      font-size: 28px;
-    }
-  }
+		.results .results-container .results-content h2 {
+			margin-bottom: 12px;
+			font-size: 28px;
+		}
+	}
 
-  .about {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+	.about {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
 }

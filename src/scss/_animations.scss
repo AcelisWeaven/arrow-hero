@@ -1,256 +1,337 @@
-@use "variables";
+@use 'variables';
 
 @keyframes reversedfadein {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: scale(calc(1.2 * var(--scale-factor)));
-    opacity: 0;
-  }
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: scale(calc(1.2 * var(--scale-factor)));
+		opacity: 0;
+	}
 }
 
 @keyframes orbit {
-  0% {
-    opacity: 0;
-    transform: translateY(variables.$orbit_radius) rotate(0deg) translateY(-(variables.$orbit_radius)) rotate(0deg) scale(1);
-  }
-  7% {
-    opacity: 0;
-    transform: translateY(variables.$orbit_radius) rotate(#{-360*0.07}deg) translateY(-(variables.$orbit_radius)) rotate(#{360*0.07}deg) scale(1);
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(variables.$orbit_radius) rotate(#{-360*0.1}deg) translateY(-(variables.$orbit_radius)) rotate(#{360*0.1}deg) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(variables.$orbit_radius) rotate(-360deg) translateY(-(variables.$orbit_radius)) rotate(360deg) scale(1);
-  }
+	0% {
+		opacity: 0;
+		transform: translateY(variables.$orbit_radius) rotate(0deg)
+			translateY(-(variables.$orbit_radius)) rotate(0deg) scale(1);
+	}
+	7% {
+		opacity: 0;
+		transform: translateY(variables.$orbit_radius) rotate(#{-360 * 0.07}deg)
+			translateY(-(variables.$orbit_radius)) rotate(#{360 * 0.07}deg) scale(1);
+	}
+	10% {
+		opacity: 1;
+		transform: translateY(variables.$orbit_radius) rotate(#{-360 * 0.1}deg)
+			translateY(-(variables.$orbit_radius)) rotate(#{360 * 0.1}deg) scale(1);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(variables.$orbit_radius) rotate(-360deg)
+			translateY(-(variables.$orbit_radius)) rotate(360deg) scale(1);
+	}
 }
 
 @keyframes mobile-orbit {
-  0% {
-    opacity: 0;
-    transform: translateY(variables.$orbit_radius * 0.6) rotate(0deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(0deg) scale(0.1);
-  }
-  10% {
-    opacity: 0;
-  }
-  13% {
-    opacity: 1;
-  }
-  20% {
-    transform: translateY(variables.$orbit_radius * 0.6) rotate(-72deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(72deg) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(variables.$orbit_radius * 0.6) rotate(-360deg) translateY(-(variables.$orbit_radius) * 0.6) rotate(360deg) scale(1);
-  }
+	0% {
+		opacity: 0;
+		transform: translateY(variables.$orbit_radius * 0.6) rotate(0deg)
+			translateY(-(variables.$orbit_radius) * 0.6) rotate(0deg) scale(0.1);
+	}
+	10% {
+		opacity: 0;
+	}
+	13% {
+		opacity: 1;
+	}
+	20% {
+		transform: translateY(variables.$orbit_radius * 0.6) rotate(-72deg)
+			translateY(-(variables.$orbit_radius) * 0.6) rotate(72deg) scale(1);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(variables.$orbit_radius * 0.6) rotate(-360deg)
+			translateY(-(variables.$orbit_radius) * 0.6) rotate(360deg) scale(1);
+	}
 }
 
 @keyframes lowbump {
-  50% {
-    transform: scale(1.1);
-  }
+	50% {
+		transform: scale(1.1);
+	}
 
-  100% {
-    transform: scale(1);
-  }
+	100% {
+		transform: scale(1);
+	}
 }
 
-
 @keyframes bump {
-  50% {
-    transform: scale(2);
-  }
+	50% {
+		transform: scale(2);
+	}
 
-  100% {
-    transform: scale(1);
-  }
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes selector-bad {
-  0% {
-    background-color: rgba(255, 0, 0, 0);
-  }
-  50% {
-    background-color: rgba(255, 0, 0, 0.3);
-    transform: scale(0.95);
-  }
+	0% {
+		background-color: rgba(255, 0, 0, 0);
+	}
+	50% {
+		background-color: rgba(255, 0, 0, 0.3);
+		transform: scale(0.95);
+	}
 
-  100% {
-    background-color: rgba(255, 0, 0, 0);
-    transform: scale(1);
-  }
+	100% {
+		background-color: rgba(255, 0, 0, 0);
+		transform: scale(1);
+	}
 }
 
 @keyframes selector-core-bad {
-  50% {
-    fill: rgba(255, 40, 40, 0.35);
-  }
+	50% {
+		fill: rgba(255, 40, 40, 0.35);
+	}
 }
 
 @keyframes mobile-selector-bad {
-  0% {
-    background-color: rgba(255, 0, 0, 0);
-  }
+	0% {
+		background-color: rgba(255, 0, 0, 0);
+	}
 
-  50% {
-    background-color: rgba(255, 0, 0, 0.3);
-  }
+	50% {
+		background-color: rgba(255, 0, 0, 0.3);
+	}
 
-  100% {
-    background-color: rgba(255, 0, 0, 0);
-  }
+	100% {
+		background-color: rgba(255, 0, 0, 0);
+	}
 }
 
 @keyframes ding {
-  0% {
-    opacity: 1;
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
+	0% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-30px);
+	}
 }
 
 @keyframes color-arrow {
-  0%, 10% {
-    color: variables.$up_color;
-    transform: rotate(0deg) translateY(-5px);
-  }
-  15%, 35% {
-    color: variables.$right_color;
-    transform: rotate(90deg) translateY(-5px);
-  }
-  40%, 60% {
-    color: variables.$down_color;
-    transform: rotate(180deg) translateY(-5px);
-  }
-  65%, 85% {
-    color: variables.$left_color;
-    transform: rotate(270deg) translateY(-5px);
-  }
-  90%, 100% {
-    color: variables.$up_color;
-    transform: rotate(359deg) translateY(-5px);
-  }
+	0%,
+	10% {
+		color: variables.$up_color;
+		transform: rotate(0deg) translateY(-5px);
+	}
+	15%,
+	35% {
+		color: variables.$right_color;
+		transform: rotate(90deg) translateY(-5px);
+	}
+	40%,
+	60% {
+		color: variables.$down_color;
+		transform: rotate(180deg) translateY(-5px);
+	}
+	65%,
+	85% {
+		color: variables.$left_color;
+		transform: rotate(270deg) translateY(-5px);
+	}
+	90%,
+	100% {
+		color: variables.$up_color;
+		transform: rotate(359deg) translateY(-5px);
+	}
 }
 
 // Punch: a hard push out that eases straight back, with no settle tail
 @keyframes selector-punch {
-  0% {
-    transform: scale(1);
-  }
-  20% {
-    transform: scale(1.08);
-    animation-timing-function: ease-out;
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+	20% {
+		transform: scale(1.08);
+		animation-timing-function: ease-out;
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes selector-frame-flash {
-  from, to {
-    stroke: currentColor;
-  }
+	from,
+	to {
+		stroke: currentColor;
+	}
 }
 
 // sin(90t) * 6px, fading out over 0.25s. It uses translate so it adds to the miss's scale.
 @keyframes selector-shake {
-  0% { translate: 0 0; }
-  7% { translate: 5.568px 0; }
-  14% { translate: -0.374px 0; }
-  21% { translate: -4.686px 0; }
-  29% { translate: 0.621px 0; }
-  36% { translate: 3.794px 0; }
-  43% { translate: -0.742px 0; }
-  50% { translate: -2.903px 0; }
-  57% { translate: 0.737px 0; }
-  64% { translate: 2.029px 0; }
-  71% { translate: -0.609px 0; }
-  79% { translate: -1.184px 0; }
-  86% { translate: 0.362px 0; }
-  93% { translate: 0.382px 0; }
-  100% { translate: 0 0; }
+	0% {
+		translate: 0 0;
+	}
+	7% {
+		translate: 5.568px 0;
+	}
+	14% {
+		translate: -0.374px 0;
+	}
+	21% {
+		translate: -4.686px 0;
+	}
+	29% {
+		translate: 0.621px 0;
+	}
+	36% {
+		translate: 3.794px 0;
+	}
+	43% {
+		translate: -0.742px 0;
+	}
+	50% {
+		translate: -2.903px 0;
+	}
+	57% {
+		translate: 0.737px 0;
+	}
+	64% {
+		translate: 2.029px 0;
+	}
+	71% {
+		translate: -0.609px 0;
+	}
+	79% {
+		translate: -1.184px 0;
+	}
+	86% {
+		translate: 0.362px 0;
+	}
+	93% {
+		translate: 0.382px 0;
+	}
+	100% {
+		translate: 0 0;
+	}
 }
 
 // two beats 0.14s apart, the second softer: each one thickens the band at once, then eases back
 @keyframes life-heartbeat {
-  0% { stroke-width: 7; }
-  15% { stroke-width: 5.44; }
-  30% { stroke-width: 4.45; }
-  48%, 51% { stroke-width: 4; }
-  52% { stroke-width: 5.5; }
-  67% { stroke-width: 4.72; }
-  85% { stroke-width: 4.15; }
-  100% { stroke-width: 4; }
+	0% {
+		stroke-width: 7;
+	}
+	15% {
+		stroke-width: 5.44;
+	}
+	30% {
+		stroke-width: 4.45;
+	}
+	48%,
+	51% {
+		stroke-width: 4;
+	}
+	52% {
+		stroke-width: 5.5;
+	}
+	67% {
+		stroke-width: 4.72;
+	}
+	85% {
+		stroke-width: 4.15;
+	}
+	100% {
+		stroke-width: 4;
+	}
 }
 
 // the counter jumps up on a point and settles straight back
 @keyframes points-bump {
-  from {
-    transform: scale(1.35);
-  }
-  to {
-    transform: scale(1);
-  }
+	from {
+		transform: scale(1.35);
+	}
+	to {
+		transform: scale(1);
+	}
 }
 
 @keyframes shutter-cover {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
 }
 
 @keyframes shutter-uncover {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(100%);
+	}
 }
 
 // the catch: pressed in at once, back out as 1 - 0.05 * exp(-25t)
 @keyframes selector-seat {
-  0% { transform: scale(0.95); }
-  20% { transform: scale(0.976); }
-  40% { transform: scale(0.989); }
-  67% { transform: scale(0.996); }
-  100% { transform: scale(1); }
+	0% {
+		transform: scale(0.95);
+	}
+	20% {
+		transform: scale(0.976);
+	}
+	40% {
+		transform: scale(0.989);
+	}
+	67% {
+		transform: scale(0.996);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes selector-seat-flash {
-  from, to {
-    stroke: white;
-  }
+	from,
+	to {
+		stroke: white;
+	}
 }
 
 // start screen: all four arrows breathe together, swelling and nudging out, easing back, then resting a beat
 @keyframes start-breathe {
-  0% { scale: 1; translate: 0 0; }
-  45% { scale: 1.08; translate: 0 -2px; }
-  90%, 100% { scale: 1; translate: 0 0; }
+	0% {
+		scale: 1;
+		translate: 0 0;
+	}
+	45% {
+		scale: 1.08;
+		translate: 0 -2px;
+	}
+	90%,
+	100% {
+		scale: 1;
+		translate: 0 0;
+	}
 }
 
 // a steady arcade blink: on for two thirds of the beat, off for the rest
 @keyframes start-blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  67% {
-    opacity: 0;
-  }
+	0%,
+	100% {
+		opacity: 1;
+	}
+	67% {
+		opacity: 0;
+	}
 }
