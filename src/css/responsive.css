@@ -1,7 +1,4 @@
-@use 'mixins';
-@use 'variables';
-
-// Desktop
+/* Desktop */
 @media (min-width: 1024px) {
 	.desktop-only {
 		display: block;
@@ -11,7 +8,7 @@
 	}
 }
 
-// Tablet
+/* Tablet */
 @media (max-width: 1024px) {
 	.mobile-controls {
 		display: block;
@@ -33,7 +30,7 @@
 	}
 }
 
-// Mobile
+/* Mobile */
 @media (max-width: 480px) {
 	body {
 		padding-top: 0;
@@ -44,7 +41,7 @@
 	}
 
 	.container {
-		height: variables.$size * 0.7;
+		height: calc(var(--size) * 0.7);
 		margin-top: 0;
 
 		.key-selector-container {
@@ -64,9 +61,15 @@
 		}
 
 		.track {
-			width: variables.$orbit_size * 0.6;
-			height: variables.$orbit_size * 0.6;
-			@include mixins.track-gap(variables.$orbit_size * 0.6);
+			width: calc(var(--orbit-size) * 0.6);
+			height: calc(var(--orbit-size) * 0.6);
+
+			/* the same gap as in layout.css, for the 180px ring: asin(47px / 90px) = 31.4814 */
+			circle {
+				stroke-dasharray: 297.0371356817 62.9628643183;
+				stroke-width: 3.3333333333px;
+				transform: rotate(-58.5185678408deg);
+			}
 		}
 
 		.pause .pause-container .pause-content h3 {

@@ -1,21 +1,16 @@
-@use 'sass:color';
-@use 'sass:list';
-@use 'mixins';
-@use 'variables';
-
 body {
-	font-family: variables.$body_font;
+	font-family: var(--body-font);
 	text-align: center;
-	background-color: variables.$background_color;
+	background-color: var(--background-color);
 	padding-top: 20px;
-	color: variables.$text_color;
+	color: var(--text-color);
 	margin: 0;
 	overflow-x: hidden;
 
 	h1,
 	h2,
 	h3 {
-		font-family: variables.$display_font;
+		font-family: var(--display-font);
 		font-weight: normal;
 	}
 
@@ -48,7 +43,7 @@ body {
 	a {
 		text-decoration: none;
 		font-weight: 500;
-		color: variables.$right_color;
+		color: var(--right-color);
 	}
 
 	strong {
@@ -67,11 +62,11 @@ body {
 }
 
 .mobile {
-	max-width: variables.$size - 20px;
+	max-width: calc(var(--size) - 20px);
 	margin: 0 auto 20px auto;
 	text-align: left;
 	border-radius: 5px;
-	background-color: rgba(black, 0.5);
+	background-color: rgb(0 0 0 / 0.5);
 	padding: 15px 10px;
 	color: white;
 
@@ -94,7 +89,7 @@ body {
 			padding: 5px 20px;
 			margin: 5px 0;
 			display: inline-block;
-			background-color: rgba(white, 0.1);
+			background-color: rgb(255 255 255 / 0.1);
 		}
 	}
 }
@@ -110,7 +105,7 @@ body {
 		}
 	}
 
-	// scale sub containers to fit the parent, using some magic calculations
+	/* scale sub containers to fit the parent, using some magic calculations */
 	.keys-container,
 	.key-selector-container,
 	.level-message {
@@ -119,10 +114,10 @@ body {
 }
 
 .container {
-	max-width: variables.$size;
-	background-color: variables.$board_color;
+	max-width: var(--size);
+	background-color: var(--board-color);
 	border-radius: 5px;
-	height: variables.$size;
+	height: var(--size);
 	position: relative;
 	border-radius: 0;
 	margin: 0 auto 10px auto;
@@ -139,7 +134,7 @@ body {
 	.key-selector-container {
 		position: relative;
 		z-index: 1;
-		padding: variables.$padding;
+		padding: var(--padding);
 
 		&.hide {
 			opacity: 0;
@@ -154,11 +149,11 @@ body {
 			margin: 0 auto;
 			left: 0;
 			right: 0;
-			width: variables.$selector_size;
-			height: variables.$selector_size;
+			width: var(--selector-size);
+			height: var(--selector-size);
 			opacity: 0;
 
-			border: variables.$selector_border_size solid transparent;
+			border: var(--selector-border-size) solid transparent;
 
 			&.show {
 				opacity: 1;
@@ -172,14 +167,14 @@ body {
 
 			> svg {
 				position: absolute;
-				top: -(variables.$selector_border_size);
-				left: -(variables.$selector_border_size);
-				width: variables.$real_selector_size;
-				height: variables.$real_selector_size;
+				top: calc(-1 * var(--selector-border-size));
+				left: calc(-1 * var(--selector-border-size));
+				width: var(--real-selector-size);
+				height: var(--real-selector-size);
 				overflow: visible;
 			}
 
-			// The frame is the life band. It runs clockwise from the top middle, and a miss eats into it from the end.
+			/* The frame is the life band. It runs clockwise from the top middle, and a miss eats into it from the end. */
 			.sel-life-track,
 			.sel-life-chunk,
 			.sel-life-band {
@@ -188,16 +183,16 @@ body {
 			}
 
 			.sel-life-track {
-				stroke: variables.$life_track_color;
+				stroke: var(--life-track-color);
 			}
 
 			.sel-life-chunk {
-				stroke: variables.$life_chunk_color;
+				stroke: var(--life-chunk-color);
 				stroke-dasharray: 0 100;
 			}
 
 			.sel-life-band {
-				stroke: variables.$life_color;
+				stroke: var(--life-color);
 				stroke-dasharray: 100 100;
 			}
 
@@ -205,7 +200,7 @@ body {
 				animation: life-heartbeat 0.27s 1 linear;
 			}
 
-			// the flash comes last so it wins the stroke while both run
+			/* the flash comes last so it wins the stroke while both run */
 			&.heal.punch .sel-life-band {
 				animation:
 					life-heartbeat 0.27s 1 linear,
@@ -218,7 +213,7 @@ body {
 				transform-origin: center;
 			}
 
-			// a catch seats the arrow: the selector presses in and the glyph flashes white
+			/* a catch seats the arrow: the selector presses in and the glyph flashes white */
 			&.seat {
 				.sel-body {
 					animation: selector-seat 0.15s 1 linear;
@@ -238,7 +233,7 @@ body {
 				transform: rotate(var(--sel-angle));
 			}
 
-			// a stance change snaps at once: the glyph turns and the plate punches out
+			/* a stance change snaps at once: the glyph turns and the plate punches out */
 			&.punch {
 				.sel-plate {
 					animation: selector-punch 0.15s 1 linear;
@@ -265,18 +260,28 @@ body {
 				stroke-width: 11;
 			}
 
-			@each $direction, $color, $angle in (up, variables.$up_color, 0deg),
-				(right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg),
-				(left, variables.$left_color, -90deg)
-			{
-				&.s-key-#{$direction} {
-					color: $color;
-					--sel-angle: #{$angle};
+			&.s-key-up {
+				color: var(--up-color);
+				--sel-angle: 0deg;
+			}
 
-					.sel-glyph {
-						visibility: visible;
-					}
-				}
+			&.s-key-right {
+				color: var(--right-color);
+				--sel-angle: 90deg;
+			}
+
+			&.s-key-down {
+				color: var(--down-color);
+				--sel-angle: 180deg;
+			}
+
+			&.s-key-left {
+				color: var(--left-color);
+				--sel-angle: -90deg;
+			}
+
+			&:is(.s-key-up, .s-key-right, .s-key-down, .s-key-left) .sel-glyph {
+				visibility: visible;
 			}
 
 			&.bad .sel-core {
@@ -289,11 +294,11 @@ body {
 				left: 0;
 				right: 0;
 				margin: 0 auto;
-				font-family: variables.$display_font;
+				font-family: var(--display-font);
 				font-size: 13pt;
 				animation: ding 0.5s 1 ease-out;
 				opacity: 0;
-				color: variables.$text_color;
+				color: var(--text-color);
 			}
 		}
 	}
@@ -317,18 +322,25 @@ body {
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: variables.$padding + variables.$selector_border_size + variables.$selector_size * 0.5;
-		width: variables.$orbit_size;
-		height: variables.$orbit_size;
+		top: calc(var(--padding) + var(--selector-border-size) + var(--selector-size) * 0.5);
+		width: var(--orbit-size);
+		height: var(--orbit-size);
 		margin: 0 auto;
 		overflow: visible;
 		opacity: 0;
-		@include mixins.track-gap(variables.$orbit_size);
 
+		/* Leaves a gap in the ring where the selector sits, plus 10px of air on each side. The ring is drawn with
+		   pathLength 360, so dash lengths are in degrees: the gap is asin((37px + 10px) / 150px) = 18.2602 on each
+		   side of the 300px ring. CSS can't turn an angle into a plain number in the browsers we target, so the
+		   values are precomputed (the mobile ring has its own in responsive.css). */
 		circle {
 			fill: none;
 			stroke: #202020;
+			stroke-dasharray: 323.4795441342 36.5204558658;
+			/* the viewBox is 300 wide, so scale the stroke back to 2px on screen */
+			stroke-width: 2px;
 			transform-origin: center;
+			transform: rotate(-71.7397720671deg);
 		}
 
 		&.show {
@@ -337,15 +349,14 @@ body {
 	}
 
 	.key {
-		$scale_adjustment: 1;
 		position: absolute;
-		margin: ((variables.$selector_size - variables.$key_size) * 0.5) auto;
+		margin: calc((var(--selector-size) - var(--key-size)) * 0.5) auto;
 		left: 0;
 		right: 0;
-		width: variables.$key_size;
-		height: variables.$key_size;
+		width: var(--key-size);
+		height: var(--key-size);
 		animation: orbit 2s 1 linear;
-		top: variables.$padding + variables.$selector_border_size;
+		top: calc(var(--padding) + var(--selector-border-size));
 
 		&.paused {
 			animation-play-state: paused;
@@ -361,33 +372,34 @@ body {
 		}
 
 		&.key-left {
-			color: variables.$left_color;
+			color: var(--left-color);
 
 			svg {
-				transform: rotate(-90deg) scale($scale_adjustment);
+				transform: rotate(-90deg);
 			}
 		}
 
 		&.key-up {
-			color: variables.$up_color;
+			color: var(--up-color);
+
 			svg {
-				transform: scale($scale_adjustment);
+				transform: rotate(0deg);
 			}
 		}
 
 		&.key-right {
-			color: variables.$right_color;
+			color: var(--right-color);
 
 			svg {
-				transform: rotate(90deg) scale($scale_adjustment);
+				transform: rotate(90deg);
 			}
 		}
 
 		&.key-down {
-			color: variables.$down_color;
+			color: var(--down-color);
 
 			svg {
-				transform: rotate(180deg) scale($scale_adjustment);
+				transform: rotate(180deg);
 			}
 		}
 	}
@@ -397,7 +409,7 @@ body {
 		position: absolute;
 		left: 0;
 		top: 0;
-		line-height: calc(variables.$size * var(--scale-factor));
+		line-height: calc(var(--size) * var(--scale-factor));
 		width: 100%;
 		height: 100%;
 		font-size: 17px;
@@ -427,12 +439,12 @@ body {
 		}
 
 		text {
-			font-family: variables.$body_font;
+			font-family: var(--body-font);
 			fill: white;
 		}
 
 		.cta {
-			font-family: variables.$display_font;
+			font-family: var(--display-font);
 			font-size: 17px;
 			text-anchor: middle;
 		}
@@ -440,7 +452,7 @@ body {
 		.sub {
 			font-size: 14px;
 			font-weight: 500;
-			fill: variables.$muted_color;
+			fill: var(--muted-color);
 			text-anchor: middle;
 		}
 
@@ -460,22 +472,28 @@ body {
 			stroke-width: 11;
 		}
 
-		@each $direction, $color in (up, variables.$up_color), (right, variables.$right_color),
-			(down, variables.$down_color), (left, variables.$left_color)
-		{
-			.#{$direction} {
-				color: $color;
-			}
+		.up {
+			color: var(--up-color);
 		}
 
-		// The arrows breathe together: a 3.6s breath of 1.6s in, 1.6s out and 0.4s rest, three blinks of the prompt long.
-		@media (prefers-reduced-motion: no-preference) {
-			$breath: 3.6s;
+		.right {
+			color: var(--right-color);
+		}
 
+		.down {
+			color: var(--down-color);
+		}
+
+		.left {
+			color: var(--left-color);
+		}
+
+		/* The arrows breathe together: a 3.6s breath of 1.6s in, 1.6s out and 0.4s rest, three blinks of the prompt long. */
+		@media (prefers-reduced-motion: no-preference) {
 			.cap {
 				transform-box: fill-box;
 				transform-origin: center;
-				animation: start-breathe $breath ease-in-out infinite;
+				animation: start-breathe 3.6s ease-in-out infinite;
 			}
 
 			.prompt {
@@ -484,10 +502,10 @@ body {
 		}
 	}
 
-	// One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
-	// stripes of the stance colors that lag each other, so it reaches past the board's right side by $shutter_overhang
-	// for the most lagging stripe to still cover it.
-	// the board lets things like the "+x" rise past its edge, so the shutter clips itself
+	/* One panel slides over the whole board, the screens swap under it, then it slides off. It is split into four
+	   stripes of the stance colors that lag each other, so it reaches 18% past the board's right side for the most
+	   lagging stripe to still cover it. */
+	/* the board lets things like the "+x" rise past its edge, so the shutter clips itself */
 	.shutter-frame {
 		position: absolute;
 		z-index: 10;
@@ -501,32 +519,49 @@ body {
 		top: 0;
 		bottom: 0;
 		left: 0;
-		right: -(variables.$shutter_overhang);
+		right: -18%;
 		transform: translateX(-100%);
 		pointer-events: none;
 
-		// the stripes lag each other, so the moving edges zigzag
-		@each $i, $color in (1, variables.$left_color), (2, variables.$up_color),
-			(3, variables.$right_color), (4, variables.$down_color)
-		{
-			> div:nth-child(#{$i}) {
-				position: absolute;
-				top: ($i - 1) * 25%;
-				// 1px taller, so no seam between stripes lets the board show through
-				height: calc(25% + 1px);
-				left: 0;
-				right: 0;
-				background-color: color.mix($color, black, variables.$shutter_tint);
-				transform: translateX(list.nth(variables.$shutter_offsets, $i));
-			}
+		/* the stripes lag each other, so the moving edges zigzag */
+		> div {
+			position: absolute;
+			/* 1px taller, so no seam between stripes lets the board show through */
+			height: calc(25% + 1px);
+			left: 0;
+			right: 0;
+		}
+
+		> div:nth-child(1) {
+			top: 0;
+			background-color: var(--left-color);
+			transform: translateX(0);
+		}
+
+		> div:nth-child(2) {
+			top: 25%;
+			background-color: var(--up-color);
+			transform: translateX(-5%);
+		}
+
+		> div:nth-child(3) {
+			top: 50%;
+			background-color: var(--right-color);
+			transform: translateX(-10%);
+		}
+
+		> div:nth-child(4) {
+			top: 75%;
+			background-color: var(--down-color);
+			transform: translateX(-15%);
 		}
 
 		&.cover {
-			animation: shutter-cover variables.$shutter_duration variables.$shutter_easing both;
+			animation: shutter-cover 0.24s cubic-bezier(0.7, 0, 0.3, 1) both;
 		}
 
 		&.uncover {
-			animation: shutter-uncover variables.$shutter_duration variables.$shutter_easing both;
+			animation: shutter-uncover 0.24s cubic-bezier(0.7, 0, 0.3, 1) both;
 		}
 	}
 
@@ -540,7 +575,7 @@ body {
 		padding: 0;
 		width: 100%;
 		height: 100%;
-		background-color: variables.$board_color;
+		background-color: var(--board-color);
 		border-radius: 5px;
 		opacity: 0;
 
@@ -572,7 +607,7 @@ body {
 				}
 
 				h3 {
-					color: variables.$muted_color;
+					color: var(--muted-color);
 				}
 
 				h2 {
@@ -591,7 +626,7 @@ body {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: variables.$board_color;
+		background-color: var(--board-color);
 		border-radius: 5px;
 		overflow: hidden;
 
@@ -627,9 +662,9 @@ body {
 }
 
 .points-container {
-	max-width: variables.$size + 2 * variables.$padding;
+	max-width: calc(var(--size) + 2 * var(--padding));
 	text-align: center;
-	font-family: variables.$display_font;
+	font-family: var(--display-font);
 	font-size: 18px;
 	color: white;
 	margin: 0 auto 20px auto;
@@ -653,7 +688,7 @@ body {
 }
 
 .best {
-	max-width: variables.$size;
+	max-width: var(--size);
 	margin: 0 auto;
 	text-align: right;
 	padding-right: 5px;
@@ -665,7 +700,7 @@ body {
 }
 
 .fullscreen-btn {
-	max-width: variables.$size;
+	max-width: var(--size);
 	margin: 5px auto 0;
 	text-align: right;
 	padding-right: 5px;
@@ -673,7 +708,7 @@ body {
 }
 
 .about {
-	max-width: variables.$size - 20px;
+	max-width: calc(var(--size) - 20px);
 	margin: 0 auto;
 	text-align: justify;
 	font-size: 16px;
@@ -685,17 +720,17 @@ body {
 	}
 
 	.prim {
-		color: variables.$text_color;
+		color: var(--text-color);
 		font-weight: 500;
 	}
 
 	.sec {
-		color: variables.$text_color;
+		color: var(--text-color);
 		font-weight: 500;
 	}
 
 	.third {
-		color: variables.$up_color;
+		color: var(--up-color);
 		font-weight: 500;
 	}
 
@@ -704,7 +739,7 @@ body {
 		width: 16px;
 		height: 16px;
 		vertical-align: top;
-		color: variables.$up_color;
+		color: var(--up-color);
 
 		svg {
 			display: block;
@@ -750,7 +785,7 @@ body {
 .mobile-controls {
 	position: relative;
 	display: none;
-	max-width: variables.$size;
+	max-width: var(--size);
 	margin: 0 auto;
 	user-select: none;
 
@@ -766,8 +801,8 @@ body {
 	.key-left,
 	.key-down,
 	.key-right {
-		width: variables.$key_size + 15px;
-		height: variables.$key_size + 15px;
+		width: calc(var(--key-size) + 15px);
+		height: calc(var(--key-size) + 15px);
 		box-sizing: border-box;
 		border: 3px solid white;
 		background-color: black;
@@ -791,16 +826,35 @@ body {
 		}
 	}
 
-	@each $direction, $color, $angle in (up, variables.$up_color, 0deg),
-		(right, variables.$right_color, 90deg), (down, variables.$down_color, 180deg),
-		(left, variables.$left_color, -90deg)
-	{
-		.key-#{$direction} {
-			color: $color;
+	.key-up {
+		color: var(--up-color);
 
-			svg {
-				transform: rotate($angle);
-			}
+		svg {
+			transform: rotate(0deg);
+		}
+	}
+
+	.key-right {
+		color: var(--right-color);
+
+		svg {
+			transform: rotate(90deg);
+		}
+	}
+
+	.key-down {
+		color: var(--down-color);
+
+		svg {
+			transform: rotate(180deg);
+		}
+	}
+
+	.key-left {
+		color: var(--left-color);
+
+		svg {
+			transform: rotate(-90deg);
 		}
 	}
 
@@ -812,7 +866,7 @@ body {
 		padding: 12px 14px;
 		background-color: white;
 		color: black;
-		font-family: variables.$display_font;
+		font-family: var(--display-font);
 		letter-spacing: 0.05em;
 		text-transform: uppercase;
 	}
