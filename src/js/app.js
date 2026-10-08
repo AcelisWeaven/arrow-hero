@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let scheduledSpawns = []
 	let bestScore = readBestScore()
 	const mobileControls = document.querySelector('.mobile-controls')
-	// Same breakpoint as the mobile layout in _responsive.scss
+	// Same breakpoint as the mobile layout in responsive.css
 	const mobileLayout = window.matchMedia('(max-width: 480px)')
 	let focusLost = false
 
@@ -527,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateScaleFactor() {
-		// Original size is $size in _variables.scss
+		// Original size is --size in variables.css
 		const size = 390
 		const height = globalContainer.offsetHeight
 

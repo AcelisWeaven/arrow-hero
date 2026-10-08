@@ -1,0 +1,22 @@
+:root {
+	--padding: 10px;
+	--key-size: 60px;
+	--selector-size: calc(var(--key-size) + 4px);
+	--selector-border-size: 5px;
+	--real-selector-size: calc(var(--selector-size) + 2 * var(--selector-border-size));
+	--size: calc(var(--key-size) * 6 + var(--padding) * 2 + var(--selector-border-size) * 2);
+	--orbit-size: calc(var(--key-size) * 5);
+	--muted-color: #8c8c8c;
+	--background-color: #181818;
+	--text-color: #e1e1e1;
+	--board-color: black;
+	--left-color: #48ff3b;
+	--up-color: #ff5252;
+	--right-color: #00b2ff;
+	--down-color: #ffff00;
+	--life-color: white;
+	--life-track-color: #2a2a2a;
+	--life-chunk-color: #e5393f;
+	--body-font: 'DM Mono', monospace;
+	--display-font: 'Rubik Mono One', sans-serif;
+}
