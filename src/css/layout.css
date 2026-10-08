@@ -765,6 +765,22 @@ body {
 		overflow: visible;
 		vertical-align: -0.125em;
 	}
+
+	.icon-left {
+		color: var(--left-color);
+	}
+
+	.icon-up {
+		color: var(--up-color);
+	}
+
+	.icon-right {
+		color: var(--right-color);
+	}
+
+	.icon-down {
+		color: var(--down-color);
+	}
 }
 
 footer.about {
