@@ -7,7 +7,7 @@
   "display": "standalone",
   "orientation": "any",
   "start_url": "/?homescreen=1",
-  "background_color": "#fff",
+  "background_color": "#000",
   "theme_color": "#ff3232",
   "icons": [
     {
